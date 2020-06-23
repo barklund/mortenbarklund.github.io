@@ -288,7 +288,7 @@
     <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/UserContext.Consumer&gt;</span>
   );
 }
-</code></pre></div><p>While the two latter options are of course workable, they&rsquo;re not as clean as you might want them to be. However, that&rsquo;s where the <code>useContext</code> hook comes in!</p>
+</code></pre></div><p>While the two latter options are of course workable, they&rsquo;re not as clean as you might want them to be. And that&rsquo;s where the <code>useContext</code> hook comes to the rescue!</p>
 <hr>
 <h3 id="react-usecontext-hook">React <code>useContext</code> hook</h3>
 <p>In order to more directly access the current value of the nearest provider for a given context, React has supplied us with the very nice hook, <code>useContext</code>. It&rsquo;s a hook, that returns the exact same value, as the render prop of a context consumer would be invoked with - and is most often deconstructed as such.</p>
@@ -499,7 +499,7 @@
 <hr>
 <h3 id="faq-on-the-react-provider-pattern">FAQ on the React Provider Pattern</h3>
 <h4 id="why-does-the-context-have-its-own-file">Why does the context have its own file?</h4>
-<p>The reason that the context lives in it&rsquo;s own file is three-fold:</p>
+<p>The reason that the context lives in its own file is three-fold:</p>
 <ol>
 <li>It allows context reuse - you might actually end up creating multiple providers for the same context (though it&rsquo;s rare).</li>
 <li>It can be used to mock the provider in testing</li>
@@ -509,7 +509,7 @@
 <p>Well, no. Note that the actual context (the variable created in the <code>context.js</code> file) is an internal implementation detail of the user provider – and it could technically be swapped for any other technology provider similar functionality such as <code>redux</code>.</p>
 <h4 id="what-about-all-those-re-renders">What about all those re-renders?</h4>
 <p>To avoid unneccessary re-renders when unrelated context values change, please use something akin to <a href="https://github.com/dai-shi/use-context-selector"><code>use-context-selector</code></a>, which memoizes the actually used variables from the context and thus only re-renders your components, if the used properties change.</p>
-<p>Their examples are a bit crude, but it&rsquo;s faily simple to combine with the above pattern.</p>
+<p>Their examples are a bit crude, but it&rsquo;s fairly simple to combine with the above pattern.</p>
 <h4 id="so-is-redux-just-garbage-now-should-i-just-drown-it-like-a-lost-kitten-should-i-chuck-it-on-top-of-the-local-tire-fire">So is <code>redux</code> just garbage now? Should I just drown it like a lost kitten? Should I chuck it on top of the local tire fire?</h4>
 <p>First off, easy now – calm down!</p>
 <p>Secondly: no, most definitely not. Redux (in particular when combined with <code>redux-toolkit</code>) has many functionalities outside of this – and redux actually uses React Context under the hood these days. It&rsquo;s basically this pattern on steroids with many years of optimisation. It does what it does (application-wide storage) very well, but it might be overkill in a smaller (or even medium-sized) application.</p>
