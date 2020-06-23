@@ -13,13 +13,12 @@
     
     
     <item>
-      <title>Provider Pattern</title>
-      <link>https://mortenbarklund.com/blog/provider-pattern/</link>
+      <title>React Architecture: The React Provider Pattern</title>
+      <link>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</link>
       <pubDate>Mon, 11 May 2020 18:23:05 -0400</pubDate>
       
-      <guid>https://mortenbarklund.com/blog/provider-pattern/</guid>
-      <description>Stuff about provider goes here.
- Stuff after pen?</description>
+      <guid>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</guid>
+      <description>The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.</description>
     </item>
     
     <item>
@@ -28,8 +27,7 @@
       <pubDate>Mon, 11 May 2020 16:50:40 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/blog/hello-world/</guid>
-      <description>Somewhere in the middle of the markdown document:
-This is a normal footnote, which directs to the bottom of the document. 1 This is a dual footnote, which also reuses the url from the footnote for a hyperlink 2</description>
+      <description>Welcome to my blog - a place for thoughts on React, accessibility and testing.</description>
     </item>
     
     <item>
@@ -56,7 +54,7 @@ This is a normal footnote, which directs to the bottom of the document. 1 This i
       <pubDate>Mon, 11 May 2020 17:16:37 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/about/</guid>
-      <description>Icons made by Becris from www.flaticon.com</description>
+      <description>What Blog, a place where I dump my thoughts and ideas - mostly about React, accessibility and testing, but also other more or less related topics.</description>
     </item>
     
   </channel>
