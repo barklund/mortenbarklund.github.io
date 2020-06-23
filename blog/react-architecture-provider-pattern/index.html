@@ -506,7 +506,7 @@
 <li>It reduces the codebase in the rare case your don&rsquo;t need the provider in a given bundle</li>
 </ol>
 <h4 id="is-the-context-even-necessary">Is the context even necessary</h4>
-<p>Well, no. Note that the actual context (the variable created in the <code>context.js</code> file) is an internal implementation detail of the user provider – and it could technically be swapped for any other technology provider similar functionality such as <code>redux</code>.</p>
+<p>Well, no. Note that the actual context (the variable created in the <code>context.js</code> file) is an internal implementation detail of the user provider – and it could technically be swapped for any other technology resulting in similar functionality such as <code>redux</code>.</p>
 <h4 id="what-about-all-those-re-renders">What about all those re-renders?</h4>
 <p>To avoid unneccessary re-renders when unrelated context values change, please use something akin to <a href="https://github.com/dai-shi/use-context-selector"><code>use-context-selector</code></a>, which memoizes the actually used variables from the context and thus only re-renders your components, if the used properties change.</p>
 <p>Their examples are a bit crude, but it&rsquo;s fairly simple to combine with the above pattern.</p>
