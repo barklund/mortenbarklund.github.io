@@ -418,7 +418,7 @@
     &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">handleClick</span>} /&gt;
   );
 }
-</code></pre></div><p>And again, we can see this in action, in this live example. On the surface is completely identical to before, but now the context is internalised behind the provider and the custom hook resulting in a much cleaner interface between the provider and the rest of the application:</p>
+</code></pre></div><p>And again, we can see this in action, in this live example. On the surface the example is completely identical to before, but now the context is internalised behind the provider and the custom hook resulting in a much cleaner interface between the provider and the rest of the application:</p>
 <script
     data-slug-hash="RwrVRQe"
     data-user="barklund"
@@ -479,7 +479,7 @@
 <p>This usage can be found in the <code>google/web-stories-wp</code> codebase in the <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/history/historyProvider.js">history provider</a> and the [story provider] (<a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/story/storyProvider.js">https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/story/storyProvider.js</a>) - each a provider of different levels of application-wide storage and each with their own associated states and actions.</p>
 <p>Note how both these are applied – among many other providers – in <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/index.js#L52-L83">a very specific order</a> in the main application file.</p>
 <h4 id="ui-state">UI state</h4>
-<p>This pattern can be used as component-local storage storage for UI state - a use that redux handles rather poorly in my opinion.</p>
+<p>This pattern can be used as component-local storage for UI state - a use that redux handles rather poorly in my opinion.</p>
 <p>Imagine a tabbed interface - you want to remember which tab is currently active, but there&rsquo;s no need to bring in some big library to fuel this. It can be done very simple and elegantly with the provider pattern:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">TabProvider</span>({<span style="color:#a6e22e">children</span>}) {
   <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">current</span>, <span style="color:#a6e22e">setCurrent</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#e6db74">&#39;INFO&#39;</span>);
@@ -512,7 +512,7 @@
 <p>Their examples are a bit crude, but it&rsquo;s fairly simple to combine with the above pattern.</p>
 <h4 id="so-is-redux-just-garbage-now-should-i-just-drown-it-like-a-lost-kitten-should-i-chuck-it-on-top-of-the-local-tire-fire">So is <code>redux</code> just garbage now? Should I just drown it like a lost kitten? Should I chuck it on top of the local tire fire?</h4>
 <p>First off, easy now – calm down!</p>
-<p>Secondly: no, most definitely not. Redux (in particular when combined with <code>redux-toolkit</code>) has many functionalities outside of this – and redux actually uses React Context under the hood these days. It&rsquo;s basically this pattern on steroids with many years of optimisation. It does what it does (application-wide storage) very well, but it might be overkill in a smaller (or even medium-sized) application.</p>
+<p>Secondly: no, most definitely not. Redux (in particular when combined with <code>redux-toolkit</code>) has many functionalities outside of this – and redux actually uses React Context under the hood these days. It&rsquo;s basically this pattern on steroids with many years of optimisation. It does what it does (application-wide storage) very well, but it might be overkill in a smaller (or even medium-sized) applications.</p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
