@@ -322,7 +322,8 @@
   )
 }
 </code></pre></div><p>Now, <code>ShowName</code> is as before, but <code>EditName</code> will now use the newly provided <code>setName</code> property:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">EditName</span>() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useContext</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">EditName</span>() {
   <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">setName</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">useContext</span>(<span style="color:#a6e22e">UserContext</span>);
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleClick</span> <span style="color:#f92672">=</span> () =&gt; <span style="color:#a6e22e">setName</span>(<span style="color:#a6e22e">prompt</span>(<span style="color:#e6db74">&#39;What is your name?&#39;</span>));
   <span style="color:#66d9ef">return</span> (
@@ -375,7 +376,8 @@
 }
 
 <span style="color:#75715e">// File: user/provider.js
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">UserProvider</span>({ <span style="color:#a6e22e">children</span> }) {
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">UserProvider</span>({ <span style="color:#a6e22e">children</span> }) {
   <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">setName</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>(<span style="color:#e6db74">&#39;World&#39;</span>);
   <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> {
     <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">name</span> },
@@ -434,7 +436,8 @@
 <h4 id="application-wide-storage">Application-wide storage</h4>
 <p>This pattern can be used as application-wide storage in lieu of other libraries such as redux.</p>
 <p>Imagine the classic todo application. Our provider has a state, which is the list of todos, and a couple of functions for adding, removing and marking todos as complete:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">TodoProvider</span>({<span style="color:#a6e22e">children</span>}) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jsx" data-lang="jsx"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">useState</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;react&#39;</span>;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">TodoProvider</span>({<span style="color:#a6e22e">children</span>}) {
   <span style="color:#75715e">// Start with an empty list
 </span><span style="color:#75715e"></span>  <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">todos</span>, <span style="color:#a6e22e">setTodos</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">useState</span>([]);
 
