@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.70.0" />
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>15 (mostly bad) ways to set the accessible name of a button | Morten Barklund</title>
+	<meta name="description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it.">
+	<meta name="keywords" content="accessibility, html, buton, standards,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg"/>
+<meta name="twitter:title" content="15 (mostly bad) ways to set the accessible name of a button"/>
+<meta name="twitter:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it."/>
+
+	<meta property="og:title" content="15 (mostly bad) ways to set the accessible name of a button" />
+<meta property="og:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/" />
+<meta property="og:image" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg"/>
+<meta property="article:published_time" content="2020-08-10T08:00:00-04:00" />
+<meta property="article:modified_time" content="2020-08-10T08:00:00-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+	<link href="/css/additional.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=15%20%28mostly%20bad%29%20ways%20to%20set%20the%20accessible%20name%20of%20a%20button&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f&title=15%20%28mostly%20bad%29%20ways%20to%20set%20the%20accessible%20name%20of%20a%20button&summary=When%20you%20see%20a%20button%20on%20a%20webpage%2c%20you%20probably%20know%20what%20it%20does.%20If%20you%20don%26rsquo%3bt%2c%20the%20page%20is%20poorly%20made.%20But%20just%20because%20you%20do%2c%20when%20you%20see%20it%2c%20doesn%26rsquo%3bt%20mean%20a%20non-visual%20user%20does%20when%20interacting%20with%20it.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                                <img >
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, avid runner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Aug 10, 2020
+                                    <i class="far fa-clock clock"></i>
+                                    5 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">15 (mostly bad) ways to set the accessible name of a button</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg" alt="A button to activate a cross walk signal" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">The label for this button should probably not be &#39;arrow&#39; but &#39;walk&#39; or similar - right?</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because <em>you</em> do, when you <em>see</em> it, doesn&rsquo;t mean a non-visual user does when interacting with it.</p>
+<p>Maybe the button has a text label – okay then a screen reader can easily read the name of the button. But the button text might only make sense it the context of the element it is next to – e.g. it might say <code>&quot;Select this&quot;</code> where <em>&ldquo;this&rdquo;</em> makes perfect sense when viewed, but not when read aloud.</p>
+<p>The button might in stead have an image, an SVG-shape or even some weird font glyph as its visual element - something that&rsquo;ll make sense to you as a sighted user, but not to a user with a screen reader this isn&rsquo;t informed of what the image represents.</p>
+<p>And all of the above applies not only to buttons, but also to input fields, headlines, images, videos and many other important smaller elements of your web application.</p>
+<p>In all such cases, you should make sure to provide a textual, meaningful <strong>accessible name</strong> to the element in question.</p>
+<h2 id="what-is-the-accessible-name">What is the accessible name?</h2>
+<p>The accessible name is the text string used by browsers and screen readers to represent the element in question. The algorithm for resolving the accessible name of an element is quite complex to account for some rather esoteric situations. However in practice most of the algorithm steps can be ignored and the accessible name is trivial to glean from any element.</p>
+<p>The actual algorithm is described in the <a href="https://www.w3.org/TR/accname-1.1">Accessible Name and Description Computation 1.1 W3 specification</a> in <a href="https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_te">section §4.3</a>. However, this reads fairly badly and it&rsquo;s much better understood through some (more or less common) examples.</p>
+<h2 id="examples-of-accessible-names-in-html">Examples of accessible names in HTML</h2>
+<p>Here&rsquo;s a bunch of buttons, that on the surface appear to be very different, but all have the <strong>exact same accessible name</strong>, namely the string <code>&quot;Publish post&quot;</code>.</p>
+<p>These examples will give you an idea as to how different elements can be labelled in different ways - including images, texts, SVG&rsquo;s and input elements:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- Just a button with text content --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish post
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Nested tags inside --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish 
+  &lt;<span style="color:#f92672">span</span>&gt;&lt;<span style="color:#f92672">em</span>&gt;p&lt;<span style="color:#f92672">strong</span>&gt;o&lt;/<span style="color:#f92672">strong</span>&gt;&lt;/<span style="color:#f92672">em</span>&gt;st&lt;/<span style="color:#f92672">span</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Some content hidden - but only for accessibility --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish 
+  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;new&lt;/<span style="color:#f92672">span</span>&gt; 
+  post
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Label provided on parent element, ignoring content --&gt;</span>
+&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Publish post&#34;</span>&gt;
+  Tell the world!
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Label provided by child node --&gt;</span>
+&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;child-label&#34;</span>&gt;
+  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;child-label&#34;</span>&gt;Publish post&lt;/<span style="color:#f92672">span</span>&gt;
+   now
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- A button with both a direct label and another element as label
+</span><span style="color:#75715e">where the latter takes precedence
+</span><span style="color:#75715e">Note that this even works with a hidden (or aria-hidden) label element --&gt;</span>
+&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;span-label&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+  Publish post
+&lt;/<span style="color:#f92672">span</span>&gt;
+&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Make public&#34;</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;span-label&#34;</span>&gt;
+  Click me
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Image with alt text --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish
+  &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://dummyimage.com/32x16/fff/000&amp;text=post&#34;</span> <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Emojis can be made accessible too - but remember the role=&#34;img&#34; --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish 
+  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;emoji&#34;</span> <span style="color:#a6e22e">role</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;img&#34;</span>&gt;✉️&lt;/<span style="color:#f92672">span</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Image with empty alt is ignored --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://dummyimage.com/16x16/fff/000&amp;text=⇨&#34;</span> <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+  Publish post
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- A combination of two child elements labelled in different ways --&gt;</span>
+&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;some-post&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+  post
+&lt;/<span style="color:#f92672">span</span>&gt;
+&lt;<span style="color:#f92672">button</span>&gt;
+  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Publish&#34;</span>&gt;
+    Submit
+  &lt;/<span style="color:#f92672">span</span>&gt; 
+  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;some-post&#34;</span>&gt;
+    item
+  &lt;/<span style="color:#f92672">span</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- SVG text is ignored --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish post 
+  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 20 10&#34;</span>&gt;
+    &lt;<span style="color:#f92672">text</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentColor&#34;</span> &gt;(now)&lt;/<span style="color:#f92672">text</span>&gt;
+  &lt;/<span style="color:#f92672">svg</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- SVG title is respected though --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish 
+  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 10 10&#34;</span>&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;post&lt;/<span style="color:#f92672">title</span>&gt;
+    &lt;<span style="color:#f92672">rect</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">rx</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentColor&#34;</span> /&gt;
+  &lt;/<span style="color:#f92672">svg</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- But aria-label takes precedence over SVG title --&gt;</span>
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish
+  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 10 10&#34;</span>&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;item&lt;/<span style="color:#f92672">title</span>&gt;
+    &lt;<span style="color:#f92672">rect</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">rx</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;chocolate&#34;</span> /&gt;
+  &lt;/<span style="color:#f92672">svg</span>&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- Inputs can be referenced from a label --&gt;</span>
+&lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;input&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;visually-hidden&#34;</span>&gt;
+  post
+&lt;/<span style="color:#f92672">label</span>&gt;
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish
+  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;input&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">disabled</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;item&#34;</span> /&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+
+<span style="color:#75715e">&lt;!-- But a hidden label is ignored (unlike an element referenced via aria-labelledby) --&gt;</span>
+&lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;extra-input&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+  (extra)
+&lt;/<span style="color:#f92672">label</span>&gt;
+&lt;<span style="color:#f92672">button</span>&gt;
+  Publish post
+  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;extra-input&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">disabled</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;(extra)&#34;</span> /&gt;
+&lt;/<span style="color:#f92672">button</span>&gt;
+</code></pre></div><p>That&rsquo;s quite the list - and it illustrates almost all the principles of the resolution of accessible names. Note however that most of them are pretty stupid.</p>
+<p>You should never have an <code>&lt;input&gt;</code> inside a <code>&lt;button&gt;</code> - even if it is <code>disabled</code>. Nor should you have <strong>one text</strong> for sighted users and <strong>a completely different text</strong> for non-sighted users - that&rsquo;s only going to lead to confusion if they were ever to talk about their work.</p>
+<h2 id="how-to-see-the-accessible-name">How to see the accessible name</h2>
+<p>But how do I actually know, that this text is in fact the accessible name for this element? Can I somehow test that it works correctly? Of course you can - right in your browser developer tools. In Chrome, you can find it right here:</p>
+<figure>
+<a href="./chrome_dev_tools_accessible_name.jpg"><img src="./chrome_dev_tools_accessible_name.jpg" alt="Chrome developer tools showing the location of accessible name for an element" /></a>
+<caption><em><small>Chrome developer tools showing the location of accessible name for an element - here showing in particular how `aria-labelledby` takes precedence over `aria-label`.</small></em></caption>
+</figure>
+<p>And if you have upgraded to Chrome 84 or newer, it&rsquo;s even easier to see. Accessible name is now a first-class citizen in web debugging display directly in the web page when examining any HTML element along with the role and the keyboard focusability of the element:</p>
+<figure>
+<a href="./chrome_dev_tools_display_accessible_name.jpg"><img src="./chrome_dev_tools_display_accessible_name.jpg" alt="Chrome developer tools showing the location of accessible name for an element" /></a>
+<caption><em><small>Chrome developer tools displaying the accessible name directly in the page when inspected.</small></em></caption>
+</figure>
+<h2 id="examples-of-accessible-names-in-action">Examples of accessible names in action</h2>
+<p>Go ahead and try it out in <a href="https://codepen.io/barklund/pen/mdVvPLv?editors=1100">this Codepen of all the above buttons with the same accessible name</a> right here:</p>
+<script
+    data-slug-hash="mdVvPLv"
+    data-user="barklund"
+    data-height="500"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>Inspect any of the <code>&lt;button&gt;</code>s here and see, that they all have the same accessible name: <code>&quot;Publish post&quot;</code>.</p>
+<h2 id="why-accessible-name-is-important-for-accessibility">Why accessible name is important for accessibility</h2>
+<p>Not all elements need an accessible name, but most do. 95% of the time, the accessible name is trivially just the text value of the component, but for those 5% (icon buttons, inputs, images, etc), it&rsquo;s good to know how to properly set it.</p>
+<p>To reiterate: The accessible name of any element will determine how the element is announced to any vision-impaired user. Not properly setting the accessible name for even semi-complex components will confuse these users at best – and completely hinder them in using your application at worst.</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/accessibility">accessibility</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/html">html</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/buton">buton</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/standards">standards</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/react-architecture-provider-pattern/">React Architecture: The React Provider Pattern &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+    </div>
+
+
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101253872ns.gif" /></p></noscript>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>
