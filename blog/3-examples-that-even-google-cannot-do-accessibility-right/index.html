@@ -275,13 +275,13 @@
 <a href="./calls_tab_focussed_closed.png"><img src="./calls_tab_focussed_closed.png" alt="Gmail with calls tab closed and with focus" /></a>
 <caption><em><small>After attempting to activate the "contacts" tab, the "phone calls" tab simply closes.</small></em></caption>
 </figure>
-<p>The expected behavior is of course, that the focussed tab changes when arrow keys are pressed - both visually but also with respect to being the actual <code>document.activeElement</code>.</p>
+<p>The expected behavior is of course, that the focused tab changes when arrow keys are pressed - both visually but also with respect to being the actual <code>document.activeElement</code>.</p>
 <h3 id="whats-wrong-1">What&rsquo;s wrong?</h3>
 <p>There&rsquo;s several problems with the tab list implementation here.</p>
 <p>The biggest problems are:</p>
 <ol>
 <li>A tab list should only have the current tab as part of the tabbing order - you should not be able to use the tab key to move between the different tabs (this is known as <a href="https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex"><em>&ldquo;roving tabindex&rdquo;</em></a><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>).</li>
-<li>When focussing another tab using arrow keys, keyboard focus should follow. This implementation with two different sets of focus makes no sense at all.</li>
+<li>When focusing another tab using arrow keys, keyboard focus should follow. This implementation with two different sets of focus makes no sense at all.</li>
 <li>The tab panels aren&rsquo;t actually marked up as such (with <code>role=&quot;tabpanel&quot;</code>) and are missing all the relevant <code>aria-*</code> attributes expected of such an element.</li>
 </ol>
 <p>Smaller problems include:</p>
@@ -290,7 +290,7 @@
 <li>The tabs section of WAI-ARIA does not describe the interaction of closing the currently active tab panel. Re-activating the active tab should just do nothing. However, given that the specification also allows for multiple tabs to be open at the same time, zero tabs open could be considered a legal configuration – albeit unusual.</li>
 <li>The <code>aria-controls</code> property is missing from all the tab buttons - thus leaving assistive technologies without information about what the tab actually controls.</li>
 <li>Tabs should auto-select when receiving focus in such a simple tab panel setup as this one. The <a href="https://www.w3.org/TR/wai-aria-practices/#issue-container-generatedID-25">recommendation in WAI-ARIA</a> is that tabs auto-select when receiving focus (<em>&ldquo;selection follows focus&rdquo;</em>) unless expensive calculation or external load is involved. In this instance, the information is already available and there&rsquo;s no reason not to switch tabs as soon as a tab receives focus (by pressing arrow keys, <strong>not</strong> the tab key). This could be excused in this instance though, as the tab panels actually live inside another iframe, but the content for all of them is preloaded anyway.</li>
-<li><code>aria-activedescendant</code> is used to highlight which tab has &ldquo;visual focus&rdquo; (the focus that can be navigated using arrow keys), however that is not necessary according to specification. It&rsquo;s superfluous information - the focussed tab can be deduced from it having <code>tabindex=&quot;0&quot;</code> and the active tab(s) from having <code>aria-selected=&quot;true&quot;</code> (which is recommended above to be the same thing).</li>
+<li><code>aria-activedescendant</code> is used to highlight which tab has &ldquo;visual focus&rdquo; (the focus that can be navigated using arrow keys), however that is not necessary according to specification. It&rsquo;s superfluous information - the focused tab can be deduced from it having <code>tabindex=&quot;0&quot;</code> and the active tab(s) from having <code>aria-selected=&quot;true&quot;</code> (which is recommended above to be the same thing).</li>
 </ol>
 <h3 id="how-can-this-be-fixed-1">How can this be fixed?</h3>
 <p>This does not come with an easy fix. I suspect a major overhaul of the widget is required to make it behave according to specifications. These would be the steps I&rsquo;d go through to fix it:</p>
@@ -307,14 +307,14 @@
 <h3 id="impact-1">Impact</h3>
 <h4 id="how-bad-of-a-violation-is-this-1">How bad of a violation is this?</h4>
 <p>This is in many ways directly against recommendations. I hope that this is &ldquo;just&rdquo; a partial implementation of the WAI-ARIA tab recommendation (which is about as good as not implementing it at all), and but I fear that it is something copy-pasted from another product and left rotting in the codebase.</p>
-<p>The weirdest part of the implementation is definitely the dual-focus of using both <code>tabindex</code> and <code>aria-activedescendant</code> and allowing tabs to be &ldquo;active&rdquo; in 3 different ways. I can set up a situation where <em>one tab</em> is open, <em>another tab</em> has actual keyboard focus and <em>the last tab</em> appears focussed (has bright white icon). That&rsquo;s completely misunderstood in so many ways.</p>
+<p>The weirdest part of the implementation is definitely the dual-focus of using both <code>tabindex</code> and <code>aria-activedescendant</code> and allowing tabs to be &ldquo;active&rdquo; in 3 different ways. I can set up a situation where <em>one tab</em> is open, <em>another tab</em> has actual keyboard focus and <em>the last tab</em> appears focused (has bright white icon). That&rsquo;s completely misunderstood in so many ways.</p>
 <h4 id="what-is-the-impact-on-users-1">What is the impact on users?</h4>
 <p>This is a pretty bad user experience for keyboard-only users. Tabs have an expected interaction model involving arrow keys to move between tabs and the tab key to move to and from the tab list - not this weird combination of both modes interspersing with one another.</p>
 <p>I assume keyboard-only users can figure it out and stick with pressing only the tab key and not using the arrow keys, but it should not be a necessary workaround.</p>
 <hr>
 <h2 id="3-font-size-listbox-in-google-docs--google-sheets">3. &ldquo;Font size listbox&rdquo; in Google Docs &amp; Google Sheets</h2>
 <p>For this example we&rsquo;re now entering <em>small potatoes</em> country. It&rsquo;s not that there aren&rsquo;t other accessibility misimplementations, it&rsquo;s just that this is an example of a very complex widget, that&rsquo;s almost perfect, but still lacking a bit.</p>
-<p>This concens the font size dropdown available in both Google Docs and Google Sheets. It&rsquo;s a <em>combobox</em> with an input (a <em>textbox</em>), that when focussed opens a <em>listbox</em> with font size options:</p>
+<p>This concens the font size dropdown available in both Google Docs and Google Sheets. It&rsquo;s a <em>combobox</em> with an input (a <em>textbox</em>), that when focused opens a <em>listbox</em> with font size options:</p>
 <figure>
 <a href="./docs_fontsize_combobox_display.png"><img src="./docs_fontsize_combobox_display.png" alt="The combobox as visually displayed in Google Sheets" /></a>
 <caption><em><small>This shows an expanded font size combobox in Google Sheets.</small></em></caption>
