@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</loc>
     <lastmod>2020-08-10T08:00:00-04:00</lastmod>
   </url>
@@ -19,12 +24,32 @@
   
   <url>
     <loc>https://mortenbarklund.com/tags/accessibility/</loc>
-    <lastmod>2020-08-10T08:00:00-04:00</lastmod>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/aria/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
   </url>
   
   <url>
     <loc>https://mortenbarklund.com/blog/</loc>
-    <lastmod>2020-08-10T08:00:00-04:00</lastmod>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/examples/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/google/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
   </url>
   
   <url>
@@ -39,11 +64,6 @@
   
   <url>
     <loc>https://mortenbarklund.com/tags/standards/</loc>
-    <lastmod>2020-08-10T08:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mortenbarklund.com/tags/</loc>
     <lastmod>2020-08-10T08:00:00-04:00</lastmod>
   </url>
   

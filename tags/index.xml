@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 10 Aug 2020 08:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2020 18:17:37 -0400</lastBuildDate>
     
 	<atom:link href="https://mortenbarklund.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,36 @@
     <item>
       <title>accessibility</title>
       <link>https://mortenbarklund.com/tags/accessibility/</link>
-      <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/tags/accessibility/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>aria</title>
+      <link>https://mortenbarklund.com/tags/aria/</link>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/aria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>examples</title>
+      <link>https://mortenbarklund.com/tags/examples/</link>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/examples/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>google</title>
+      <link>https://mortenbarklund.com/tags/google/</link>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/google/</guid>
       <description></description>
     </item>
     
