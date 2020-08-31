@@ -13,6 +13,15 @@
     
     
     <item>
+      <title>The simplest possible webapp implemented in React, Angular, and Vue</title>
+      <link>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</guid>
+      <description>Are you new to frontend development and feel that all the popular libraries and frameworks are too daunting to get started with? Do you always balk at tutorials, when they mention installing a bunch of programs and libraries and running scripts, compilers, and bundlers when trying to learn something new?</description>
+    </item>
+    
+    <item>
       <title>3 Examples That Even Google Can&#39;t Do Accessibility Right</title>
       <link>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</link>
       <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
