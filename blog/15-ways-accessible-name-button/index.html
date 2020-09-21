@@ -7,16 +7,16 @@
 	<link rel="icon" href="/images/logo.svg">
 	
 	<title>15 (mostly bad) Ways to Set the Accessible Name of a Button | Morten Barklund</title>
-	<meta name="description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it.">
+	<meta name="description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a disabled user does when interacting with it.">
 	<meta name="keywords" content="accessibility, html, button, standards,react, react hooks, react context, design patterns, react concurrent">
 
 	<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg"/>
 <meta name="twitter:title" content="15 (mostly bad) Ways to Set the Accessible Name of a Button"/>
-<meta name="twitter:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it."/>
+<meta name="twitter:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a disabled user does when interacting with it."/>
 
 	<meta property="og:title" content="15 (mostly bad) Ways to Set the Accessible Name of a Button" />
-<meta property="og:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it." />
+<meta property="og:description" content="When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a disabled user does when interacting with it." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/" />
 <meta property="og:image" content="https://mortenbarklund.com/blog/15-ways-accessible-name-button/cover.jpg"/>
@@ -122,7 +122,7 @@
         </li>
         
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f&title=15%20%28mostly%20bad%29%20Ways%20to%20Set%20the%20Accessible%20Name%20of%20a%20Button&summary=When%20you%20see%20a%20button%20on%20a%20webpage%2c%20you%20probably%20know%20what%20it%20does.%20If%20you%20don%26rsquo%3bt%2c%20the%20page%20is%20poorly%20made.%20But%20just%20because%20you%20do%2c%20when%20you%20see%20it%2c%20doesn%26rsquo%3bt%20mean%20a%20non-visual%20user%20does%20when%20interacting%20with%20it.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f&title=15%20%28mostly%20bad%29%20Ways%20to%20Set%20the%20Accessible%20Name%20of%20a%20Button&summary=When%20you%20see%20a%20button%20on%20a%20webpage%2c%20you%20probably%20know%20what%20it%20does.%20If%20you%20don%26rsquo%3bt%2c%20the%20page%20is%20poorly%20made.%20But%20just%20because%20you%20do%2c%20when%20you%20see%20it%2c%20doesn%26rsquo%3bt%20mean%20a%20disabled%20user%20does%20when%20interacting%20with%20it.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin"></i>
             </a>
         </li>
@@ -186,16 +186,16 @@
 
                     
                     <div class="article-post">
-                        <p>When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because <em>you</em> do, when you <em>see</em> it, doesn&rsquo;t mean a non-visual user does when interacting with it.</p>
-<p>Maybe the button has a text label – okay then a screen reader can easily read the name of the button. But the button text might only make sense it the context of the element it is next to – e.g. it might say <code>&quot;Select this&quot;</code> where <em>&ldquo;this&rdquo;</em> makes perfect sense when viewed, but not when read aloud.</p>
-<p>The button might in stead have an image, an SVG-shape or even some weird font glyph as its visual element - something that&rsquo;ll make sense to you as a sighted user, but not to a user with a screen reader this isn&rsquo;t informed of what the image represents.</p>
+                        <p>When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because <em>you</em> do, when you <em>see</em> it, doesn&rsquo;t mean a disabled user does when interacting with it.</p>
+<p>Maybe the button has a text label – okay then a screen reader can easily read the name of the button. But the button text might only make sense in the context of the element it is next to – e.g. it might say <code>&quot;Select this&quot;</code> where <em>&ldquo;this&rdquo;</em> makes perfect sense when viewed, but not when read aloud.</p>
+<p>The button might in stead have an image, an SVG-shape or even some weird font glyph as its visual element - something that&rsquo;ll make sense to you as a sighted user, but not to a user with a screen reader who isn&rsquo;t informed of what the image represents.</p>
 <p>And all of the above applies not only to buttons, but also to input fields, headlines, images, videos and many other important smaller elements of your web application.</p>
 <p>In all such cases, you should make sure to provide a textual, meaningful <strong>accessible name</strong> to the element in question.</p>
-<h2 id="what-is-the-accessible-name">What is the accessible name?</h2>
+<h2 id="what-is-an-accessible-name">What is an accessible name?</h2>
 <p>The accessible name is the text string used by browsers and screen readers to represent the element in question. The algorithm for resolving the accessible name of an element is quite complex to account for some rather esoteric situations. However in practice most of the algorithm steps can be ignored and the accessible name is trivial to glean from any element.</p>
-<p>The actual algorithm is described in the <a href="https://www.w3.org/TR/accname-1.1">Accessible Name and Description Computation 1.1 W3 specification</a> in <a href="https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_te">section §4.3</a>. However, this reads fairly badly and it&rsquo;s much better understood through some (more or less common) examples.</p>
+<p>The actual algorithm is described in the <a href="https://www.w3.org/TR/accname-1.1">Accessible Name and Description Computation 1.1 W3 specification</a> in <a href="https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_te">section §4.3</a>, however this algorithm is fairly hard to read and it&rsquo;s much better understood through some (more or less common) examples.</p>
 <h2 id="examples-of-accessible-names-in-html">Examples of accessible names in HTML</h2>
-<p>Here&rsquo;s a bunch of buttons, that on the surface appear to be very different, but all have the <strong>exact same accessible name</strong>, namely the string <code>&quot;Publish post&quot;</code>.</p>
+<p>Here&rsquo;s a bunch of buttons that on the surface appear to be very different, but all have the <strong>exact same accessible name</strong>, namely the string <code>&quot;Publish post&quot;</code>.</p>
 <p>These examples will give you an idea as to how different elements can be labelled in different ways - including images, texts, SVG&rsquo;s and input elements:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- Just a button with text content --&gt;</span>
 &lt;<span style="color:#f92672">button</span>&gt;
@@ -313,7 +313,7 @@
 </code></pre></div><p>That&rsquo;s quite the list - and it illustrates almost all the principles of the resolution of accessible names. Note however that most of them are pretty stupid.</p>
 <p>You should never have an <code>&lt;input&gt;</code> inside a <code>&lt;button&gt;</code> - even if it is <code>disabled</code>. Nor should you have <strong>one text</strong> for sighted users and <strong>a completely different text</strong> for non-sighted users - that&rsquo;s only going to lead to confusion if they were ever to talk about their work.</p>
 <h2 id="how-to-see-the-accessible-name">How to see the accessible name</h2>
-<p>But how do I actually know, that this text is in fact the accessible name for this element? Can I somehow test that it works correctly? Of course you can - right in your browser developer tools. In Chrome, you can find it right here:</p>
+<p>But how do I actually know that some text is in fact the accessible name for a specific element? Can I somehow test that it works correctly? Of course you can - right in your browser developer tools. In Chrome, you can find it right here:</p>
 <figure>
 <a href="./chrome_dev_tools_accessible_name.jpg"><img src="./chrome_dev_tools_accessible_name.jpg" alt="Chrome developer tools showing the location of accessible name for an element" /></a>
 <caption><em><small>Chrome developer tools showing the location of accessible name for an element - here showing in particular how `aria-labelledby` takes precedence over `aria-label`.</small></em></caption>
