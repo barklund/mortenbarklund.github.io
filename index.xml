@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Web Accessibility: 9 extensive tips for perfectly accessible React components (in 2020)</title>
+      <link>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</guid>
+      <description>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</description>
+    </item>
+    
+    <item>
       <title>15 (mostly bad) Ways to Set the Accessible Name of a Button</title>
       <link>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</link>
       <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>

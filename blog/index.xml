@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 31 Aug 2020 00:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 20 Oct 2020 08:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://mortenbarklund.com/blog/index.xml" rel="self" type="application/rss+xml" />
     
@@ -19,6 +19,15 @@
       
       <guid>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</guid>
       <description>The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.</description>
+    </item>
+    
+    <item>
+      <title>Web Accessibility: 9 extensive tips for perfectly accessible React components (in 2020)</title>
+      <link>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</guid>
+      <description>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</description>
     </item>
     
     <item>

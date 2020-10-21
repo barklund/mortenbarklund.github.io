@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</loc>
     <lastmod>2020-08-10T08:00:00-04:00</lastmod>
   </url>
@@ -28,22 +33,37 @@
   </url>
   
   <url>
+    <loc>https://mortenbarklund.com/tags/accessibility/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/blog/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/checklist/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/standards/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/tags/</loc>
+    <lastmod>2020-10-20T08:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://mortenbarklund.com/tags/angular/</loc>
     <lastmod>2020-08-31T00:00:00-04:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mortenbarklund.com/blog/</loc>
-    <lastmod>2020-08-31T00:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://mortenbarklund.com/tags/react/</loc>
-    <lastmod>2020-08-31T00:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mortenbarklund.com/tags/</loc>
     <lastmod>2020-08-31T00:00:00-04:00</lastmod>
   </url>
   
@@ -55,11 +75,6 @@
   <url>
     <loc>https://mortenbarklund.com/tags/webapp/</loc>
     <lastmod>2020-08-31T00:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mortenbarklund.com/tags/accessibility/</loc>
-    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
   </url>
   
   <url>
@@ -84,11 +99,6 @@
   
   <url>
     <loc>https://mortenbarklund.com/tags/html/</loc>
-    <lastmod>2020-08-10T08:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mortenbarklund.com/tags/standards/</loc>
     <lastmod>2020-08-10T08:00:00-04:00</lastmod>
   </url>
   

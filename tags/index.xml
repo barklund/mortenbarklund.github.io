@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 31 Aug 2020 00:00:00 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 20 Oct 2020 08:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://mortenbarklund.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>accessibility</title>
+      <link>https://mortenbarklund.com/tags/accessibility/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/accessibility/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>checklist</title>
+      <link>https://mortenbarklund.com/tags/checklist/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/checklist/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>standards</title>
+      <link>https://mortenbarklund.com/tags/standards/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/tags/standards/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>angular</title>
@@ -45,15 +72,6 @@
       <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/tags/webapp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>accessibility</title>
-      <link>https://mortenbarklund.com/tags/accessibility/</link>
-      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
-      
-      <guid>https://mortenbarklund.com/tags/accessibility/</guid>
       <description></description>
     </item>
     
@@ -99,15 +117,6 @@
       <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/tags/html/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>standards</title>
-      <link>https://mortenbarklund.com/tags/standards/</link>
-      <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>
-      
-      <guid>https://mortenbarklund.com/tags/standards/</guid>
       <description></description>
     </item>
     

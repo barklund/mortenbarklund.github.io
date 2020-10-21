@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 15 Aug 2020 18:17:37 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 20 Oct 2020 08:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://mortenbarklund.com/tags/accessibility/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Web Accessibility: 9 extensive tips for perfectly accessible React components (in 2020)</title>
+      <link>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</guid>
+      <description>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</description>
+    </item>
     
     <item>
       <title>15 (mostly bad) Ways to Set the Accessible Name of a Button</title>
