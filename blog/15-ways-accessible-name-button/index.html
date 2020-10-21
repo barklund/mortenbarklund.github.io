@@ -47,7 +47,8 @@
 	 crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
 	<link href="/css/medium.css" rel="stylesheet">
-	<link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
@@ -56,7 +57,7 @@
         <a class="navbar-brand" href="https://mortenbarklund.com//">
 
             
-            <img src="/images/logo.svg" alt="logo">
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
             
         </a>
         
@@ -111,19 +112,22 @@
     <ul>
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://twitter.com/intent/tweet?text=15%20%28mostly%20bad%29%20Ways%20to%20Set%20the%20Accessible%20Name%20of%20a%20Button&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-twitter" aria-hidden title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
             </a>
         </li>
         
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
-                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-facebook-f" aria-hidden title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
             </a>
         </li>
         
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f15-ways-accessible-name-button%2f&title=15%20%28mostly%20bad%29%20Ways%20to%20Set%20the%20Accessible%20Name%20of%20a%20Button&summary=When%20you%20see%20a%20button%20on%20a%20webpage%2c%20you%20probably%20know%20what%20it%20does.%20If%20you%20don%26rsquo%3bt%2c%20the%20page%20is%20poorly%20made.%20But%20just%20because%20you%20do%2c%20when%20you%20see%20it%2c%20doesn%26rsquo%3bt%20mean%20a%20disabled%20user%20does%20when%20interacting%20with%20it.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
-                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-linkedin" aria-hidden title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
             </a>
         </li>
 
@@ -147,7 +151,6 @@
                                     <source srcset="/images/author.jpg.webp" />
                                     <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
                                 </picture>
-                                <img >
                             </div>
                             <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
                                 <a target="_blank" class="link-dark">Morten Barklund</a><br>
@@ -197,119 +200,119 @@
 <h2 id="examples-of-accessible-names-in-html">Examples of accessible names in HTML</h2>
 <p>Here&rsquo;s a bunch of buttons that on the surface appear to be very different, but all have the <strong>exact same accessible name</strong>, namely the string <code>&quot;Publish post&quot;</code>.</p>
 <p>These examples will give you an idea as to how different elements can be labelled in different ways - including images, texts, SVG&rsquo;s and input elements:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!-- Just a button with text content --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- Just a button with text content --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish post
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Nested tags inside --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- Nested tags inside --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish 
-  &lt;<span style="color:#f92672">span</span>&gt;&lt;<span style="color:#f92672">em</span>&gt;p&lt;<span style="color:#f92672">strong</span>&gt;o&lt;/<span style="color:#f92672">strong</span>&gt;&lt;/<span style="color:#f92672">em</span>&gt;st&lt;/<span style="color:#f92672">span</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;&lt;</span><span class="nt">em</span><span class="p">&gt;</span>p<span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>o<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">em</span><span class="p">&gt;</span>st<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Some content hidden - but only for accessibility --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- Some content hidden - but only for accessibility --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish 
-  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;new&lt;/<span style="color:#f92672">span</span>&gt; 
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">aria-hidden</span><span class="o">=</span><span class="s">&#34;true&#34;</span><span class="p">&gt;</span>new<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> 
   post
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Label provided on parent element, ignoring content --&gt;</span>
-&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Publish post&#34;</span>&gt;
+<span class="c">&lt;!-- Label provided on parent element, ignoring content --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;Publish post&#34;</span><span class="p">&gt;</span>
   Tell the world!
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Label provided by child node --&gt;</span>
-&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;child-label&#34;</span>&gt;
-  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;child-label&#34;</span>&gt;Publish post&lt;/<span style="color:#f92672">span</span>&gt;
+<span class="c">&lt;!-- Label provided by child node --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;child-label&#34;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;child-label&#34;</span><span class="p">&gt;</span>Publish post<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
    now
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- A button with both a direct label and another element as label
-</span><span style="color:#75715e">where the latter takes precedence
-</span><span style="color:#75715e">Note that this even works with a hidden (or aria-hidden) label element --&gt;</span>
-&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;span-label&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+<span class="c">&lt;!-- A button with both a direct label and another element as label
+</span><span class="c">where the latter takes precedence
+</span><span class="c">Note that this even works with a hidden (or aria-hidden) label element --&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;span-label&#34;</span> <span class="na">hidden</span><span class="p">&gt;</span>
   Publish post
-&lt;/<span style="color:#f92672">span</span>&gt;
-&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Make public&#34;</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;span-label&#34;</span>&gt;
+<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;Make public&#34;</span> <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;span-label&#34;</span><span class="p">&gt;</span>
   Click me
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Image with alt text --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- Image with alt text --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish
-  &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://dummyimage.com/32x16/fff/000&amp;text=post&#34;</span> <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://dummyimage.com/32x16/fff/000&amp;text=post&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;post&#34;</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Emojis can be made accessible too - but remember the role=&#34;img&#34; --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- Emojis can be made accessible too - but remember the role=&#34;img&#34; --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish 
-  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;emoji&#34;</span> <span style="color:#a6e22e">role</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;img&#34;</span>&gt;✉️&lt;/<span style="color:#f92672">span</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;post&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;emoji&#34;</span> <span class="na">role</span><span class="o">=</span><span class="s">&#34;img&#34;</span><span class="p">&gt;</span>✉️<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Image with empty alt is ignored --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
-  &lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://dummyimage.com/16x16/fff/000&amp;text=⇨&#34;</span> <span style="color:#a6e22e">alt</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>&gt;
+<span class="c">&lt;!-- Image with empty alt is ignored --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;https://dummyimage.com/16x16/fff/000&amp;text=⇨&#34;</span> <span class="na">alt</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>
   Publish post
-&lt;/<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- A combination of two child elements labelled in different ways --&gt;</span>
-&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;some-post&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+<span class="c">&lt;!-- A combination of two child elements labelled in different ways --&gt;</span>
+<span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;some-post&#34;</span> <span class="na">hidden</span><span class="p">&gt;</span>
   post
-&lt;/<span style="color:#f92672">span</span>&gt;
-&lt;<span style="color:#f92672">button</span>&gt;
-  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Publish&#34;</span>&gt;
+<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;Publish&#34;</span><span class="p">&gt;</span>
     Submit
-  &lt;/<span style="color:#f92672">span</span>&gt; 
-  &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">aria-labelledby</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;some-post&#34;</span>&gt;
+  <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> 
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;some-post&#34;</span><span class="p">&gt;</span>
     item
-  &lt;/<span style="color:#f92672">span</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- SVG text is ignored --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- SVG text is ignored --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish post 
-  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 20 10&#34;</span>&gt;
-    &lt;<span style="color:#f92672">text</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentColor&#34;</span> &gt;(now)&lt;/<span style="color:#f92672">text</span>&gt;
-  &lt;/<span style="color:#f92672">svg</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">svg</span> <span class="na">viewbox</span><span class="o">=</span><span class="s">&#34;0 0 20 10&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">text</span> <span class="na">x</span><span class="o">=</span><span class="s">&#34;2&#34;</span> <span class="na">y</span><span class="o">=</span><span class="s">&#34;8&#34;</span> <span class="na">fill</span><span class="o">=</span><span class="s">&#34;currentColor&#34;</span> <span class="p">&gt;</span>(now)<span class="p">&lt;/</span><span class="nt">text</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- SVG title is respected though --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- SVG title is respected though --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish 
-  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 10 10&#34;</span>&gt;
-    &lt;<span style="color:#f92672">title</span>&gt;post&lt;/<span style="color:#f92672">title</span>&gt;
-    &lt;<span style="color:#f92672">rect</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">rx</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;currentColor&#34;</span> /&gt;
-  &lt;/<span style="color:#f92672">svg</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">svg</span> <span class="na">viewbox</span><span class="o">=</span><span class="s">&#34;0 0 10 10&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>post<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">rect</span> <span class="na">x</span><span class="o">=</span><span class="s">&#34;2&#34;</span> <span class="na">y</span><span class="o">=</span><span class="s">&#34;2&#34;</span> <span class="na">width</span><span class="o">=</span><span class="s">&#34;6&#34;</span> <span class="na">height</span><span class="o">=</span><span class="s">&#34;6&#34;</span> <span class="na">rx</span><span class="o">=</span><span class="s">&#34;1&#34;</span> <span class="na">fill</span><span class="o">=</span><span class="s">&#34;currentColor&#34;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- But aria-label takes precedence over SVG title --&gt;</span>
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="c">&lt;!-- But aria-label takes precedence over SVG title --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish
-  &lt;<span style="color:#f92672">svg</span> <span style="color:#a6e22e">aria-label</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">viewbox</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0 0 10 10&#34;</span>&gt;
-    &lt;<span style="color:#f92672">title</span>&gt;item&lt;/<span style="color:#f92672">title</span>&gt;
-    &lt;<span style="color:#f92672">rect</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">y</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">rx</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">fill</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;chocolate&#34;</span> /&gt;
-  &lt;/<span style="color:#f92672">svg</span>&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">svg</span> <span class="na">aria-label</span><span class="o">=</span><span class="s">&#34;post&#34;</span> <span class="na">viewbox</span><span class="o">=</span><span class="s">&#34;0 0 10 10&#34;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>item<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">rect</span> <span class="na">x</span><span class="o">=</span><span class="s">&#34;2&#34;</span> <span class="na">y</span><span class="o">=</span><span class="s">&#34;2&#34;</span> <span class="na">width</span><span class="o">=</span><span class="s">&#34;6&#34;</span> <span class="na">height</span><span class="o">=</span><span class="s">&#34;6&#34;</span> <span class="na">rx</span><span class="o">=</span><span class="s">&#34;1&#34;</span> <span class="na">fill</span><span class="o">=</span><span class="s">&#34;chocolate&#34;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">svg</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- Inputs can be referenced from a label --&gt;</span>
-&lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;input&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;visually-hidden&#34;</span>&gt;
+<span class="c">&lt;!-- Inputs can be referenced from a label --&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;input&#34;</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;visually-hidden&#34;</span><span class="p">&gt;</span>
   post
-&lt;/<span style="color:#f92672">label</span>&gt;
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish
-  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;input&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">disabled</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;item&#34;</span> /&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;input&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">disabled</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;item&#34;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 
-<span style="color:#75715e">&lt;!-- But a hidden label is ignored (unlike an element referenced via aria-labelledby) --&gt;</span>
-&lt;<span style="color:#f92672">label</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;extra-input&#34;</span> <span style="color:#a6e22e">hidden</span>&gt;
+<span class="c">&lt;!-- But a hidden label is ignored (unlike an element referenced via aria-labelledby) --&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;extra-input&#34;</span> <span class="na">hidden</span><span class="p">&gt;</span>
   (extra)
-&lt;/<span style="color:#f92672">label</span>&gt;
-&lt;<span style="color:#f92672">button</span>&gt;
+<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>
   Publish post
-  &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;extra-input&#34;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">disabled</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;(extra)&#34;</span> /&gt;
-&lt;/<span style="color:#f92672">button</span>&gt;
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;extra-input&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text&#34;</span> <span class="na">disabled</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;(extra)&#34;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
 </code></pre></div><p>That&rsquo;s quite the list - and it illustrates almost all the principles of the resolution of accessible names. Note however that most of them are pretty stupid.</p>
 <p>You should never have an <code>&lt;input&gt;</code> inside a <code>&lt;button&gt;</code> - even if it is <code>disabled</code>. Nor should you have <strong>one text</strong> for sighted users and <strong>a completely different text</strong> for non-sighted users - that&rsquo;s only going to lead to confusion if they were ever to talk about their work.</p>
 <h2 id="how-to-see-the-accessible-name">How to see the accessible name</h2>
@@ -371,10 +374,10 @@
                     
                     <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
                     
-                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/"> &laquo; 3 Examples That Even Google Can&#39;t Do Accessibility Right</a>
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/react-architecture-provider-pattern/"> &laquo; React Architecture: The React Provider Pattern</a>
                     
                     
-                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/react-architecture-provider-pattern/">React Architecture: The React Provider Pattern &raquo;</a>
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/">The simplest possible webapp implemented in React, Angular, and Vue &raquo;</a>
                     
                     <div class="clearfix"></div>
                     </div>
@@ -402,7 +405,6 @@
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
 <script async src="//static.getclicky.com/js"></script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101253872ns.gif" /></p></noscript>
         </div>
 
 

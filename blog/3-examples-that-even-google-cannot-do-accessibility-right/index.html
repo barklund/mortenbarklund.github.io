@@ -47,7 +47,8 @@
 	 crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
 	<link href="/css/medium.css" rel="stylesheet">
-	<link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
@@ -56,7 +57,7 @@
         <a class="navbar-brand" href="https://mortenbarklund.com//">
 
             
-            <img src="/images/logo.svg" alt="logo">
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
             
         </a>
         
@@ -111,19 +112,22 @@
     <ul>
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://twitter.com/intent/tweet?text=3%20Examples%20That%20Even%20Google%20Can%27t%20Do%20Accessibility%20Right&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-twitter" aria-hidden title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
             </a>
         </li>
         
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
-                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-facebook-f" aria-hidden title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
             </a>
         </li>
         
         <li class="ml-1 mr-1">
             <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f&title=3%20Examples%20That%20Even%20Google%20Can%27t%20Do%20Accessibility%20Right&summary=Google%20is%20not%20infallible.%20Even%20they%20fail%20at%20following%20accessibility%20best-practices.%20I%20have%20found%203%20examples%20of%20%28very%20common%29%20mistakes%2c%20that%20even%20the%20bright%20minds%20at%20Google%20and%20all%20their%20efforts%20and%20reviews%20failed%20to%20see%20before%20shipping%20them%20to%20end-users.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
-                <i class="fab fa-linkedin"></i>
+                <i class="fab fa-linkedin" aria-hidden title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
             </a>
         </li>
 
@@ -147,7 +151,6 @@
                                     <source srcset="/images/author.jpg.webp" />
                                     <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
                                 </picture>
-                                <img >
                             </div>
                             <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
                                 <a target="_blank" class="link-dark">Morten Barklund</a><br>
@@ -410,7 +413,7 @@
                         <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/"> &laquo; The simplest possible webapp implemented in React, Angular, and Vue</a>
                     
                     
-                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/15-ways-accessible-name-button/">15 (mostly bad) Ways to Set the Accessible Name of a Button &raquo;</a>
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/hello-world/">Hello &lt;World /&gt; &raquo;</a>
                     
                     <div class="clearfix"></div>
                     </div>
@@ -438,7 +441,6 @@
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
 <script async src="//static.getclicky.com/js"></script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101253872ns.gif" /></p></noscript>
         </div>
 
 

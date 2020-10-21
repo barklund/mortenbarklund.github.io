@@ -3,13 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</loc>
-    <lastmod>2020-08-31T00:00:00-04:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</loc>
-    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
+    <loc>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</loc>
+    <lastmod>2020-05-11T18:23:05-04:00</lastmod>
   </url>
   
   <url>
@@ -18,8 +13,13 @@
   </url>
   
   <url>
-    <loc>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</loc>
-    <lastmod>2020-05-11T18:23:05-04:00</lastmod>
+    <loc>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</loc>
+    <lastmod>2020-08-31T00:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</loc>
+    <lastmod>2020-08-15T18:17:37-04:00</lastmod>
   </url>
   
   <url>

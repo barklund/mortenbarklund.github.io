@@ -13,21 +13,21 @@
     
     
     <item>
-      <title>3 Examples That Even Google Can&#39;t Do Accessibility Right</title>
-      <link>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</link>
-      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
-      
-      <guid>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</guid>
-      <description>Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users.</description>
-    </item>
-    
-    <item>
       <title>15 (mostly bad) Ways to Set the Accessible Name of a Button</title>
       <link>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</link>
       <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>
       
       <guid>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</guid>
       <description>When you see a button on a webpage, you probably know what it does. If you don&amp;rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&amp;rsquo;t mean a disabled user does when interacting with it.</description>
+    </item>
+    
+    <item>
+      <title>3 Examples That Even Google Can&#39;t Do Accessibility Right</title>
+      <link>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</link>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</guid>
+      <description>Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users.</description>
     </item>
     
   </channel>
