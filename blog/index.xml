@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogs on Morten Barklund</title>
+    <link>https://mortenbarklund.com/blog/</link>
+    <description>Recent content in Blogs on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 16 May 2023 22:37:37 +0200</lastBuildDate><atom:link href="https://mortenbarklund.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Comprehensive Guide to Advanced React and TypeScript</title>
+      <link>https://mortenbarklund.com/blog/advanced-react-typescript/</link>
+      <pubDate>Tue, 16 May 2023 22:37:37 +0200</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/advanced-react-typescript/</guid>
+      <description>As I embark on this exciting journey of exploring &amp;ldquo;Advanced React and TypeScript,&amp;rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies.</description>
+    </item>
+    
+    <item>
+      <title>Spreading props correctly with React &#43; TypeScript</title>
+      <link>https://mortenbarklund.com/blog/react-typescript-props-spread/</link>
+      <pubDate>Wed, 04 Jan 2023 21:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-typescript-props-spread/</guid>
+      <description>In this blog post, we&amp;rsquo;re going to explore how to create a React component that can be passed any number of properties which will be passed through to some other component.</description>
+    </item>
+    
+    <item>
+      <title>React 18 Concurrent Mode: How transitions really work (feat. Wordle)</title>
+      <link>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</guid>
+      <description>A deep-dive into React 18 Concurrent Mode and transitions including &lt;code&gt;startTransition&lt;/code&gt; and &lt;code&gt;useTransition&lt;/code&gt; with diagrams – and Wordle!</description>
+    </item>
+    
+    <item>
+      <title>Today I Learned: How mouse events really bubble in React</title>
+      <link>https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/</link>
+      <pubDate>Sun, 30 Jan 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/</guid>
+      <description>While researching a related topic, I came across a section in the React documentation for synthetic mouse events about how &amp;ldquo;&lt;em&gt;the &lt;code&gt;onMouseEnter&lt;/code&gt; and &lt;code&gt;onMouseLeave&lt;/code&gt; events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase&lt;/em&gt;&amp;rdquo;. What does that even mean? Let&amp;rsquo;s explore!</description>
+    </item>
+    
+    <item>
+      <title>React Architecture: The React Provider Pattern</title>
+      <link>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</link>
+      <pubDate>Mon, 11 May 2020 18:23:05 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</guid>
+      <description>The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.</description>
+    </item>
+    
+    <item>
+      <title>How to use Styled-Components correctly in Remix</title>
+      <link>https://mortenbarklund.com/blog/styled-components-remix/</link>
+      <pubDate>Sat, 28 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/styled-components-remix/</guid>
+      <description>Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.</description>
+    </item>
+    
+    <item>
+      <title>Returning children in React &#43; Typescript</title>
+      <link>https://mortenbarklund.com/blog/returning-children-typescript/</link>
+      <pubDate>Thu, 05 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/returning-children-typescript/</guid>
+      <description>In this blog post, we&amp;rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it.</description>
+    </item>
+    
+    <item>
+      <title>My new book is out: React Quickly, Second Edition</title>
+      <link>https://mortenbarklund.com/blog/new-book-react-quickly/</link>
+      <pubDate>Sat, 05 Feb 2022 08:00:00 -0500</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/new-book-react-quickly/</guid>
+      <description>So, this is pretty exciting. I have been working for a few months on a new project, and it is finally out for general consumption in its first iteration.</description>
+    </item>
+    
+    <item>
+      <title>Web Accessibility: 9 tips for accessible React components (in 2022)</title>
+      <link>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</guid>
+      <description>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</description>
+    </item>
+    
+    <item>
+      <title>15 (mostly bad) Ways to Set the Accessible Name of a Button</title>
+      <link>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</link>
+      <pubDate>Mon, 10 Aug 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/15-ways-accessible-name-button/</guid>
+      <description>When you see a button on a webpage, you probably know what it does. If you don&amp;rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&amp;rsquo;t mean a disabled user does when interacting with it.</description>
+    </item>
+    
+    <item>
+      <title>The simplest possible webapp implemented in React, Angular, and Vue</title>
+      <link>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</guid>
+      <description>Are you new to frontend development and feel that all the popular libraries and frameworks are too daunting to get started with? Do you always balk at tutorials, when they mention installing a bunch of programs and libraries and running scripts, compilers, and bundlers when trying to learn something new?</description>
+    </item>
+    
+    <item>
+      <title>3 Examples That Even Google Can&#39;t Do Accessibility Right</title>
+      <link>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</link>
+      <pubDate>Sat, 15 Aug 2020 18:17:37 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/</guid>
+      <description>Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users.</description>
+    </item>
+    
+    <item>
+      <title>Hello &lt;World /&gt;</title>
+      <link>https://mortenbarklund.com/blog/hello-world/</link>
+      <pubDate>Mon, 11 May 2020 16:50:40 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/hello-world/</guid>
+      <description>Welcome to my blog - a place for thoughts on React, accessibility and testing.</description>
+    </item>
+    
+  </channel>
+</rss>

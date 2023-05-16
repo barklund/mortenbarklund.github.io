@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hooks on Morten Barklund</title>
+    <link>https://mortenbarklund.com/categories/hooks/</link>
+    <description>Recent content in Hooks on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 01 May 2022 08:00:00 -0400</lastBuildDate><atom:link href="https://mortenbarklund.com/categories/hooks/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>React 18 Concurrent Mode: How transitions really work (feat. Wordle)</title>
+      <link>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</guid>
+      <description>A deep-dive into React 18 Concurrent Mode and transitions including &lt;code&gt;startTransition&lt;/code&gt; and &lt;code&gt;useTransition&lt;/code&gt; with diagrams – and Wordle!</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>checklist on Morten Barklund</title>
+    <link>https://mortenbarklund.com/tags/checklist/</link>
+    <description>Recent content in checklist on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 20 Oct 2020 08:00:00 -0400</lastBuildDate><atom:link href="https://mortenbarklund.com/tags/checklist/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Web Accessibility: 9 tips for accessible React components (in 2022)</title>
+      <link>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/</guid>
+      <description>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</description>
+    </item>
+    
+  </channel>
+</rss>

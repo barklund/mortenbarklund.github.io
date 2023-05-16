@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>Returning children in React &#43; Typescript | Morten Barklund</title>
+	<meta name="description" content="In this blog post, we&rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it.">
+	<meta name="keywords" content="react, typescript,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/returning-children-typescript/twitter_feature.png"/>
+<meta name="twitter:title" content="Returning children in React &#43; Typescript"/>
+<meta name="twitter:description" content="In this blog post, we&rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it."/>
+
+	<meta property="og:title" content="Returning children in React &#43; Typescript" />
+<meta property="og:description" content="In this blog post, we&rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/returning-children-typescript/" /><meta property="og:image" content="https://mortenbarklund.com/blog/returning-children-typescript/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-01-05T20:00:00+01:00" />
+<meta property="article:modified_time" content="2023-01-05T20:00:00+01:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Returning%20children%20in%20React%20%2b%20Typescript&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freturning-children-typescript%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2freturning-children-typescript%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freturning-children-typescript%2f&title=Returning%20children%20in%20React%20%2b%20Typescript&summary=In%20this%20blog%20post%2c%20we%26rsquo%3bll%20go%20over%20the%20topic%20of%20returning%20the%20children%20property%20directly%20from%20a%20React%20component%20discussing%20why%20you%20would%20want%20to%20do%20that%2c%20what%20issues%20you%20can%20run%20into%20when%20introducing%20TypeScript%2c%20and%20how%20we%20can%20get%20around%20it.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Jan 5, 2023
+                                    <i class="far fa-clock clock"></i>
+                                    6 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">Returning children in React &#43; Typescript</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/returning-children-typescript/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/returning-children-typescript/cover.jpg" alt="A child in a cardboard box" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Sometimes you need to return children without modifying them at all. Sounds familiar?</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>In this blog post, we&rsquo;ll go over the topic of returning the <code>children</code> property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it.</p>
+<blockquote>
+<p>This article is part of my <a href="https://mortenbarklund.com/blog/advanced-react-typescript/" title="Advanced React and TypeScript series">&ldquo;Advanced React and TypeScript series&rdquo;</a> - go check out the other articles in the series too!</p>
+</blockquote>
+<hr>
+<p>Let&rsquo;s say we&rsquo;re tasked with creating a React component to display a numbered list of pages for a pagination result. You know, those underlined numbers below search results with 1, 2, 3, etc. However, we don&rsquo;t want the current page to be a link, only the other pages in the list.</p>
+<p>That seems like an easy exercise. We are going to need two components, one for the list, <code>PageLinkList</code>, and one for each number in it, <code>PageLink</code>.</p>
+<p>Let&rsquo;s do so in plain JavaScript and React to start with.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLinkList</span><span class="p">({</span> <span class="nx">numPages</span><span class="p">,</span> <span class="nx">currentPage</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Create an array like [1,2,3,...,numPages].
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">pageLinks</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">from</span><span class="p">({</span> <span class="nx">length</span><span class="o">:</span> <span class="nx">numPages</span> <span class="p">}).</span><span class="nx">map</span><span class="p">((</span><span class="nx">v</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">nav</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nx">pageLinks</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">page</span><span class="p">)</span> <span class="p">=&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">PageLink</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">page</span><span class="p">}</span> <span class="na">link</span><span class="o">=</span><span class="p">{</span><span class="sb">`?page=</span><span class="si">${</span><span class="nx">page</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span> <span class="na">isLink</span><span class="o">=</span><span class="p">{</span><span class="nx">page</span> <span class="o">===</span> <span class="nx">currentPage</span><span class="p">}&gt;{</span><span class="nx">page</span><span class="o">+</span><span class="mi">1</span><span class="p">}&lt;/</span><span class="nt">PageLink</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLink</span><span class="p">({</span> <span class="nx">isLink</span><span class="p">,</span> <span class="nx">link</span><span class="p">,</span> <span class="nx">children</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">isLink</span> <span class="o">?</span> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="p">{</span><span class="nx">link</span><span class="p">}&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> <span class="o">:</span> <span class="nx">children</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This all seems reasonable, and we can use it to create a nice list of links like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">App</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">PageLinkList</span> <span class="na">numPages</span><span class="o">=</span><span class="p">{</span><span class="mi">7</span><span class="p">}</span> <span class="na">currentPage</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<p>But we want to use TypeScript of course. React, like any other JavaScript project, becomes so much more pleasant to work with using a nicely typed language such as TypeScript.</p>
+<p>So, let&rsquo;s add some types. The most obvious solution is to do this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">PropsWithChildren</span> <span class="p">}</span> <span class="kr">from</span> <span class="s2">&#34;react&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLink</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">isLink</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">link</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">children</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="o">:</span> <span class="nx">PropsWithChildren</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">isLink</span>: <span class="kt">boolean</span><span class="p">;</span> <span class="nx">link</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">isLink</span> <span class="o">?</span> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="p">{</span><span class="nx">link</span><span class="p">}&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> <span class="o">:</span> <span class="nx">children</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLinkList</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">numPages</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">currentPage</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">numPages</span>: <span class="kt">number</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">currentPage</span>: <span class="kt">number</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Create an array like [0,1,2,...,numPages-1].
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">pageLinks</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="kr">from</span><span class="p">({</span> <span class="nx">length</span>: <span class="kt">numPages</span> <span class="p">}).</span><span class="nx">map</span><span class="p">((</span><span class="nx">v</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">k</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">nav</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nx">pageLinks</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">page</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">PageLink</span>
+</span></span><span class="line"><span class="cl">          <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">page</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="na">link</span><span class="o">=</span><span class="p">{</span><span class="sb">`?page=</span><span class="si">${</span><span class="nx">page</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="na">isLink</span><span class="o">=</span><span class="p">{</span><span class="nx">page</span> <span class="o">!==</span> <span class="nx">currentPage</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="p">{</span><span class="nx">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;/</span><span class="nt">PageLink</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">))}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>That all looks pretty straight-forward. We type the <code>&lt;PageLink /&gt;</code> component using the <code>React.PropsWithChildren</code> so we can allow any type of child or list of children to be passed to it, and we type all other properties using their primitives.</p>
+<p>But this doesn&rsquo;t work. If you do this, you will see this error where we use the <code>&lt;PageLink /&gt;</code> component:</p>
+<pre tabindex="0"><code>&#39;PageLink&#39; cannot be used as a JSX component.
+  Its return type &#39;string | number | boolean | ReactFragment | Element | null | undefined&#39; is not a valid JSX element.
+    Type &#39;undefined&#39; is not assignable to type &#39;Element | null&#39;.
+</code></pre><p>Why is that? Well, that is because we&rsquo;re returning the <code>children</code> prop directly under some circumstances. And that prop does not qualify as a proper return value.</p>
+<p>That is because the <code>PropsWithChildren</code> interface types the <code>children</code> property as <code>ReactNode</code>, which in turn is defined as:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl"><span class="kr">type</span> <span class="nx">ReactNode</span> <span class="o">=</span> <span class="nx">ReactChild</span> <span class="o">|</span> <span class="nx">ReactFragment</span> <span class="o">|</span> <span class="nx">ReactPortal</span> <span class="o">|</span> <span class="kr">boolean</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">|</span> <span class="kc">undefined</span>
+</span></span></code></pre></div><p>Note that this includes <code>undefined</code>, which is what TypeScript complains about (for now..!). Components aren&rsquo;t allowed to return <code>undefined</code>, but rather <code>null</code> in case they shouldn&rsquo;t render anything.</p>
+<p>So what can we do about that?</p>
+<hr>
+<p>There are three posible fixes.</p>
+<ol>
+<li>We can define the <code>children</code> property in a way, where it doesn&rsquo;t allow <code>undefined</code>.</li>
+<li>We can return <code>null</code> in case the <code>children</code> property is  <code>undefined</code> and we want to return it as-is.</li>
+<li>We can make sure to wrap the <code>children</code> property in a valid JSX element.</li>
+</ol>
+<p>Option 1 is a bit tricky to do. It would require manually defining the type for <code>children</code> which isn&rsquo;t very forwards-compatible. When we use the built-in <code>PropsWithChildren</code> interface, we&rsquo;re guaranteed it follows the internal type system of React going forwards, but if we circumvent that, we can&rsquo;t be sure it still does that in the future.</p>
+<p>Options 2 seems a lot more approachable. We can just make sure to return <code>null</code> in case <code>children</code> is <code>undefined</code>, quite easily like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">isLink</span> <span class="o">?</span> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="p">{</span><span class="nx">link</span><span class="p">}&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> <span class="o">:</span> <span class="p">(</span><span class="nx">children</span> <span class="o">??</span> <span class="kc">null</span><span class="p">);</span>
+</span></span></code></pre></div><p>Here we use <em>nullish coalescing</em>  to return <code>null</code> in case <code>children</code> is <code>undefined</code> (or <code>null</code>).</p>
+<p>Frustratingly, that <strong>still</strong> doesn&rsquo;t work. Now, we get another TypeScript error:</p>
+<pre tabindex="0"><code>&#39;PageLink&#39; cannot be used as a JSX component.
+  Its return type &#39;string | number | boolean | ReactFragment | Element | null&#39; is not a valid JSX element.
+    Type &#39;string&#39; is not assignable to type &#39;ReactElement&lt;any, any&gt;&#39;.
+</code></pre><p>It turns out, <code>undefined</code> isn&rsquo;t the only possible value of the <code>children</code> property, that we aren&rsquo;t allowed to return directly from a component.</p>
+<p>We could dive further into this and handle the other possible values, but let&rsquo;s turn to option 3 instead. Returning a JSX element no matter what. We can wrap the <code>children</code> property in a React fragment like so:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLink</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">isLink</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">link</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">children</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="o">:</span> <span class="nx">PropsWithChildren</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">isLink</span>: <span class="kt">boolean</span><span class="p">;</span> <span class="nx">link</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">isLink</span> <span class="o">?</span> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="p">{</span><span class="nx">link</span><span class="p">}&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> <span class="o">:</span> <span class="p">&lt;&gt;{</span><span class="nx">children</span><span class="p">}&lt;/&gt;;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And that&rsquo;s it. This just works with no quirks or anything else required. We return a simple React fragment wrapping the property: <code>&lt;&gt;{children}&lt;/&gt;</code>.</p>
+<p>Why <em>does</em> this work? Well, that&rsquo;s quite simple. The <code>children</code> property is typed as <em>anything that is allowed to be put inside a JSX node</em>, so we can of course put it inside a fragment node, which is a valid JSX node. And we can return a fragment from a component, because it is a valid JSX node.</p>
+<p>You can play around with <a href="https://www.typescriptlang.org/play?#code/JYWwDg9gTgLgBAJQKYEMDGMA0cDecAKUEYAzgOrAwAWAwlcADYAmUSAdnAL5wBmRIcAESt0MQQG4AsACgZPAK5sMwCB3woA5kgAywNgGsAFDhlw4wEroOZTcBnv03pZtPWas2MzgC4CRUhTUdIws7AA8eBZW+r4ARhAQDKhs4nYOviQwUHoaXAB8AJS4tqww8lAcUQ5wAPxwYShwVKw8ALw49gaceTiuIR6cYQD0KHlwvmE9fe7sg0N5UtKcMnKKyqoEmjoOupnGtmzyIOpaJE4u5R4wJ0hevibOcIfHWyS+z7FIUIsXUFc37yOn2+XiKDzMQyGcBoIhgSDgKA4KD+KAAnml9PCANoABkwAEZMAAmTAAOnJmGeNxIAFp8QBdUm2NCqTJwMBbaIkOCtOAAQRRqNJfAgIGMdnYGmogJepy4BVJIBQYEMhgAbth9EVWmMtT84KVyhxDLYzGE2Cg1XlTWZcBytFzFcrVfakNqxibHrbbWEbtEbd6zJjUe1XcsvYGzJ19O0AAY1V2tAAkODDsfDke9VQMoa2cAAhK1eWhLuxrlsM5nrRHI6m8wBqOD4yuR4Z+hzVyMFAot+pDC1W2wFRbh1ZKGAqDh8sAqsElJBlCpwT3esJKvSdwO+zk7CzwKmvdoAdm4Jb+ZZu7SJ3HmNuG67Ym+HXhW0iQAA9ILA4EwkDwUPIDDwNOYCLEAA">this example in TypeScript Playground</a>, or in <a href="https://codesandbox.io/s/returning-children-in-react-typescript-pf51o5?file=/src/App.tsx">the CodeSandbox</a> that you also see below:</p>
+<iframe
+    src="https://codesandbox.io/embed/returning-children-in-react-typescript-pf51o5?fontsize=12&codemirror=1&hidenavigation=1&theme=dark&module=&highlights=&view="
+    style="width:100%; height:400px; border:0; border-radius: 4px; overflow:hidden;"
+    title="React TypeScript and props spreading"
+></iframe>
+<p><em><strong>Note</strong></em>: If you are using ESLint, you might have a rule prohibiting <em>&ldquo;useless&rdquo;</em> fragments (<code>react/jsx-no-useless-fragment</code>) , which will (somewhat erroneously) mark this use as a match for that rule.</p>
+<p>You can get around that by telling ESLint to ignore this instance:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ts" data-lang="ts"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">PageLink</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">isLink</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">link</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">children</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="o">:</span> <span class="nx">PropsWithChildren</span><span class="o">&lt;</span><span class="p">{</span> <span class="nx">isLink</span>: <span class="kt">boolean</span><span class="p">;</span> <span class="nx">link</span>: <span class="kt">string</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// eslint-disable-next-line react/jsx-no-useless-fragment -- required for valid return type
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">return</span> <span class="nx">isLink</span> <span class="o">?</span> <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="p">{</span><span class="nx">link</span><span class="p">}&gt;{</span><span class="nx">children</span><span class="p">}&lt;/</span><span class="nt">a</span><span class="p">&gt;</span> <span class="o">:</span> <span class="p">&lt;&gt;{</span><span class="nx">children</span><span class="p">}&lt;/&gt;;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And now even you should be good to go.</p>
+<p>To an extent, this <em>is</em> a useless fragment, as it has no practical function, but will actually appear in the resulting JavaScript when the TypeScript is compiled. So it&rsquo;s an extra JavaScript wrapper to make TypeScript happy. This does introduce a tiny overhead, but that&rsquo;s probably negligible in almost all applications.</p>
+<hr>
+<p>Returning the <code>children</code> property directly from a React component is sometimes a useful tool, but TypeScript makes it a bit tricky to do. The solution however is surprisingly simple with only the tiniest of downsides.</p>
+<p>If you need to return the <code>children</code> property directly in a React component when using TypeScript, make sure to wrap it in a fragment like so: <code>&lt;&gt;{children}&lt;/&gt;</code>.</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/react">react</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/typescript">typescript</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/styled-components-remix/"> &laquo; How to use Styled-Components correctly in Remix</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/new-book-react-quickly/">My new book is out: React Quickly, Second Edition &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

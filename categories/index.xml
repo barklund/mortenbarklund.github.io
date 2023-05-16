@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Morten Barklund</title>
+    <link>https://mortenbarklund.com/categories/</link>
+    <description>Recent content in Categories on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 16 May 2023 22:37:37 +0200</lastBuildDate><atom:link href="https://mortenbarklund.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>series</title>
+      <link>https://mortenbarklund.com/categories/series/</link>
+      <pubDate>Tue, 16 May 2023 22:37:37 +0200</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/series/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>how-to</title>
+      <link>https://mortenbarklund.com/categories/how-to/</link>
+      <pubDate>Sat, 28 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/how-to/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Concurrency</title>
+      <link>https://mortenbarklund.com/categories/concurrency/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/concurrency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hooks</title>
+      <link>https://mortenbarklund.com/categories/hooks/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/hooks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>React</title>
+      <link>https://mortenbarklund.com/categories/react/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/react/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>personal</title>
+      <link>https://mortenbarklund.com/categories/personal/</link>
+      <pubDate>Sat, 05 Feb 2022 08:00:00 -0500</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/personal/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>accessibility</title>
+      <link>https://mortenbarklund.com/categories/accessibility/</link>
+      <pubDate>Tue, 20 Oct 2020 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/accessibility/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>web development</title>
+      <link>https://mortenbarklund.com/categories/web-development/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/web-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Blog</title>
+      <link>https://mortenbarklund.com/categories/blog/</link>
+      <pubDate>Mon, 11 May 2020 16:50:40 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/categories/blog/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

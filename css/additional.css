@@ -1,0 +1,114 @@
+
+:root {
+    --main-color: #1190cb;
+    --darker-color: #0d74a3
+}
+.index-title{
+    color: rgba(0,0,0,.84);
+    margin-top:20px;
+    font-size: 2rem;
+    font-size: max(2rem, 4vw);
+}
+.index-sub{
+    color: rgba(0,0,0,.54);
+    font-size: 1.2rem;
+    font-size: max(1.2rem, 2vw);
+
+}
+.index-text{
+    margin-top:20px;
+    color: rgba(0,0,0,.44);
+}
+.index-recent {
+    margin: 4em 0;
+}
+.index-image{
+    width: 200px;
+    width: min(200px, 40vw);
+    margin-bottom: 1em;
+}
+.social-icon{
+    color: rgba(0,0,0,.44);
+    font-size:2rem;
+    margin: 0 .3rem;
+
+}
+.clock{
+    margin-left: 25px;
+}
+.jumbotron.fortags a {
+    background: var(--main-color);
+}
+.error{
+    text-align: center !important;
+}
+@media(min-width: 769px){
+    .md-nopad-right{
+        padding-right: 0px !important;
+    }
+    .md-nopad-left{
+        padding-left: 0px !important;
+    }
+}
+.navbar-light .navbar-nav .nav-link {
+    color: rgba(0,0,0,.8);
+}
+
+/* codepen embeds */
+.cp_embed_wrapper {
+  margin-bottom: 1em;
+}
+
+.article-post figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Flaired edges, by Tomas Theunissen */
+hr {
+    overflow: visible; /* For IE */
+    height: 15px;
+    border-style: solid;
+    border-color: var(--main-color);
+    border-width: 1px 0 0 0;
+    border-radius: 10px;
+    margin: 3em 0 1em;
+    position: relative;
+}
+hr::after {
+  content: '<hr />';
+  display: block;
+  color: var(--main-color);
+  position: absolute;
+  font-family: monospace;
+  background-color: white;
+  left: 50%;
+  margin-left: -2em;
+  width: 4em;
+  top: -1em;
+  text-align: center;
+  font-size: 70%;
+  transform: scale(0.7);
+  transform-origin: 50% 50%;
+}
+hr::before { /* Not really supposed to work, but does */
+    display: block;
+    content: "";
+    height: 15px;
+    margin-top: -15px;
+    border-style: solid;
+    border-color: var(--main-color);
+    border-width: 0 0 1px;
+    border-radius: 10px;
+}
+
+table {
+  margin-bottom: 1em;
+}
+
+td, th {
+  padding: 0.5em;
+  border: 1px solid #444;
+}

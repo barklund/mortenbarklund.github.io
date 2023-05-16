@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>angular on Morten Barklund</title>
+    <link>https://mortenbarklund.com/tags/angular/</link>
+    <description>Recent content in angular on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 31 Aug 2020 00:00:00 -0400</lastBuildDate><atom:link href="https://mortenbarklund.com/tags/angular/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The simplest possible webapp implemented in React, Angular, and Vue</title>
+      <link>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</guid>
+      <description>Are you new to frontend development and feel that all the popular libraries and frameworks are too daunting to get started with? Do you always balk at tutorials, when they mention installing a bunch of programs and libraries and running scripts, compilers, and bundlers when trying to learn something new?</description>
+    </item>
+    
+  </channel>
+</rss>

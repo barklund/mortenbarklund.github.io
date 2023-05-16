@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>series on Morten Barklund</title>
+    <link>https://mortenbarklund.com/categories/series/</link>
+    <description>Recent content in series on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 16 May 2023 22:37:37 +0200</lastBuildDate><atom:link href="https://mortenbarklund.com/categories/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Comprehensive Guide to Advanced React and TypeScript</title>
+      <link>https://mortenbarklund.com/blog/advanced-react-typescript/</link>
+      <pubDate>Tue, 16 May 2023 22:37:37 +0200</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/advanced-react-typescript/</guid>
+      <description>As I embark on this exciting journey of exploring &amp;ldquo;Advanced React and TypeScript,&amp;rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies.</description>
+    </item>
+    
+  </channel>
+</rss>

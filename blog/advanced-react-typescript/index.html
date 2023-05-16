@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>A Comprehensive Guide to Advanced React and TypeScript | Morten Barklund</title>
+	<meta name="description" content="As I embark on this exciting journey of exploring &ldquo;Advanced React and TypeScript,&rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies.">
+	<meta name="keywords" content="react, typescript,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/advanced-react-typescript/twitter_feature.png"/>
+<meta name="twitter:title" content="A Comprehensive Guide to Advanced React and TypeScript"/>
+<meta name="twitter:description" content="As I embark on this exciting journey of exploring &ldquo;Advanced React and TypeScript,&rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies."/>
+
+	<meta property="og:title" content="A Comprehensive Guide to Advanced React and TypeScript" />
+<meta property="og:description" content="As I embark on this exciting journey of exploring &ldquo;Advanced React and TypeScript,&rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/advanced-react-typescript/" /><meta property="og:image" content="https://mortenbarklund.com/blog/advanced-react-typescript/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-05-16T22:37:37+02:00" />
+<meta property="article:modified_time" content="2023-05-16T22:37:37+02:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=A%20Comprehensive%20Guide%20to%20Advanced%20React%20and%20TypeScript&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fadvanced-react-typescript%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2fadvanced-react-typescript%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fadvanced-react-typescript%2f&title=A%20Comprehensive%20Guide%20to%20Advanced%20React%20and%20TypeScript&summary=As%20I%20embark%20on%20this%20exciting%20journey%20of%20exploring%20%26ldquo%3bAdvanced%20React%20and%20TypeScript%2c%26rdquo%3b%20I%20invite%20you%20to%20join%20me%20on%20a%20quest%20to%20unlock%20the%20hidden%20potential%20of%20these%20powerful%20technologies.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    May 16, 2023
+                                    <i class="far fa-clock clock"></i>
+                                    5 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">A Comprehensive Guide to Advanced React and TypeScript</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/advanced-react-typescript/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/advanced-react-typescript/cover.jpg" alt="Man climbing a mountain" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Mastering TypeScript and React is an uphill struggle, but I&#39;m here to make that journey along with you!</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>As I embark on this exciting journey of exploring &ldquo;Advanced React and TypeScript,&rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies. In this series of articles, we will delve deep into advanced concepts and patterns that will elevate your React and TypeScript skills to new heights.</p>
+<p>To lay a strong foundation, I have curated a selection of four initial articles that focus on essential topics within the realm of React and TypeScript. We will explore prop spreading, returning children, using context with TypeScript, and implementing selectable contexts in React. These articles serve as the starting point for our exploration and provide valuable insights into practical implementation techniques.</p>
+<p>But this series is not just about what I have planned; it&rsquo;s also about you, the reader. Your input and feedback are vital to shaping the content and addressing the areas that matter most to you. I encourage you to actively participate by suggesting specific topics, patterns, or challenges that you would like me to cover. Together, we will create a comprehensive resource tailored to your needs.</p>
+<p>In the upcoming articles, we will venture into intricate data flow patterns, effective API interactions, performance optimizations, and more. By mastering these advanced concepts, you will gain a deeper understanding of React and TypeScript, enabling you to build robust and scalable applications.</p>
+<p>I believe in the power of sharing knowledge and fostering a supportive community. Throughout this series, I invite you to actively engage, share your thoughts, ask questions, and learn from one another. Together, we will push the boundaries of what can be accomplished with React and TypeScript.</p>
+<p>So, fasten your seatbelts and get ready for an immersive journey into the realm of advanced React and TypeScript patterns. I am honored to be your guide, and I can&rsquo;t wait to embark on this adventure with you. Let&rsquo;s begin our pursuit of mastery in React and TypeScript together!</p>
+<hr>
+<h2 id="current-content">Current content</h2>
+<p>To kickstart our journey, let&rsquo;s begin with an overview of the existing articles in our exploration of advanced React and TypeScript patterns:</p>
+<ol>
+<li>
+<p><a href="https://mortenbarklund.com/blog/react-typescript-props-spread/" title="Spreading props correctly with React + TypeScript">Spreading props correctly with React + TypeScript</a>: In this article, we explore the concept of prop spreading in React and TypeScript, discussing its benefits, potential pitfalls, and best practices. Learn how to efficiently pass multiple properties down the component tree, ensuring type safety and maintainability.</p>
+</li>
+<li>
+<p><a href="https://mortenbarklund.com/blog/returning-children-typescript/" title="Returning children in React + Typescript">Returning children in React + Typescript</a>: Delve into the technique of returning children from React components in TypeScript. Discover how to create powerful and flexible component compositions using this approach, along with type annotations to enhance the development experience.</p>
+</li>
+</ol>
+<p>This collection of articles serves as a solid foundation for our deep dive into advanced React and TypeScript patterns. But we&rsquo;re not stopping there! I invite you to reach out and suggest specific topics or concepts you would like to see covered in this ongoing exploration.</p>
+<hr>
+<h2 id="planned-future-content">Planned future content</h2>
+<p>As we delve into the world of advanced React and TypeScript patterns, our journey is far from complete. In this section, we&rsquo;ll take a sneak peek into the exciting topics and concepts that await us in the future. Brace yourself for an exhilarating ride as we explore the uncharted territories of React development!</p>
+<ol>
+<li>
+<p>Using Context with TypeScript: Explore the integration of React Context API with TypeScript. This article delves into leveraging TypeScript&rsquo;s static type system to ensure type safety and clarity when using context for state management and data sharing across components.</p>
+</li>
+<li>
+<p>Selectable Contexts in React + TypeScript: Learn how to create selectable contexts using React and TypeScript. Dive into advanced patterns that allow components to selectively subscribe to and consume specific contexts, enabling more fine-grained control and modularity.</p>
+</li>
+<li>
+<p>Advanced Data Flow Patterns in React and TypeScript: Discover advanced data flow patterns in React, such as Compound Components, Render Props, and Controlled Components. Explore how TypeScript empowers you with stronger type checking and improved error handling in these scenarios.</p>
+</li>
+<li>
+<p>Advanced API Interaction in React with TypeScript: Uncover advanced techniques for handling API interactions in React applications, including error handling, pagination, caching, and optimistic updates. See how TypeScript can provide enhanced type validation and better integration with APIs.</p>
+</li>
+<li>
+<p>Advanced Form Management with React and TypeScript: Dive into managing complex forms in React using libraries like Formik or React Hook Form. Learn how to leverage TypeScript&rsquo;s type system to ensure form data integrity, validation, and error handling.</p>
+</li>
+</ol>
+<p>These upcoming articles promise to expand our knowledge, challenge our skills, and equip us with the tools to tackle complex scenarios in React and TypeScript development. Stay tuned for these exciting adventures!</p>
+<p>&ndash;</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>As we conclude this introductory article to the &ldquo;Advanced React and TypeScript&rdquo; series, I hope you&rsquo;re excited about the vast possibilities that lie ahead. I&rsquo;ve laid the foundation by highlighting four key articles that cover prop spreading, returning children, using context with TypeScript, and selectable contexts in React and TypeScript. These articles will serve as your starting point to dive into the depths of advanced React and TypeScript patterns.</p>
+<p>However, this series is not just about what I have planned; it&rsquo;s also about you, the reader. I value your input and want to ensure that I cover the topics that matter most to you. If there&rsquo;s a particular aspect of React and TypeScript integration you&rsquo;d like me to explore, a specific pattern you&rsquo;d like me to discuss, or a challenging scenario you&rsquo;d like guidance on, I encourage you to reach out to me.</p>
+<p>Your feedback and suggestions will shape the direction of this series, allowing me to tailor the content to your needs. My goal is to provide you with practical, actionable insights that empower you to become a master of advanced React and TypeScript patterns.</p>
+<p>Stay tuned for the upcoming articles, where we&rsquo;ll dive deep into the intricacies of data flow patterns, API interactions, performance optimizations, and much more. Together, let&rsquo;s unlock the true potential of React and TypeScript and elevate our development skills to new heights.</p>
+<p>Remember, your voice matters. Don&rsquo;t hesitate to reach out to me with your content requests and let me know what you&rsquo;d like to see covered in this series. Together, we&rsquo;ll continue our journey of mastering advanced React and TypeScript patterns.</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/react">react</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/typescript">typescript</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/react-typescript-props-spread/">Spreading props correctly with React &#43; TypeScript &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

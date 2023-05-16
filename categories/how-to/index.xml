@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>how-to on Morten Barklund</title>
+    <link>https://mortenbarklund.com/categories/how-to/</link>
+    <description>Recent content in how-to on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 28 Jan 2023 20:00:00 +0100</lastBuildDate><atom:link href="https://mortenbarklund.com/categories/how-to/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spreading props correctly with React &#43; TypeScript</title>
+      <link>https://mortenbarklund.com/blog/react-typescript-props-spread/</link>
+      <pubDate>Wed, 04 Jan 2023 21:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-typescript-props-spread/</guid>
+      <description>In this blog post, we&amp;rsquo;re going to explore how to create a React component that can be passed any number of properties which will be passed through to some other component.</description>
+    </item>
+    
+    <item>
+      <title>How to use Styled-Components correctly in Remix</title>
+      <link>https://mortenbarklund.com/blog/styled-components-remix/</link>
+      <pubDate>Sat, 28 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/styled-components-remix/</guid>
+      <description>Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.</description>
+    </item>
+    
+    <item>
+      <title>Returning children in React &#43; Typescript</title>
+      <link>https://mortenbarklund.com/blog/returning-children-typescript/</link>
+      <pubDate>Thu, 05 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/returning-children-typescript/</guid>
+      <description>In this blog post, we&amp;rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it.</description>
+    </item>
+    
+  </channel>
+</rss>

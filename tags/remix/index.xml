@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>remix on Morten Barklund</title>
+    <link>https://mortenbarklund.com/tags/remix/</link>
+    <description>Recent content in remix on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 28 Jan 2023 20:00:00 +0100</lastBuildDate><atom:link href="https://mortenbarklund.com/tags/remix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to use Styled-Components correctly in Remix</title>
+      <link>https://mortenbarklund.com/blog/styled-components-remix/</link>
+      <pubDate>Sat, 28 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/styled-components-remix/</guid>
+      <description>Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.</description>
+    </item>
+    
+  </channel>
+</rss>

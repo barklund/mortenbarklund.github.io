@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>Web Accessibility: 9 tips for accessible React components (in 2022) | Morten Barklund</title>
+	<meta name="description" content="Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.">
+	<meta name="keywords" content="accessibility, checklist, standards,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/twitter_feature.png"/>
+<meta name="twitter:title" content="Web Accessibility: 9 tips for accessible React components (in 2022)"/>
+<meta name="twitter:description" content="Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React."/>
+
+	<meta property="og:title" content="Web Accessibility: 9 tips for accessible React components (in 2022)" />
+<meta property="og:description" content="Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/" /><meta property="og:image" content="https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2020-10-20T08:00:00-04:00" />
+<meta property="article:modified_time" content="2020-10-20T08:00:00-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Web%20Accessibility%3a%209%20tips%20for%20accessible%20React%20components%20%28in%202022%29&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fweb-accessibility-tips-accessible-react-components%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2fweb-accessibility-tips-accessible-react-components%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fweb-accessibility-tips-accessible-react-components%2f&title=Web%20Accessibility%3a%209%20tips%20for%20accessible%20React%20components%20%28in%202022%29&summary=Web%20accessibility%20is%20somehow%20both%20the%20common%20fork%20and%20the%20holy%20grail%20of%20web%20development%20today%20%e2%80%93%c2%a0even%20in%20popular%20web%20frameworks%20such%20as%20React.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Oct 20, 2020
+                                    <i class="far fa-clock clock"></i>
+                                    29 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">Web Accessibility: 9 tips for accessible React components (in 2022)</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/web-accessibility-tips-accessible-react-components/cover.jpg" alt="Woman writing on a notepad" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Read on for an extensive checklist to create perfectly accessible React components</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>Web accessibility is somehow both the common fork and the holy grail of web development today – even in popular web frameworks such as React.</p>
+<p>Web accessibility is so ingrained in how the web works that it&rsquo;s impossible to do without, yet at the same time, it is a concept so clouded in mystery and lore, that it scares most developers and content creators before even attempting to address it.</p>
+<p>In this article we&rsquo;ll start out exploring <a href="#why-is-web-accessibility-important">the importance of web accessibility</a>, go on to the main principles of <a href="#making-your-website-accessible">how to make web content accessible</a>, then we&rsquo;ll cover our <a href="#tips-for-accessible-react-components">9 primary tips for creating accessible React components</a>, and finally distill this into <a href="#react-web-accessibility-checklist">a short checklist of 9 points</a>, that you should keep in mind when writing React components - if you do, you&rsquo;ll be home safe!</p>
+<p>Before going too deep into this, please know that even though this article specifically addresses how to make <em>React</em> components and applications accessible, 95% of the content presented here is relevant for any web framework.</p>
+<hr>
+<h2 id="why-is-web-accessibility-important">Why is web accessibility important?</h2>
+<p>This question is probably one of the most answered questions as it&rsquo;s included in any tool, service, or guide to accessibility. Yet, I feel a need to address this too, if for nothing else my own catharsis on the subject.</p>
+<p>Web accessibility is first and foremost <em>not only</em> but <em>also</em> about disabled people. You might think, that your website about comic books isn&rsquo;t relevant to blind users, thus you have no need for any accessibility, but that&rsquo;s completely missing the point. Yes, blind people also benefit from accessible websites, but so do many, many other users of web content.</p>
+<p>I personally like summarizing web accessibility (a bit coldly) as follows:</p>
+<blockquote>
+<p>Web accessibility is accomodating anyone using your website regardless of input or output hardware.</p>
+</blockquote>
+<p>This might seem overly simplified, yet it encompasses most use-cases for accessible considerations.</p>
+<p>Consider people with mobility limitations (which include a lot of people from paralyzed users over people with Parkinson&rsquo;s to someone with a broken arm) - they&rsquo;ll all use some other form of input device than a regular mouse in order to interact with the web site.</p>
+<p>Or consider people with vision impairment (which include a lot of people from blind users to older people with reduced eyesight to someone sitting in bright sunlight or using a tiny/huge screen) — they&rsquo;ll all have different output requirements than the &ldquo;average&rdquo; user and maybe even use alternative output devices such as screen readers or braille displays.</p>
+<p>At its core, web accessibility is about making sure that people can access your content regardless of hardware - and why would you limit what hardware people should be using anyway?</p>
+<hr>
+<h2 id="making-your-website-accessible">Making your website accessible</h2>
+<p>The following two documents outline web accessibility with all the relevant properties, that a correctly accessible web document should adhere to:</p>
+<ol>
+<li>
+<p>WCAG: The <a href="https://www.w3.org/WAI/intro/wcag">Web Content Accessibility Guidelines</a> provides general guidelines for accessible web content not specifically targeted for web applications, but plain old web documents and simple interactive web sites (nothing more complex than a form).</p>
+</li>
+<li>
+<p>WAI-ARIA: The <a href="https://www.w3.org/WAI/intro/aria">Web Accessibility Initiative — Accessible Rich Internet Applications</a> document addresses complex web applications and provides techniques and best-practices for making intricate web components usable by all users regardless of input and output devices.</p>
+</li>
+</ol>
+<p>Where many articles about web accessibility address the former specification, the latter is much more important for most React applications, as they more often fall into the category of <em>rich internet applications</em> - a slightly antiquated term for modern single-page web applications.</p>
+<h3 id="wcag">WCAG</h3>
+<p>The WCAG guideline summarizes web accessibility in the following 4 categories:</p>
+<ol>
+<li><strong>Perceivable</strong>: <em>All information must be presentable to users in a way they can perceive</em>.</li>
+<li><strong>Operable</strong>: <em>All user interface components and navigation must be operable</em>.</li>
+<li><strong>Understandable</strong>: <em>Information and the operation of the user interface must be understandable</em>.</li>
+<li><strong>Robust</strong>: <em>Content must be robust enough that it can be interpreted by a wide variety of user agents, including assistive technologies</em>.</li>
+</ol>
+<h3 id="wai-aria">WAI-ARIA</h3>
+<p>WAI-ARIA addresses primarily more complex web controls and interfaces, that are used in modern web sites – often known from old-fashioned desktop applications. The specification contains fundamental properties (mostly prefixed as <code>aria-*</code>) that can be applied to a whole range of elements in HTML denoting their relationships and states – and includes principles and techniques on how to implement proper:</p>
+<ul>
+<li>Content structures such as dialogs, alerts, tabs, and accordions.</li>
+<li>Complex form elements such as sliders, listboxes, and combo boxes.</li>
+<li>Application elements such as toolbars, menus, and tooltips.</li>
+</ul>
+<p>For all of these (and many more - 27 widgets in total are described), a number of expectations are listed including how to navigate a component using a keyboard and how focus is expected to behave, how to make sure screen readers know how to inform a user of the functionality and state of a widget, and comes with at least one example for every widget.</p>
+<hr>
+<h2 id="tips-for-accessible-react-components">Tips for accessible React components</h2>
+<p>While every React developer ought to follow all the principles listed in the above guidelines – both those on web content in general and rich internet applications in particular – some principles are more pervasive to the user experience than others. Also, there&rsquo;s some extra tips and tricks you can do in your frontend development setup, that&rsquo;ll increase the likelihood your app is behaving accessibly.</p>
+<p><img src="./1.jpg" alt="1"></p>
+<h3 id="1-write-semantic-markup">1: Write semantic markup</h3>
+<p>Semantic markup is the discipline of wrapping your text and interactive elements in the web document in the proper tag and with the proper attributes, for which it is meant.</p>
+<p>An HTML snippet such as <code>&lt;span&gt;Review&lt;/span&gt;</code> carries no semantic meaning. Is it a verb or a noun? Can you interact with it?</p>
+<p>It can however be styled to look and act like anything from a headline to a button - for users viewing the page through a normal browser that is.</p>
+<p>If it were either of those, it should have been tagged as <code>&lt;h2&gt;Review&lt;/h2&gt;</code> or <code>&lt;button&gt;Review&lt;/button&gt;</code> respectively (the actual level of header to be determined by context). In this fashion, the browser, and everything else, would know the text to have a certain semantic meaning.</p>
+<p>Semantic markup is first and foremost about using the right HTML tag for every bit of content, but also about assigning the right attributes to the elements in question - an <code>&lt;input type=&quot;range&quot; /&gt;</code> is very different from an <code>&lt;input type=&quot;checkbox&quot; /&gt;</code>.</p>
+<h4 id="why-should-you-write-semantic-markup">Why should you write semantic markup?</h4>
+<p>Semantic markup is the web development equivalent of using full sentences rather than just a string of words with no direct coherence or relation between them. Without proper semantic markup, the data presented in a web document is just a bunch of unrelated items with no context, meaning, or relationship – except the visual relationships displayed in a browser. Quite a lot of computer systems rely on semantic markup, not restricted to:</p>
+<ul>
+<li>Search engines</li>
+<li>Social networks</li>
+<li>Sharing services (basically, anywhere you can share a web link, from text messages to slack).</li>
+<li>Indexing services</li>
+<li>Smart devices (Alexa and Siri can only answer your question if the website with the answer is properly formatted)</li>
+<li>Browsers (duh!)</li>
+<li>Screen readers</li>
+</ul>
+<p>And many, many others.</p>
+<h4 id="why-semantic-markup-is-important-for-accessibility">Why semantic markup is important for accessibility</h4>
+<p>Let&rsquo;s say your website has a left-side menu located on every page. Without the menu being marked up as such, a screen reader would &ldquo;correctly&rdquo; read all the menu items every time the page changed, because it is the first thing in the document.</p>
+<p>With proper semantic markup, a document author can instruct screen readers to skip to the main content and ignore navigational elements (unless the viewer actually wants to know about them).</p>
+<p>Similarly, screen readers can inform users of collapsible elements, the relationship of list items and data cells, the relationship between labels and form fields, etc.</p>
+<p>Without proper semantic markup, the screen reader will simply read every bit of text on the page with no context or relation. With semantic markup, a screen reader can read only the text on the page, that matters to the user at the current time - and put it in context.</p>
+<p><img src="./2.jpg" alt="2"></p>
+<h3 id="2-use-proper-roles-and-relevant-aria--attributes">2: Use proper roles and relevant <code>aria-*</code> attributes</h3>
+<p>Semantic markup will only get us so far. Yes, we can create a comprehensive document outline for an interlinked article with simple elements, but web applications often have much more complex components such as tabbed interfaces, menus, dialogs, and many other elements.</p>
+<p>Browsers can understand those too, but not with basic semantic markup only. For these to be fully supported, often the document author would need to augment the semantic markup with roles and <code>aria-*</code> attributes.</p>
+<h4 id="which-elements-require-a-role-or-attribute-and-when">Which elements require a role or attribute and when?</h4>
+<p>Any of <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques">these</a>. This unfortunately cannot really be summed up. Check the list whenever you&rsquo;re developing some more complex widget, composition, structure, or landmark and see if any of them fit.</p>
+<p>Another approach is to look at the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex">27 pre-made W3-sanctioned examples of interactive widgets and elements</a> and see if you&rsquo;re trying to implement any of those. They all come with full interactive examples illustrating both HTML structure and JS implementation for expected behavior. However, WAI-ARIA is not limited to these examples and often you&rsquo;ll have some component that isn&rsquo;t exactly one of these 27 but a variant of one of them or even a mix of multiple examples. In that case, follow the documentation on the raw roles and attributes and test everything with a real screen reader!</p>
+<p>However, also know when <strong>not</strong> to apply a role! Understand implicit roles and legal roles - you shouldn&rsquo;t do <code>&lt;button role=&quot;button&quot; /&gt;</code> as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button">this role is (of course) implicit</a>, and you also shouldn&rsquo;t ever do <code>&lt;h1 role=&quot;button&quot; /&gt;</code> as <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements">a heading should never be a button</a>.</p>
+<h4 id="why-roles-and-aria--attributes-are-important-for-accessibility">Why roles and <code>aria-*</code> attributes are important for accessibility</h4>
+<p>This kind of answers itself. WAI-ARIA is the definition after which all screen readers are modeled, so they&rsquo;ll assist users based on the recommendations here. They expect web pages to behave according to WAI-ARIA and if so, will assist the user in their work. If not, they cannot really help the user.</p>
+<p>WAI-ARIA is <em>the</em> definition of complex interactive web applications. Not following it is a sure way to <strong>not</strong> be accessible. Following it is the only true way to <strong>be</strong> accessible.</p>
+<p><img src="./3.jpg" alt="3"></p>
+<h3 id="3-consider-the-accessible-name-of-every-element">3: Consider the accessible name of every element</h3>
+<p>When you see a button on a webpage, you probably know what it does. If you don&rsquo;t, the page is poorly made. But just because you do, when you see it, doesn&rsquo;t mean a non-visual user does when interacting with it.</p>
+<p>Maybe the button has a text label - okay then a screen reader can easily read the name of the button. But the button text might only make sense in the context of the element it is next to - e.g. it might say <code>&quot;Select this&quot;</code> where <em>&ldquo;this&rdquo;</em> makes perfect sense when viewed, but not when read aloud.</p>
+<p>The button might also have an image, an SVG-shape, or even some weird font glyph as it&rsquo;s a visual element - something that&rsquo;ll make sense to you as a sighted user, but not to a user with a screen reader.</p>
+<p>And all of the above applies not only to buttons but also to input fields, headlines, images, videos, and many other important smaller elements of your web application.</p>
+<p>In all such cases, you should make sure to provide a textual meaningful accessible name to the element in question.</p>
+<h4 id="what-is-the-accessible-name">What is the accessible name?</h4>
+<p>The accessible name is the text string used by browsers and screen readers to represent the element in question. The algorithm for resolving the accessible name of an element is quite complex to account for some rather esoteric situations but is mostly pretty simple when used.</p>
+<p>For an in-depth understanding of how to set the accessible name of a component, please see the related post on [15 (Mostly Bad) Ways to Set The Accessible Name]</p>
+<h4 id="why-the-accessible-name-is-important-for-accessibility">Why the accessible name is important for accessibility</h4>
+<p>To reiterate: The accessible name of any element will determine how the element is announced to any vision-impaired user. Not properly setting the accessible name for even semi-complex components will confuse these users at best – and completely hinder them in using your application at worst.</p>
+<p><img src="./4.jpg" alt="4"></p>
+<h3 id="4-make-sure-current-focus-is-clearly-visible">4: Make sure current focus is clearly visible</h3>
+<p>For people using a keyboard, the focus border/outline around elements is very important. The focus outline is natively shown in browsers as a blue glow - for instance as this around a button, input, and link in Chrome and Firefox respectively in this <a href="https://codepen.io/barklund/pen/GRZbJgd">codepen</a>:</p>
+<script
+    data-slug-hash="GRZbJgd"
+    data-user="barklund"
+    data-height="300"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>And this styling is exactly what this is about</p>
+<h4 id="when-should-you-show-focus">When should you show focus?</h4>
+<p>You must show current focus visually on-screen whenever a user navigates to an element using a keyboard. But sometimes also when a user navigates to an element using a mouse or other pointer device. However, it is less urgent in the case of a mouse or a pointer device, as any such user will already have a pretty good idea where the device was when clicking, so they&rsquo;ll most likely assume that focus is also there.</p>
+<p>For keyboard navigation showing focus is of the utmost importance. It must never <strong>not</strong> happen. And if you forget proper focus display for even a single element, you can completely throw off the user as they&rsquo;re navigating around.</p>
+<h4 id="why-would-i-not-show-it">Why would I not show it?</h4>
+<p>If you only use default HTML elements and don&rsquo;t tinker too much with their styling, you get focus styling for free. Buttons, links, and inputs already have excellent focus styling and appear as users expect.</p>
+<p>The reason for even bringing this item up here is for the following concerns:</p>
+<ol>
+<li>Sometimes you want users to be able to focus non-standard elements in order to interact with non-standard widgets</li>
+<li>Sometimes designers want to have the default styling removed, as it can be a bit of an eyesore when clicking buttons in a nice application</li>
+</ol>
+<p>The proper ways to handle these two concerns are slightly different.</p>
+<h5 id="focus-styling-for-custom-focusable-elements">Focus styling for custom focusable elements</h5>
+<p>If you make custom focusable elements, make sure they also have focus styling. For instance, say you make a collapsible header as this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">header</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;collapsible-header&#34;</span> <span class="na">onClick</span><span class="o">=</span><span class="s">&#34;collapseHeader();&#34;</span> <span class="na">tabindex</span><span class="o">=</span><span class="s">&#34;0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>I can be collapsed?<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>In such a case, make sure to also include focus styling for your header:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">.</span><span class="nc">collapsible-header</span><span class="p">:</span><span class="nd">focus</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">outline</span><span class="p">:</span> <span class="mi">2</span><span class="kt">px</span> <span class="kc">solid</span> <span class="kc">lightblue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This is obviously not the best semantic HTML for such a construction, but you might find yourself building something similar when creating a complex widget. This example in particular could probably have used a <code>role=&quot;button&quot;</code> and at least an <code>aria-expanded</code> property (as detailed by <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">the <em>&ldquo;Disclosure&rdquo;</em> pattern in WAI-ARIA</a>).</p>
+<h5 id="hiding-click-focus-styling">Hiding click focus styling</h5>
+<p>If you want to hide focus when clicking buttons (and there&rsquo;s a couple of reasons for wanting to do that), you must make sure to only do so when users are interacting with a mouse or pointer device, and <strong>not</strong> when users are using a keyboard - and actually rely on this visual feedback to be able to interact with the page.</p>
+<p>One such method is using <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible">the <code>:focus-visible</code> selector</a> rather than just <code>:focus</code>. However, browser adoption is not that impressive on this one (most notably with Safari not supporting it), so it probably won&rsquo;t be good enough.</p>
+<p>Another method is to use JavaScript to detect whether the user is navigating with a keyboard (mostly just detecting the tab key, but also arrow keys) and showing or hiding focus styling based on that. A library such as <a href="https://github.com/moxystudio/react-keyboard-only-outlines"><code>@moxy/react-keyboard-only-outlines</code></a> can help with that (in React specifically).</p>
+<p>And as always, there&rsquo;s much more than three ways to skin a cat (and browsers are weird). <a href="https://www.kizu.ru/keyboard-only-focus/">This great article by Roman Komarov</a>, however, dated a couple of years, gives a great overview of the problem, limitations, and opportunities of the different solutions (using CSS only).</p>
+<h4 id="why-showing-focus-is-important-for-accessibility">Why showing focus is important for accessibility</h4>
+<p>Not all users can and will use a mouse or other pointer device. There&rsquo;s a number of reasons not to use a mouse, including joint or tendon problems (e.g. <em>&ldquo;mouse arm/elbow&rdquo;</em>), convenience or preference, reduced motor skills, or even missing limbs. And probably a bunch more that neither you nor I fully <em>can</em> or even <em>need to</em> know.</p>
+<p>Just rest assured, that some portion of your visitors will not be using a mouse or pointer device to interact with parts or all of your website. They will be using a keyboard for navigation at some point. And you should make sure to support that.</p>
+<p>Try using a keyboard only when navigating on any slightly complex web page, and you&rsquo;ll soon be searching frantically for this very important focus outline on elements. You <em>need</em> this visual feedback to have an idea, where you&rsquo;re currently interacting with the webpage. Focusing an element is the only way to interact with it - be it clicking a button, navigating to a link, or inputting data. So knowing where focus is, is of vital importance to do anything on a webpage.</p>
+<p><img src="./5.jpg" alt="5"></p>
+<h3 id="5-respect-focus-expectations">5: Respect focus expectations</h3>
+<p>This point is related to but very importantly different from the above about displaying focus. This is about keyboard users&rsquo; expectations of how focus moves around on a page. As discussed, users can use the tab key to move focus from one element to the next, but that can&rsquo;t and won&rsquo;t be a fix-all solution. There&rsquo;s a number of issues with expecting that to be the only way to move focus on a page.</p>
+<h4 id="when-is-regular-focus-management-not-enough">When is regular focus management not enough?</h4>
+<p>This is a non-exhaustive list of situations, where simple tab order is not good enough:</p>
+<ul>
+<li>If you have a list of interactive elements and it will auto-load more elements once you reach the end, users can never tab to interactive elements later on the page if tabbing is the only model.</li>
+<li>If you have a grid of interactive elements, tabbing from elements before the grid to after the grid will require a huge amount of keyboard presses - for a 10x10 grid, that&rsquo;s 100 keypresses, which is definitely too much to expect.</li>
+<li>Form inputs are often expected to be navigable by arrow keys to some extent - for instance between radio buttons or options in a listbox. If you implement custom versions of these, make sure to follow these expectations.</li>
+<li>If you open a popup or expand a section of content, you expect focus to move to the newly added content. And when closing something, focus should move sensibly out of the removed content as well.</li>
+</ul>
+<h4 id="how-to-handle-special-focus-expectations">How to handle special focus expectations</h4>
+<p>There&rsquo;s a number of ways to handle focus expectations. However, you don&rsquo;t have to invent your own methods. Most of the time you should follow the WAI-ARIA specification, which for all the widgets listed also includes a full write-up on focus expectations - namely what tab and shift-tab do, how and when keyboard arrows can be used, etc.</p>
+<p>For the above-listed examples, you can look up the WAI-ARIA specification for the following patterns:</p>
+<ul>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#feed"><em>&ldquo;Feed&rdquo;</em></a> describes auto-loading pagination</li>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#grid"><em>&ldquo;Grid&rdquo;</em></a>  describes a grid of interactive elements</li>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox"><em>&ldquo;Listbox&rdquo;</em></a> describes dropdown-like lists of options</li>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton"><em>&ldquo;Radio group&rdquo;</em></a> describes groups of radio buttons</li>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal"><em>&ldquo;Dialog&rdquo;</em></a> describes popups/dialogs</li>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion"><em>&ldquo;Accordion&rdquo;</em></a> describes collapsible/expandable content</li>
+</ul>
+<p>Sometimes you&rsquo;ll come across some very domain-specific widgets, that don&rsquo;t really conform to any of these standard widgets. In such a case it can help to find one or more standard widgets that <em>&ldquo;feel similar&rdquo;</em> to what you&rsquo;re building – and try to obey the spirit of these concepts rather than their literal specifications.</p>
+<p>Let&rsquo;s say that you&rsquo;re building a listbox in two vertical columns – the designer thinks it looks better in two columns rather than the standard single-column layout, so the list doesn&rsquo;t become too long. Then it would make sense to make sure, that pressing left-right arrows move between the columns while up-down moves along the columns. This would make it a combination of the keyboard expectations of a grid and a listbox, but the result would feel almost native to any user.</p>
+<h4 id="why-focus-management-is-important-for-accessibility">Why focus management is important for accessibility</h4>
+<p>If things don&rsquo;t behave as users expect, users might try for a bit, but after a while, they <strong>will</strong> leave and ignore your web application. This goes for everything - if something looks like a button, but don&rsquo;t do anything when pressed, you break expectations. And if users can&rsquo;t use arrow keys to navigate in a monthly calendar view, you break expectations.</p>
+<p>Focus expectations are particularly complex, so if you implement custom widgets, pay very special attention to keyboard interaction expectations that your users will come primed with.</p>
+<p><img src="./6.jpg" alt="6"></p>
+<h3 id="6-pay-special-attention-to-forms">6: Pay special attention to forms</h3>
+<p>Form inputs are the bread and butter of most interactive web applications. It&rsquo;s a collection of very basic building blocks that can assemble into complex monsters of interactivity. If you have a form or form-like interaction in your web application, pay extra attention to the accessibility concerns that are connected with these.</p>
+<h4 id="why-are-form-inputs-particularly-complex">Why are form inputs particularly complex?</h4>
+<p>There are a few concerns, that are particularly pertinent for accessibility:</p>
+<ul>
+<li>Make sure to correctly label all inputs</li>
+<li>Make sure tab order and focus is properly implemented</li>
+<li>Think in particular about mobile users and their input methods</li>
+</ul>
+<h5 id="label">Label</h5>
+<p>Make sure your inputs are labeled - and make sure this labeling is expressed so automated systems are aware of this relationship too.</p>
+<p>This, for example, might be sufficient a visual user, but not for a screen reader:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Name:<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">input</span> <span class="p">/&gt;</span>
+</span></span></code></pre></div><p>There are several ways to link a visual label to an input element:</p>
+<ul>
+<li><code>&lt;label for&gt;</code> with reference to input id</li>
+<li><code>&lt;label&gt;</code> around both text and input</li>
+<li><code>aria-labelledby</code> with reference to label id</li>
+<li><code>aria-label</code> if no textual label exists</li>
+</ul>
+<p>And remember, <a href="https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Placeholder_Research#:~:text=Placeholders%20are%20not%20Substitutes%20for%20Labels,-Placeholders%20are%20not&amp;text=Labels%20are%20captions%20which%20inform,to%20aid%20in%20form%20completion."><code>placeholder</code> is not a good way</a> to label your inputs!</p>
+<h5 id="tab-order-and-focus">Tab order and focus</h5>
+<p>We&rsquo;ve previously covered the importance of <a href="#5-respect-focus-expectations">focus management</a> and <a href="#4-make-sure-current-focus-is-clearly-visible">focus styling</a>.</p>
+<p>Tab order is another aspect of focus management, where you&rsquo;ll most of the time get by using default browser order simply based on document order, but for very special cases you might want to <a href="https://www.w3.org/TR/WCAG20-TECHS/H4.html">adjust the tab order</a> manually.</p>
+<p>Often it is however recommended to move your elements in the document order and place them using CSS rather than reordering them using the <code>taborder</code> property.</p>
+<p>If you for instance have a grid of inputs and you want the user to go through the left column top-to-bottom first, then the right column (rather than row by row), you can markup your form elements in columns instead of using a regular table.</p>
+<h5 id="mobile-inputs">Mobile inputs</h5>
+<p>Mobile and pointer device users should be paid particular attention due to the limited space on their screens. Make sure that inputs and the content they manipulate are close together so that a user with an on-screen keyboard on a small device can see both things at the same time.</p>
+<p>Also make sure to use the correct type for your inputs, to make the mobile keyboard display the proper subset of keys. It&rsquo;s a lot easier to type numbers for an <code>&lt;input type=&quot;number&quot; /&gt;</code> than a regular <code>&lt;input type=&quot;text&quot; /&gt;</code>, as the latter often requires switching the keyboard to symbol/number view.</p>
+<h4 id="why-form-handling-is-important-for-accessibility">Why form handling is important for accessibility</h4>
+<p>With form inputs being the basic components of web application interactivity, they create the backbone of your users&rsquo; interactions with your service. Getting these right is extremely important, as the expectations of proper behavior are well-known and deviations will lead to sharp user dropoff.</p>
+<p><img src="./7.jpg" alt="7"></p>
+<h3 id="7-test-your-components-using-accessibility-queries">7: Test your components using accessibility queries</h3>
+<p>Now we get to tooling and setup. This tip is not about writing code in particular, but about testing it in a way, that increases the awareness of accessibility.</p>
+<p>You should be testing your components in an automated way. That&rsquo;s a long-established practice, and such a statement can&rsquo;t be controversial anymore. However, you can test your components in many different ways and if you&rsquo;re not careful, you might be testing your components in ways, that real users would not interact with your application, and thus your tests are close to worthless.</p>
+<h4 id="how-and-why-should-you-test-your-components-as-your-users-do">How and why should you test your components as your users do?</h4>
+<blockquote>
+<p>Spoiler warning: This is going to sound like an ad for <a href="https://testing-library.com/"><code>@testing-library</code></a>. It&rsquo;s not meant to be, but I just tend to agree with their motivation.</p>
+</blockquote>
+<p>Let&rsquo;s say for example, that you have a component with a button, that can open a menu - and the output looks like this when the component is closed and open respectively:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- Closed menu: --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;menu-button&#34;</span><span class="p">&gt;</span>Toggle menu<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- Open menu: --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;menu-button menu-button--expanded&#34;</span><span class="p">&gt;</span>Toggle menu<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">aside</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Document menu<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  ...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">aside</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Now you have to write a test, validating, that</p>
+<ol>
+<li>when the menu is closed,</li>
+<li>you can click the button,</li>
+<li>and the menu appears.</li>
+</ol>
+<p>There are of course many ways to do this, but one naïve way would be to do something like this:</p>
+<ol>
+<li><em>To validate that the menu is closed:</em>
+<ol>
+<li>Find an element with the class <code>.menu-button</code></li>
+<li>Check that it does not have the class <code>.menu-button--expanded</code></li>
+<li>Check that there is no <code>&lt;aside&gt;</code> element in the document</li>
+</ol>
+</li>
+<li><em>To click the button</em>
+<ol>
+<li>Find an element with the class <code>.menu-button</code></li>
+<li>Send a click event</li>
+</ol>
+</li>
+<li><em>To validate that the menu appears</em>
+<ol>
+<li>Find an element with the class <code>.menu-button</code></li>
+<li>Check that it <strong>does</strong> have the class <code>.menu-button--expanded</code></li>
+<li>Check that there is an <code>&lt;aside&gt;</code> element in the document</li>
+<li>Check the <code>&lt;aside&gt;</code> element has an <code>&lt;h1&gt;</code> with the text <code>&quot;Document menu&quot;</code></li>
+</ol>
+</li>
+</ol>
+<p>While this is technically a good and exhaustive test for this functionality, it is very fragile. What if the class names for the menu-button change? What if the <code>&lt;aside&gt;</code> is changed to another type of element? What if the <code>&lt;h1&gt;</code> is changed to an <code>&lt;h2&gt;</code>?</p>
+<p>All these things would only change some underlying technical details that would never actually impact users in the real world, but would all make this test fail.</p>
+<p>And some very important changes would <strong>not</strong> make your test fail. What if we deleted all the text inside the button or changed it to something completely different? Users would be very confused if the button said <code>&quot;Free cat videos&quot;</code>, but your test would still pass!</p>
+<p>Your test should only fail when the important (user-facing) functionality of your component changes requiring you to update your tests.</p>
+<p>So, what is a better way to test this component?</p>
+<p>First of all, let&rsquo;s make some slight changes to this component.</p>
+<ol>
+<li>Let&rsquo;s keep the menu in the document all the time and just hide it when inactive</li>
+<li>Let&rsquo;s keep the state of the &ldquo;toggledness&rdquo; of the button directly on the button</li>
+<li>Let&rsquo;s associate the button with the element, that it toggles</li>
+<li>Let&rsquo;s associate the menu element with its title</li>
+</ol>
+<p>These four things result in this structure:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="c">&lt;!-- Closed menu: --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span>
+</span></span><span class="line"><span class="cl">  <span class="na">class</span><span class="o">=</span><span class="s">&#34;menu-button&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-expanded</span><span class="o">=</span><span class="s">&#34;false&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-controls</span><span class="o">=</span><span class="s">&#34;menu&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>Toggle menu<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">aside</span>
+</span></span><span class="line"><span class="cl">  <span class="na">hidden</span>
+</span></span><span class="line"><span class="cl">  <span class="na">id</span><span class="o">=</span><span class="s">&#34;menu&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;menu-title&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span>
+</span></span><span class="line"><span class="cl">    <span class="na">id</span><span class="o">=</span><span class="s">&#34;menu-title&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&gt;</span>Document menu<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  ...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">aside</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c">&lt;!-- Open menu: --&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">button</span>
+</span></span><span class="line"><span class="cl">  <span class="na">class</span><span class="o">=</span><span class="s">&#34;menu-button menu-button--expanded&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-expanded</span><span class="o">=</span><span class="s">&#34;true&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-controls</span><span class="o">=</span><span class="s">&#34;menu&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>Toggle menu<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">aside</span>
+</span></span><span class="line"><span class="cl">  <span class="na">id</span><span class="o">=</span><span class="s">&#34;menu&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="na">aria-labelledby</span><span class="o">=</span><span class="s">&#34;menu-title&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span>
+</span></span><span class="line"><span class="cl">    <span class="na">id</span><span class="o">=</span><span class="s">&#34;menu-title&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&gt;</span>Document menu<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  ...
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">aside</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>This does make our HTML a bit longer, but it adds some very important links between elements. They&rsquo;re not directly visible to users, but browsers and screen-readers will see them and assist users in interacting with the elements.</p>
+<p>We can now make our test much simpler:</p>
+<ol>
+<li><em>To validate that the menu is closed:</em>
+<ol>
+<li>Find a button with the label <code>&quot;Toggle menu&quot;</code></li>
+<li>Verify that it is not expanded</li>
+<li>Find a complementary element with the label <code>&quot;Document menu&quot;</code></li>
+<li>Verify that it is hidden</li>
+</ol>
+</li>
+<li><em>To click the button</em>
+<ol>
+<li>Find a button with the label <code>&quot;Toggle menu&quot;</code></li>
+<li>Send a click event</li>
+</ol>
+</li>
+<li><em>To validate that the menu appears</em>
+<ol>
+<li>Find a button with the label <code>&quot;Toggle menu&quot;</code></li>
+<li>Verify that it <strong>is</strong> expanded</li>
+<li>Find a complementary element with the label <code>&quot;Document menu&quot;</code></li>
+<li>Verify that it is <strong>not</strong> hidden</li>
+</ol>
+</li>
+</ol>
+<p>This might read similarly to before, but the resulting stability of the test is much better. We do not depend on irrelevant technical details such as class names or HTML tag names but check for element roles and labels.</p>
+<p>You might think, that the test for <em>&ldquo;a button&rdquo;</em> above is a test for a specific HTML element, but it doesn&rsquo;t have to be. All these are buttons in the eyes of a browser: <code>&lt;button /&gt;</code>, <code>&lt;input type=&quot;button&quot; /&gt;</code>, and <code>&lt;span role=&quot;button&quot; /&gt;</code>.</p>
+<p>Putting this all together, and using the awesome selectors that can be found in <code>@testing-library</code>, this test can be written as:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">menuButton</span> <span class="o">=</span> <span class="nx">getByRole</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Toggle menu&#39;</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">menu</span> <span class="o">=</span> <span class="nx">queryByRole</span><span class="p">(</span><span class="s1">&#39;complementary&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Document menu&#39;</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Verify that the menu is initially closed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">expect</span><span class="p">(</span><span class="nx">menuButton</span><span class="p">).</span><span class="nx">toHaveAttribute</span><span class="p">(</span><span class="s1">&#39;aria-expanded&#39;</span><span class="p">,</span> <span class="s1">&#39;false&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">expect</span><span class="p">(</span><span class="nx">menu</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toBeDefined</span><span class="p">();</span> <span class="c1">// It doesn&#39;t &#34;exist&#34; yet
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Click the button
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">fireEvent</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">menuButton</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Verify that the menu is open
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">expect</span><span class="p">(</span><span class="nx">menuButton</span><span class="p">).</span><span class="nx">toHaveAttribute</span><span class="p">(</span><span class="s1">&#39;aria-expanded&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">menu</span> <span class="o">=</span> <span class="nx">queryByRole</span><span class="p">(</span><span class="s1">&#39;complementary&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Document menu&#39;</span><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">expect</span><span class="p">(</span><span class="nx">menu</span><span class="p">).</span><span class="nx">toBeDefined</span><span class="p">();</span> <span class="c1">// It &#34;exists&#34; now
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">expect</span><span class="p">(</span><span class="nx">menu</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nx">toHaveAttribute</span><span class="p">(</span><span class="s1">&#39;hidden&#39;</span><span class="p">);</span>
+</span></span></code></pre></div><p>In practice, you&rsquo;d want to do more than this (maybe <code>role=&quot;menu&quot;</code> would be a better choice) and the real world is always more complex than a simple example as this. Nevertheless, these would be the exercises you would go through, as you turn your testing process away from technical details and over to accessibility queries.</p>
+<p>You can play around with the <code>@testing-library</code> selectors for this example in the <a href="https://testing-playground.com/">testing playground</a> (<a href="https://testing-playground.com/gist/44c74b5d638d4c080feab20b918654c9/a139eaa829a084229cef013a1fa9a7a0978e7778">deep link with this HTML preloaded</a>)</p>
+<h4 id="why-testing-is-important-for-accessibility">Why testing is important for accessibility</h4>
+<p>This is in essence an example of <a href="https://en.wikipedia.org/wiki/Eating_your_own_dog_food"><em>&ldquo;eating your own dog food&rdquo;</em></a>. By testing your components as if you were a real user (potentially even using a screen-reader), you will stumble over the same problems as a (screen-reader) user does. And then in making your tests pass, you will solve the actual real-world problems, that your users would be facing while interacting with your website.</p>
+<p>At the same time, by not relying on irrelevant technical details of your components, you make your tests less fragile to slight changes in design or structure. It&rsquo;s basically a <strong>win-win</strong>!</p>
+<p><img src="./8.jpg" alt="8"></p>
+<h3 id="8-add-static-html-validation-to-your-testing-pipeline">8: Add static HTML validation to your testing pipeline</h3>
+<p>Besides of course testing directly for accessibility (<em>&ldquo;does this image have an <code>alt</code> attribute?&rdquo;</em>) as well as testing using accessibility (<em>&ldquo;click the button labeled <code>add to cart</code>&rdquo;</em>), the final trick in your accessibility testing toolbox should be to statically validate, that at any point in time your HTML is fully valid.</p>
+<h4 id="why-should-you-use-static-html-validation">Why should you use static HTML validation?</h4>
+<p>When you begin to implement the more complex widgets in the ARIA specification, for instance, accordions or tab panels, you will often refer to other elements by ID. This is the case for common properties like <code>aria-labelledby</code> or even the simple <code>&lt;label for&gt;</code>, but also for more specific properties such as <code>aria-controls</code> and <code>aria-owns</code>.</p>
+<p>However, it might easily be the case, that for some configuration, that you didn&rsquo;t think of, you might have a temporary state, where one of these elements points to a non-existing element - simply because the element is not currently displayed. Or there might be two of them at some point - which is also an error, as ID&rsquo;s have to be unique.</p>
+<p>Doing static validation of larger portions of your application in action, even while testing features completed unrelated to accessibility, you can catch these errors before they crop up in production.</p>
+<p>And the cool thing about some of the available accessibility test tools, for instance, the <a href="https://www.deque.com/axe/">AXE test suite</a>, is, that you don&rsquo;t have to specify <strong>what</strong> you want to test for, as AXE knows all the HTML + ARIA rules - so it&rsquo;ll test for everything at once. It&rsquo;ll validate that all your buttons have a valid accessible name, all your inputs have labels, all your ID references exist and are unique, etc.</p>
+<p>You can see a list of other alternative providers of automated accessibility testing tools over <a href="https://www.w3.org/WAI/ER/tools/">on W3&rsquo;s website</a>.</p>
+<h4 id="why-static-html-validation-is-important-for-accessibility">Why static HTML validation is important for accessibility</h4>
+<p>This is a great <em>last-line-of-defense</em> style utility to catch those silly mistakes, that tend to crop up in real-world situations.</p>
+<p>You might have a generic panel component, that always has a title, so the panel generates an ID and the panel <code>&lt;section&gt;</code> is <code>aria-labelledby</code> it&rsquo;s <code>&lt;h1&gt;</code> identified by said ID. However, two months down the line someone adds a panel without a title, and suddenly you have a <code>&lt;section aria-labelledby&gt;</code> a non-existing ID. Your normal unit and integration tests won&rsquo;t catch this, but a full sweep of the entire HTML of your application in all states will.</p>
+<p>(this <em>totally</em> made-up example did <a href="https://github.com/google/web-stories-wp/commit/0e097717b3ca1b720bd2b04b677d7e0f2c574841#diff-653ae7278fae3d73d9b3b92a11770d46L130"><em>totally</em> not happen to me</a> and was caught by this exact method of static validation)</p>
+<p>With this last tool in effect validating your generated output at any configuration for your real-world application, you can rest assured, that all your accessibility effort is at least valid.</p>
+<p><img src="./9.jpg" alt="9"></p>
+<h3 id="9-make-sure-to-use-accessible-third-party-components-and-libraries">9: Make sure to use accessible third-party components and libraries</h3>
+<p>Unfortunately close doesn&rsquo;t count in accessibility. If you do your best to make your application accessible, but happen to use a third-party component, that has horrible accessibility, it will reflect badly upon you and your application - and your users will suffer for it.</p>
+<p>Also, you should never assume that a third-party library is accessible - even if it&rsquo;s very popular and has been around for a long time. Accessibility is hard and not something you can spray on top of an existing library. It has to be baked into the core and must be a priority of the developers behind the module. If just an afterthought, it&rsquo;s probably not going to be adequate.</p>
+<h4 id="which-libraries-are-known-to-be-accessible">Which libraries are known to be accessible?</h4>
+<p>Nice try, but I, unfortunately, cannot keep such a list, nor would it even be possible. I can however make some pointed recommendations for specific areas of functionality, but for everything else you have to search for yourself.</p>
+<ul>
+<li>Drag-and-drop (Trello Card style): <a href="https://github.com/atlassian/react-beautiful-dnd"><code>atlassian/react-beautiful-dnd</code></a>. See <a href="https://react-beautiful-dnd.netlify.app/iframe.html?id=board--simple">their nice demo page</a> - use tab to navigate to an element, spacebar to &ldquo;pick&rdquo; it up or drop it, and arrow keys to move it around.</li>
+</ul>
+<p>And that&rsquo;s it. That&rsquo;s the full list of React components that I&rsquo;ve found to have decent accessibility.</p>
+<p>I did try a lot of the plugins listed on <a href="https://github.com/brillout/awesome-react-components">@brillout&rsquo;s list of awesome React components</a>, but most of them failed either completely or just partially. Accessibility is unfortunately not high on the list of priorities for most developers – even when writing generalized reusable components.</p>
+<p>The two <em>dead giveaways</em> of a library correctly considering accessibility are <strong>keyboard interactivity</strong> and <strong>accessible names</strong>:</p>
+<ol>
+<li>Try using a keyboard to interact with the plugin&rsquo;s demo page. Can you interact with all the controls? Does focus display and move logically around when tabbing and/or using arrow keys?</li>
+<li>Check elements on the demo page in your browser developer console for roles and accessible names. Do all interactive elements have a relevant role and a dedicated accessible name? Are the accessible names customizable (e.g. for localization)?</li>
+</ol>
+<p>These two checks are of course not a full guarantee, but it&rsquo;s a great start. If you want to dig further, you can check the WAI-ARIA list of patterns and find which ones apply to the component in question, and investigate whether the pattern is correctly followed regarding roles, properties, and keyboard interaction.</p>
+<h4 id="why-safe-libraries-are-required-for-accessibility">Why safe libraries are required for accessibility</h4>
+<p>Your users will judge you based on the weakest link in your application. If 90% is accessible, your users will still be unable to use your platform, when they encounter any of the remaining 10%.</p>
+<p>But at the same time, you should never invent all the wheels yourself - there&rsquo;s a huge community of developers, that will have experienced the same pain points that you are, and you should be able to build upon their work. However, be diligent and check their stuff.</p>
+<p>If you come across a plugin that you really like, but notice that it comes up just shy of fully accessible, feel more than free to contribute to it. You&rsquo;ll be helping not only yourself but also all the other projects built on that plugin and all their users in turn.</p>
+<hr>
+<h2 id="react-web-accessibility-checklist">React web accessibility checklist</h2>
+<p>Feel free to copy-paste this checklist or share it, but do keep <a href="/license">the content license</a> in mind.</p>
+<ol>
+<li><span style="color:#157A15">✔</span> <strong>Write semantic and valid markup</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Use proper roles and relevant <code>aria-*</code> attributes</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Consider the accessible name of every element</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Make sure current focus is clearly visible</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Respect focus expectations</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Pay special attention to form elements</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Test your components using accessibility queries</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Add static HTML validation to your testing pipeline</strong></li>
+<li><span style="color:#157A15">✔</span> <strong>Make sure to use accessible third party components and libraries</strong></li>
+</ol>
+<p>So get out there and make awesome accessible web applications!</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/accessibility">accessibility</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/checklist">checklist</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/standards">standards</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/new-book-react-quickly/"> &laquo; My new book is out: React Quickly, Second Edition</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/15-ways-accessible-name-button/">15 (mostly bad) Ways to Set the Accessible Name of a Button &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

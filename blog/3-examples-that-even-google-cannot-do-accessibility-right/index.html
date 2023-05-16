@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>3 Examples That Even Google Can&#39;t Do Accessibility Right | Morten Barklund</title>
+	<meta name="description" content="Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users.">
+	<meta name="keywords" content="accessibility, aria, google, examples,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/twitter_feature.png"/>
+<meta name="twitter:title" content="3 Examples That Even Google Can&#39;t Do Accessibility Right"/>
+<meta name="twitter:description" content="Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users."/>
+
+	<meta property="og:title" content="3 Examples That Even Google Can&#39;t Do Accessibility Right" />
+<meta property="og:description" content="Google is not infallible. Even they fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/" /><meta property="og:image" content="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2020-08-17T00:00:00-04:00" />
+<meta property="article:modified_time" content="2020-08-15T18:17:37-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=3%20Examples%20That%20Even%20Google%20Can%27t%20Do%20Accessibility%20Right&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2f3-examples-that-even-google-cannot-do-accessibility-right%2f&title=3%20Examples%20That%20Even%20Google%20Can%27t%20Do%20Accessibility%20Right&summary=Google%20is%20not%20infallible.%20Even%20they%20fail%20at%20following%20accessibility%20best-practices.%20I%20have%20found%203%20examples%20of%20%28very%20common%29%20mistakes%2c%20that%20even%20the%20bright%20minds%20at%20Google%20and%20all%20their%20efforts%20and%20reviews%20failed%20to%20see%20before%20shipping%20them%20to%20end-users.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Aug 17, 2020
+                                    <i class="far fa-clock clock"></i>
+                                    14 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">3 Examples That Even Google Can&#39;t Do Accessibility Right</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/3-examples-that-even-google-cannot-do-accessibility-right/cover.jpg" alt="A skateboarder losing control of his board mid-trick" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Accessibility is - like rad skateboarding skills - hard, but we will never learn if we don&#39;t keep trying</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>Google is not infallible. Even <em>they</em> fail at following accessibility best-practices. I have found 3 examples of (very common) mistakes, that even the bright minds at Google and all their efforts and reviews failed to see before shipping them to end-users.</p>
+<p>So did I have to dig deep to find an example? On the contrary – the very first example is right on the search/results page on Google Search! We&rsquo;re talking about probably the most viewed page on the entire web<sup><a href="https://en.wikipedia.org/wiki/List_of_most_popular_websites">[citation needed]</a></sup> shown billions of times <strong>every single day</strong>! And it&rsquo;s a dumb error, easy to fix, but with actual consequences for real users.</p>
+<p>Besides this error, I dug a bit deeper into some popular Google products and it wasn&rsquo;t hard to find a couple of accessibility mistakes in both Gmail and Google Docs/Google Sheets.</p>
+<p>That Google isn&rsquo;t infallible is of course the understatement of the year, but Google is by many developers and end-users seen as the pinnacle of software and developer excellence. Google has incredibly high standards for employees and projects and is surrounded by a mystical aura of basically being the best at everything they set their minds to.</p>
+<p>However, this article is not about Google&rsquo;s perceived (lack of) perfection. This is about accessibility. And it&rsquo;s about trying, failing, and trying again. Because Google does try - they try really hard! They have <a href="https://twitter.com/googleaccess">an internal division</a> dedicated only to accessibility, have a process for internal accessibility reviews applied to all their products, and they provide <a href="https://www.google.com/accessibility/">guidelines for the rest of us</a> on how to make our sites more accessible. And yet, sometimes even they fail as demonstrated below.</p>
+<p>But fear not, all the below examples can be fixed and even Google can get better at this. Fear of failing is no excuse for not trying however - you have to do your very best and keep going at it.</p>
+<blockquote>
+<p>Accessibility is not a sprint. It&rsquo;s not even a marathon. It&rsquo;s staying healthy your entire life by staying active continuously always trying to do better.</p>
+</blockquote>
+<p><strong>NB</strong>: Note that all of these examples are valid as of August 16, 2020. This will most likely chance in the future. If it does seem outdated, please <a href="https://twitter.com/barklund">ping me on twitter</a>.</p>
+<hr>
+<h2 id="1-clear-input-in-google-search">1. &ldquo;Clear input&rdquo; in Google Search</h2>
+<p>The first example of an accessibility <em>faux pas</em> comes right at the core of Google&rsquo;s products - Google Search itself. And not even hidden away somewhere obscure, but right there in the search input field on every search and results page.</p>
+<h3 id="steps-to-reproduce">Steps to reproduce</h3>
+<ol>
+<li>Go to <a href="https://google.com">google.com</a></li>
+<li>Type something in the search field, e.g. <em>&ldquo;accessibility&rdquo;</em></li>
+<li>Press the tab key and observe, that the <em>&ldquo;clear&rdquo;</em> button (stylized as an <em>&ldquo;×&rdquo;</em>) has focus</li>
+<li>Press the space bar to activate the button</li>
+<li>Observe that nothing happens</li>
+</ol>
+<p>The expected result is, that the search input is cleared when the space bar is pressed.</p>
+<h3 id="whats-wrong">What&rsquo;s wrong?</h3>
+<p>It happens to be a quite simple mistake, but it took me a few minutes to figure out what went wrong here. Because you can press the enter key to activate the button, just not the space bar.</p>
+<p>When you have pressed the tab key to focus the <em>&ldquo;clear&rdquo;</em> button, try to open the developer console and inspect the active element (the element with current focus) by typing <code>document.activeElement</code>. As you can see in the following screenshot, the active element is a <code>&lt;span /&gt;</code>. And it is focusable, but it has no semantic role (shown as <code>generic</code>):</p>
+<figure>
+<a href="./google_search_clear_focus.png"><img src="./google_search_clear_focus.png" alt="Google Search after tabbing from search input" /></a>
+<caption><em><small>This shows the active element after tabbing from the search input field - it's clearly a generic <code>&lt;span /></code> in focus, not a button.</small></em></caption>
+</figure>
+<p>But the parent node is a button – as you can see here:</p>
+<figure>
+<a href="./google_search_clear_button.png"><img src="./google_search_clear_button.png" alt="Google Search with proper clear button inspected in developer console" /></a>
+<caption><em><small>The parent of the previous generic element is the actual button - but it's not focusable?</small></em></caption>
+</figure>
+<p>This button is not focusable though, but it has the proper role. Both elements have a proper <a href="https://mortenbarklund.com/blog/15-ways-accessible-name-button/">accessible name</a> (but the accessible name has no real purpose for an element without a semantic role).</p>
+<h3 id="how-can-this-be-fixed">How can this be fixed?</h3>
+<p>It makes no sense, that the span inside the button is focusable and the button isn&rsquo;t. If we simply move the <code>tabindex=&quot;0&quot;</code> attribute from the span to the button, we now get the following situation after pressing the tab key from the input:</p>
+<figure>
+<a href="./google_search_clear_button_focus.png"><img src="./google_search_clear_button_focus.png" alt="Google Search after tabbing from search input with clear button being made accessible" /></a>
+<caption><em><small>In the HTML <code>tabindex="0"</code> has been moved from the generic child element to the button and now everything works correctly (except for missing focus styling)</small></em></caption>
+</figure>
+<p>The button correctly has focus and it can now be activated using the space bar in addition to the enter key. In the process, we did unfortunately lose visual focus styling, but that can easily be remedied.</p>
+<h3 id="impact">Impact</h3>
+<h4 id="how-bad-of-a-violation-is-this">How bad of a violation is this?</h4>
+<p>This is actually a big deal. Buttons, or things that act like buttons, should in fact <strong>be</strong> buttons. That the generic child element can receive focus rather than the button is a grave violation of guidelines and in fact expectations and this breaks the ability of assistive technologies to correctly aid users in using the product. One direct consequence of this is the lack of support of activating the (non-)button using the space bar.</p>
+<h4 id="what-is-the-impact-on-users">What is the impact on users?</h4>
+<p>Probably not too grave - most keyboard-only users will probably already be using the enter key to click buttons, and if not they&rsquo;ll probably try the enter key after discovering, that the space bar doesn&rsquo;t do anything. The (non-)button is also announced wrongly when focused, but that&rsquo;s probably a fairly minor issue in this instance.</p>
+<hr>
+<h2 id="2-hangout-tablist-in-gmail">2. &ldquo;Hangout tablist&rdquo; in Gmail</h2>
+<p>Gmail has a little tablist in the lower-left corner (if you use the desktop experience at least), that allows you to see your contacts, your most recent hangouts or most recent phone calls. You can select which tab is active from a little icon-based tab list at the bottom of the widget. There is however a number of problems with this tab list - not just deviations from specifications, but even worse some confusing and directly dysfunctional interaction patterns.</p>
+<h3 id="steps-to-reproduce-1">Steps to reproduce</h3>
+<p>This is an illustration of one of the more serious issues with this tab list:</p>
+<ol>
+<li>Click the <em>&ldquo;phone call&rdquo;</em> icon (📞) and observe the panel switch to recent phone calls</li>
+</ol>
+<figure>
+<a href="./calls_tab_open.png"><img src="./calls_tab_open.png" alt="Gmail with calls tab open" /></a>
+<caption><em><small>This shows the "phone calls" tab open.</small></em></caption>
+</figure>
+<ol start="2">
+<li>Press the tab key a few times until focus is on the currently active tab</li>
+</ol>
+<figure>
+<a href="./calls_tab_focussed.png"><img src="./calls_tab_focussed.png" alt="Gmail with calls tab open and with focus" /></a>
+<caption><em><small>This shows the "phone calls" tab open and with keyboard focus.</small></em></caption>
+</figure>
+<ol start="3">
+<li>Press enter and observe the tab closing (leaving no tab open)</li>
+</ol>
+<figure>
+<a href="./calls_tab_focussed_closed.png"><img src="./calls_tab_focussed_closed.png" alt="Gmail with calls tab closed and with focus" /></a>
+<caption><em><small>This shows the "phone calls" tab closed and with keyboard focus.</small></em></caption>
+</figure>
+<ol start="4">
+<li>Press enter again and observe the tab opening again</li>
+<li>Now press the left arrow key twice and observe, that some alternate focus appears to shift to the <em>&ldquo;contacts&rdquo;</em> tab as its icon lights up in a brighter white than the others and with a noticable difference in background color</li>
+</ol>
+<figure>
+<a href="./calls_and_contacts_tabs_focussed.png"><img src="./calls_and_contacts_tabs_focussed.png" alt="Gmail with dual tab focus" /></a>
+<caption><em><small>This shows two different kinds of focus on different tabs.</small></em></caption>
+</figure>
+<ol start="6">
+<li>Press enter to activate the <em>&ldquo;contacts&rdquo;</em> tab</li>
+<li>Observe that instead of activating the <em>&ldquo;contacts&rdquo;</em> tab, the <em>&ldquo;calls&rdquo;</em> tab simply closes as if it was the one having focus (which it is in some sense)</li>
+</ol>
+<figure>
+<a href="./calls_tab_focussed_closed.png"><img src="./calls_tab_focussed_closed.png" alt="Gmail with calls tab closed and with focus" /></a>
+<caption><em><small>After attempting to activate the "contacts" tab, the "phone calls" tab simply closes.</small></em></caption>
+</figure>
+<p>The expected behavior is of course, that the focused tab changes when arrow keys are pressed - both visually but also with respect to being the actual <code>document.activeElement</code>.</p>
+<h3 id="whats-wrong-1">What&rsquo;s wrong?</h3>
+<p>There&rsquo;s several problems with the tab list implementation here.</p>
+<p>The biggest problems are:</p>
+<ol>
+<li>A tab list should only have the current tab as part of the tabbing order - you should not be able to use the tab key to move between the different tabs (this is known as <a href="https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex"><em>&ldquo;roving tabindex&rdquo;</em></a><sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>).</li>
+<li>When focusing another tab using arrow keys, keyboard focus should follow. This implementation with two different sets of focus makes no sense at all.</li>
+<li>The tab panels aren&rsquo;t actually marked up as such (with <code>role=&quot;tabpanel&quot;</code>) and are missing all the relevant <code>aria-*</code> attributes expected of such an element.</li>
+</ol>
+<p>Smaller problems include:</p>
+<ol>
+<li>The tab list itself can receive tab focus, but doesn&rsquo;t have an accessible name, so the user has no idea what actually has focus nor what to do with it. According to the specification, the tab list <em>can</em> have focus but doesn&rsquo;t need to in this case.</li>
+<li>The tabs section of WAI-ARIA does not describe the interaction of closing the currently active tab panel. Re-activating the active tab should just do nothing. However, given that the specification also allows for multiple tabs to be open at the same time, zero tabs open could be considered a legal configuration – albeit unusual.</li>
+<li>The <code>aria-controls</code> property is missing from all the tab buttons - thus leaving assistive technologies without information about what the tab actually controls.</li>
+<li>Tabs should auto-select when receiving focus in such a simple tab panel setup as this one. The <a href="https://www.w3.org/TR/wai-aria-practices/#issue-container-generatedID-25">recommendation in WAI-ARIA</a> is that tabs auto-select when receiving focus (<em>&ldquo;selection follows focus&rdquo;</em>) unless expensive calculation or external load is involved. In this instance, the information is already available and there&rsquo;s no reason not to switch tabs as soon as a tab receives focus (by pressing arrow keys, <strong>not</strong> the tab key). This could be excused in this instance though, as the tab panels actually live inside another iframe, but the content for all of them is preloaded anyway.</li>
+<li><code>aria-activedescendant</code> is used to highlight which tab has &ldquo;visual focus&rdquo; (the focus that can be navigated using arrow keys), however that is not necessary according to specification. It&rsquo;s superfluous information - the focused tab can be deduced from it having <code>tabindex=&quot;0&quot;</code> and the active tab(s) from having <code>aria-selected=&quot;true&quot;</code> (which is recommended above to be the same thing).</li>
+</ol>
+<h3 id="how-can-this-be-fixed-1">How can this be fixed?</h3>
+<p>This does not come with an easy fix. I suspect a major overhaul of the widget is required to make it behave according to specifications. These would be the steps I&rsquo;d go through to fix it:</p>
+<ol>
+<li>Move the tab list and tab panels to live in the same document. If the tab panels have to exist in an external iframe, I&rsquo;d move the tab list there as well - it makes for a much cleaner and more logical DOM Structure.</li>
+<li>Correctly set roles and <code>aria-*</code> attributes on all involved elements.</li>
+<li>Make sure <code>tabindex</code> is updated on the tabs, so only the currently open tab has <code>tabindex=&quot;0&quot;</code>, the others should have <code>-1</code> - do this when tabs received focus both from mouse and keyboard.</li>
+<li>Remove the weird functionality of closing the active tab. It serves no purpose.</li>
+<li>When navigating with the arrow keys between the tabs, make sure that the tab actually receives keyboard focus and not just visual focus by calling <code>.focus()</code> on it.</li>
+<li>Finally, I&rsquo;d probably also implement that <em>&ldquo;selection follows focus&rdquo;</em>, as previously mentioned, as it is the most common implementation for a simple tab interface such as this one.</li>
+</ol>
+<p>Correctly implementing tabs is not hard and has been done many times. If nothing else, one can start with <a href="https://www.w3.org/TR/wai-aria-practices/examples/tabs/tabs-1/tabs.html">the very nice example</a> created by W3.</p>
+<p>I have done this myself – on a Google project even. The <a href="http://goo.gle/storyeditor">Google Web Story Editor</a> has tabs in a few locations implemented with full adherence to the recommendations (<a href="https://github.com/google/web-stories-wp/blob/main/assets/src/edit-story/components/tabview/index.js">implementation in React</a>).</p>
+<h3 id="impact-1">Impact</h3>
+<h4 id="how-bad-of-a-violation-is-this-1">How bad of a violation is this?</h4>
+<p>This is in many ways directly against recommendations. I hope that this is &ldquo;just&rdquo; a partial implementation of the WAI-ARIA tab recommendation (which is about as good as not implementing it at all), and but I fear that it is something copy-pasted from another product and left rotting in the codebase.</p>
+<p>The weirdest part of the implementation is definitely the dual-focus of using both <code>tabindex</code> and <code>aria-activedescendant</code> and allowing tabs to be &ldquo;active&rdquo; in 3 different ways. I can set up a situation where <em>one tab</em> is open, <em>another tab</em> has actual keyboard focus and <em>the last tab</em> appears focused (has bright white icon). That&rsquo;s completely misunderstood in so many ways.</p>
+<h4 id="what-is-the-impact-on-users-1">What is the impact on users?</h4>
+<p>This is a pretty bad user experience for keyboard-only users. Tabs have an expected interaction model involving arrow keys to move between tabs and the tab key to move to and from the tab list - not this weird combination of both modes interspersing with one another.</p>
+<p>I assume keyboard-only users can figure it out and stick with pressing only the tab key and not using the arrow keys, but it should not be a necessary workaround.</p>
+<hr>
+<h2 id="3-font-size-listbox-in-google-docs--google-sheets">3. &ldquo;Font size listbox&rdquo; in Google Docs &amp; Google Sheets</h2>
+<p>For this example we&rsquo;re now entering <em>small potatoes</em> country. It&rsquo;s not that there aren&rsquo;t other accessibility misimplementations, it&rsquo;s just that this is an example of a very complex widget, that&rsquo;s almost perfect, but still lacking a bit.</p>
+<p>This concens the font size dropdown available in both Google Docs and Google Sheets. It&rsquo;s a <em>combobox</em> with an input (a <em>textbox</em>), that when focused opens a <em>listbox</em> with font size options:</p>
+<figure>
+<a href="./docs_fontsize_combobox_display.png"><img src="./docs_fontsize_combobox_display.png" alt="The combobox as visually displayed in Google Sheets" /></a>
+<caption><em><small>This shows an expanded font size combobox in Google Sheets.</small></em></caption>
+</figure>
+<p>This pattern is <a href="https://www.w3.org/TR/wai-aria-practices/#combobox">extremely well-described in WAI-ARIA</a>, yet Google&rsquo;s implementation falls short on a few nit-picky details.</p>
+<h3 id="steps-to-reproduce-2">Steps to reproduce</h3>
+<p>There&rsquo;s no actual user experience bug to reproduce here. The issue does not have user impact at all - unless screen readers and other assistive technologies aren&rsquo;t able to correctly help users achieve their goal.</p>
+<h3 id="whats-wrong-2">What&rsquo;s wrong?</h3>
+<p>This shows the ARIA information given about the three most important elements in this widget – the combobox, the listbox and the textbox:</p>
+<figure>
+<a href="./docs_fontsize_combobox.png"><img src="./docs_fontsize_combobox.png" alt="The accessibility pane in Developer Console listing ARIA properties of the combobox" /></a>
+<caption><em><small>The <strong>combobox</strong> has quite a few properties and most of them are even correct!</small></em></caption>
+</figure>
+<figure>
+<a href="./docs_fontsize_textbox.png"><img src="./docs_fontsize_textbox.png" alt="The accessibility pane in Developer Console listing ARIA properties of the textbox" /></a>
+<caption><em><small>The <strong>textbox</strong> has too few properties here.</small></em></caption>
+</figure>
+<figure>
+<a href="./docs_fontsize_listbox.png"><img src="./docs_fontsize_listbox.png" alt="The accessibility pane in Developer Console listing ARIAproperties of the combobox" /></a>
+<caption><em><small>The <strong>listbox</strong> has the weirdest property of all - you'll never guess which one!</small></em></caption>
+</figure>
+<p>There&rsquo;s a few errors in the implementation, but overall it is very close to perfect.</p>
+<p>The three most important problems are:</p>
+<ol>
+<li>The <em>listbox</em> element has <code>aria-haspopup=&quot;true&quot;</code>. This makes no sense. The <em>listbox</em> <strong>is</strong> a popup, it doesn&rsquo;t <strong>have</strong> a popup – and definitely not a <em>menu</em> popup, which is <a href="https://www.w3.org/TR/wai-aria-1.1/#desc-aria-haspopup:~:text=user%20agents%20MUST%20treat%20an%20aria%2Dhaspopup%20value%20of%20true%20as%20equivalent%20to%20a%20value%20of%20menu">the default value for <code>true</code></a>.</li>
+<li>The <em>combobox</em> doesn&rsquo;t have an accessible name. It <a href="https://www.w3.org/TR/wai-aria-practices/#wai-aria-roles-states-and-properties-6:~:text=the%20combobox%20element%20has%20a%20label%20provided%20by%20aria%2Dlabel">should have had an <code>aria-label</code></a>.</li>
+<li>The <em>combobox</em> is listed as having the wrong type of popup. This is actually a weird error to make, because not using <code>aria-haspopup</code> would indicate that <a href="https://www.w3.org/TR/wai-aria-practices/#wai-aria-roles-states-and-properties-6:~:text=Note%20that%20elements%20with%20role%20combobox%20have%20an%20implicit%20aria%2Dhaspopup%20value%20of%20listbox.,-When">the <em>combobox</em> has a popup of type <code>listbox</code></a> (which this one does), but actively setting <code>aria-haspopup=&quot;true&quot;</code> indicates that the <em>combobox</em> has a popup of type <code>menu</code><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</li>
+</ol>
+<p>Some minor errors include:</p>
+<ol>
+<li>The <em>combobox</em> has <code>aria-owns</code> set to the currently selected option. It should be set to <a href="https://www.w3.org/TR/wai-aria-practices/#wai-aria-roles-states-and-properties-6:~:text=combobox%20element%20contains%20or%20owns%20an%20element%20that%20has%20role%20listbox">the <em>listbox</em> as whole</a>, not the individual option.</li>
+<li>The <em>combobox</em> has <code>aria-activedescendant</code> set, but this property only applies to elements with keyboard focus. Thus it should only <a href="https://www.w3.org/TR/wai-aria-practices/#wai-aria-roles-states-and-properties-6:~:text=the%20textbox%20has%20aria%2Dactivedescendant%20set">be set on the <em>textbox</em></a> (which it also is), not the <em>combobox</em>.</li>
+<li>The <em>textbox</em> does not have <code>aria-controls</code> set to the <em>listbox</em>, which <a href="https://www.w3.org/TR/wai-aria-practices/#wai-aria-roles-states-and-properties-6:~:text=textbox%20element%20has%20aria%2Dcontrols%20set%20to%20a%20value%20that%20refers%20to%20the%20combobox%20popup%20element">it should have</a>.</li>
+</ol>
+<h3 id="how-can-this-be-fixed-2">How can this be fixed?</h3>
+<p>All the above errors come with instructions on how to fix them. They&rsquo;re all fairly straight-forward and should not take any skilled developer a long time to fix.</p>
+<h3 id="impact-2">Impact</h3>
+<h4 id="how-bad-of-a-violation-is-this-2">How bad of a violation is this?</h4>
+<p>This is definitely a couple of tiny 🥔&rsquo;s (meaning <em>&ldquo;unimportant deviations&rdquo;</em>) and aren&rsquo;t urgent to fix. However, given that the guidelines are clear, it shouldn&rsquo;t have been an issue to implement it correctly the first time around.</p>
+<p>One redeeming factor here could however be, that the recommendations have changed since the current implementation was made. That is not an unlikely scenario.</p>
+<h4 id="what-is-the-impact-on-users-2">What is the impact on users?</h4>
+<p>None, as far as I can tell.</p>
+<hr>
+<h2 id="in-summary">In Summary</h2>
+<p>Trying is good. And while trying but failing is often better than not trying at all, for ARIA this is not always the case. The ARIA guidelines come with the notion, that <a href="https://www.w3.org/TR/wai-aria-practices/#no_aria_better_bad_aria"><em>&ldquo;No ARIA is better than bad ARIA&rdquo;</em></a>, which seems harsh, but is in fact true. It&rsquo;s like having a blue underline text on your webpage, that isn&rsquo;t a link. If you mark something with ARIA attributes as having a certain behavior, which it then doesn&rsquo;t actually have, you&rsquo;re breaking that promise and failing your users.</p>
+<blockquote>
+<p>Falling back to the browsers default accessibility behavior is better than <strong>mis</strong>implementing your own.</p>
+</blockquote>
+<p>This should however not discourage anyone from trying. Give it your best shot, but make sure to do your very best, test it out using real assistive technologies and keep working on it even after it seems complete, because standards and technology evolves - and your application should too!</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><em>&ldquo;roving tabindex&rdquo;</em> is not the only option here, the concept of <a href="https://www.w3.org/TR/wai-aria-practices/#kbd_focus_activedescendant"><em>&ldquo;active descendant&rdquo;</em> is a valid alternative</a>. However if that&rsquo;s the path chosen, then none of the tabs should have <code>tabindex=&quot;0&quot;</code>, only the tablist itself should be in the tab order. This implementation somehow falls between both options while also conforming to neither.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>Google Chrome Developer Console is clearly not aware that the default value of <code>aria-haspopup</code> for a <code>role=&quot;combobox&quot;</code> is in fact <code>listbox</code>. If you remove the property, <code>hasPopup</code> is simply not listed as one of the interpreted properties of the element, though it probably should have been.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/accessibility">accessibility</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/aria">aria</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/google">google</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/examples">examples</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/"> &laquo; The simplest possible webapp implemented in React, Angular, and Vue</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/hello-world/">Hello &lt;World /&gt; &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

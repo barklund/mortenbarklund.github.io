@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>How to use Styled-Components correctly in Remix | Morten Barklund</title>
+	<meta name="description" content="Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.">
+	<meta name="keywords" content="react, typescript, remix,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/styled-components-remix/twitter_feature.png"/>
+<meta name="twitter:title" content="How to use Styled-Components correctly in Remix"/>
+<meta name="twitter:description" content="Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries."/>
+
+	<meta property="og:title" content="How to use Styled-Components correctly in Remix" />
+<meta property="og:description" content="Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/styled-components-remix/" /><meta property="og:image" content="https://mortenbarklund.com/blog/styled-components-remix/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-01-28T20:00:00+01:00" />
+<meta property="article:modified_time" content="2023-01-28T20:00:00+01:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=How%20to%20use%20Styled-Components%20correctly%20in%20Remix&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fstyled-components-remix%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2fstyled-components-remix%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2fstyled-components-remix%2f&title=How%20to%20use%20Styled-Components%20correctly%20in%20Remix&summary=Remix%20is%20a%20great%20new%20React%20website%20framework%2c%20one%20of%20the%20few%20to%20challenge%20the%20dominance%20of%20NextJS.%20Remix%20comes%20with%20a%20new%20philosophy%2c%20and%20with%20that%20also%20some%20new%20challenges%20and%20complexities%20when%20it%20comes%20to%20integrating%20third-party%20libraries.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Jan 28, 2023
+                                    <i class="far fa-clock clock"></i>
+                                    5 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">How to use Styled-Components correctly in Remix</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/styled-components-remix/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/styled-components-remix/cover.jpg" alt="Stylish woman with shopping bags" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Sometimes you just want to look good - that&#39;s where styling comes in!</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p><a href="https://remix.run/">Remix</a> is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.</p>
+<hr>
+<h2 id="styled-components-and-remix-dont-mix-well">Styled-Components and Remix don&rsquo;t mix well</h2>
+<p>One such library is <a href="https://styled-components.com/">Styled-Components</a>, which is a popular CSS-in-JS library, that is really excellent for co-location and writing minimal JSX. IT&rsquo;s used by a lot of huge development teams including those at Airbnb, BBC, and Reddit.</p>
+<p>While it is mentioned in the <a href="https://remix.run/docs/en/v1/guides/styling#css-in-js-libraries">Remix guide on styling</a>, that you can use this library, and it even comes with a (so-called) <em><a href="https://github.com/remix-run/examples/tree/main/styled-components">runnable example</a></em>, this example doesn&rsquo;t actually work!</p>
+<p>Go ahead, try <a href="https://codesandbox.io/s/github/remix-run/examples/tree/main/styled-components">the linked Codepen</a>. It&rsquo;s broken. Okay, it does work <strong>at first</strong>, but try changing something, and it doesn&rsquo;t actually update!</p>
+<p>It&rsquo;s because React hydration fails. You will get a bunch of errors in the console like this:</p>
+<pre tabindex="0"><code>Warning: Prop `className` did not match. Server: &#34;sc-iBYQkv hiCBsX&#34; Client: &#34;sc-bcXHqe fA-DmNg&#34;
+</code></pre><p>The example is written in React 17, but even if you upgrade to React 18 and the latest Remix, you still get all the same hydration errors.</p>
+<p>So that example is less than usefull - it&rsquo;s actually completely useless. If you get hydration errors, you lose a ton of the benefits, that serverside rendering (SSR) gives you.</p>
+<p>The problem is, that you have Styled-Components running on both the server and the client, but not synchronized. You need to make sure that they are synchronized with every build, so that class names are generated uniquely, deterministically, and most inmportantly, <em>identically</em> on the two runtimes.</p>
+<p>So how can we fix this?</p>
+<hr>
+<h2 id="fixing-remix-to-allow-css-in-js">Fixing Remix to allow CSS-in-JS</h2>
+<p>In order to fix it, you need to hack into the underlying build engine, esbuild, in order for it to properly include the hydratable stylesheet in the output. We&rsquo;re going to go through these five steps to make it work:</p>
+<ol>
+<li>Install <code>remix-esbuild-override</code></li>
+<li>Install <code>styled-components</code> and optionally types for it.</li>
+<li>Add an esbuild plugin file for bundling styled components.</li>
+<li>Add the plugin to the build in the Remix configuration file.</li>
+<li>Use Styled-Components as usual.</li>
+</ol>
+<h3 id="1-install-esbuild-override">1. Install esbuild override</h3>
+<p>First step is quite easy - install <a href="https://github.com/aiji42/remix-esbuild-override">the <code>remix-esbuild-override</code> library</a> using your package manager. This library does exactly what it says on the tin: it allows you to override the remix esbuild configuration:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">npm install -D remix-esbuild-override
+</span></span><span class="line"><span class="cl"><span class="c1"># or</span>
+</span></span><span class="line"><span class="cl">yarn add -D remix-esbuild-override
+</span></span></code></pre></div><p>In order to correctly hook into the Remix build system, we need to run a script after the installation, so add a <code>postinstall</code> section to <code>package.json</code> like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;scripts&#34;</span><span class="err">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;postinstall&#34;</span><span class="p">:</span> <span class="s2">&#34;remix-esbuild-override&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And then run the install command using your package manager again, e.g. just <code>npm install</code> or <code>yarn install</code>. This should trigger the post-install script and allow the plugin access to the guts of Remix.</p>
+<h3 id="2-install-styled-components-and-types">2. Install Styled-Components and types</h3>
+<p>Next up, install Styled-Components:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">npm install -S styled-components
+</span></span><span class="line"><span class="cl"><span class="c1"># or</span>
+</span></span><span class="line"><span class="cl">yarn add styled-components
+</span></span></code></pre></div><p>And optionally install types as well, if you&rsquo;re using TypeScript:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">npm install -D @types/styled-components
+</span></span><span class="line"><span class="cl"><span class="c1"># or</span>
+</span></span><span class="line"><span class="cl">yarn add -D @types/styled-components
+</span></span></code></pre></div><h3 id="3-add-an-esbuild-plugin">3. Add an esbuild plugin</h3>
+<p>Next, we&rsquo;re going to add the esbuild plugin file. Create a new file at the root of the repository named <code>/styled-components-esbuild-plugin.js</code>.</p>
+<p>You can copy the contents from below or from <a href="https://raw.githubusercontent.com/aiji42/remix-esbuild-override/main/examples/styled-components/styled-components-esbuild-plugin.js">this source on Github</a>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">babel</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;@babel/core&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">styled</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;babel-plugin-styled-components&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;node:fs&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;path&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">styledComponentsPlugin</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;styled-components&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setup</span><span class="p">({</span> <span class="nx">onLoad</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="nx">root</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">onLoad</span><span class="p">({</span> <span class="nx">filter</span><span class="o">:</span> <span class="sr">/\.[tj]sx$/</span> <span class="p">},</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">code</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">promises</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="s2">&#34;utf8&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">plugins</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;importMeta&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;topLevelAwait&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;classProperties&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;classPrivateProperties&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;classPrivateMethods&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="s2">&#34;jsx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">let</span> <span class="nx">loader</span> <span class="o">=</span> <span class="s2">&#34;jsx&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">endsWith</span><span class="p">(</span><span class="s2">&#34;.tsx&#34;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">plugins</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">&#34;typescript&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">loader</span> <span class="o">=</span> <span class="s2">&#34;tsx&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">babel</span><span class="p">.</span><span class="nx">transformAsync</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">babelrc</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">configFile</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">ast</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">root</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">filename</span><span class="o">:</span> <span class="nx">args</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">parserOpts</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">sourceType</span><span class="o">:</span> <span class="s2">&#34;module&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">allowAwaitOutsideFunction</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">plugins</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">generatorOpts</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">decoratorsBeforeExport</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="p">},</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span><span class="nx">styled</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">sourceMaps</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">inputSourceMap</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">contents</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">result</span><span class="p">.</span><span class="nx">code</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">            <span class="sb">`//# sourceMappingURL=data:application/json;base64,`</span> <span class="o">+</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">map</span><span class="p">)).</span><span class="nx">toString</span><span class="p">(</span><span class="s2">&#34;base64&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">loader</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">resolveDir</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">dirname</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">path</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">styledComponentsPlugin</span><span class="p">;</span>
+</span></span></code></pre></div><p>Just save the file with that content, and you&rsquo;re ready to load it up in the next step.</p>
+<h3 id="4-update-the-remix-configuration-file">4. Update the Remix configuration file</h3>
+<p>Open up the file <code>/remix.config.js</code> at the root of the repository. Here we want to make sure we load our new plugin. After updating this file, it should look like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="p">{</span> <span class="nx">withEsbuildOverride</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;remix-esbuild-override&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">styledComponentsPlugin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;./styled-components-esbuild-plugin&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">withEsbuildOverride</span><span class="p">((</span><span class="nx">option</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">option</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="nx">styledComponentsPlugin</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">option</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @type {import(&#39;@remix-run/dev&#39;).AppConfig}
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">ignoredRouteFiles</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;.*&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">appDirectory</span><span class="o">:</span> <span class="s2">&#34;app&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">assetsBuildDirectory</span><span class="o">:</span> <span class="s2">&#34;public/build&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">serverBuildPath</span><span class="o">:</span> <span class="s2">&#34;build/index.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">publicPath</span><span class="o">:</span> <span class="s2">&#34;/build/&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>Now spin up your local Remix server using <code>npm run dev</code> or <code>yarn dev</code> to see your styled application in action.</p>
+<h3 id="5-enjoy-using-css-in-js-with-styled-components">5. Enjoy using CSS-in-JS with Styled-Components</h3>
+<p>And that&rsquo;s it. you&rsquo;re good to go. You will get proper hydration, no error messages, and it just works both in the local development environment as well as in the production build.</p>
+<p>You can now write your routes like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-tsx" data-lang="tsx"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Form</span><span class="p">,</span> <span class="nx">Link</span> <span class="p">}</span> <span class="kr">from</span> <span class="s2">&#34;@remix-run/react&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">styled</span> <span class="kr">from</span> <span class="s2">&#34;styled-components&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">Main</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">main</span><span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">  background-color: hotpink;
+</span></span></span><span class="line"><span class="cl"><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">Title</span> <span class="o">=</span> <span class="nx">styled</span><span class="p">.</span><span class="nx">h1</span><span class="sb">`
+</span></span></span><span class="line"><span class="cl"><span class="sb">  font-family: monospace;
+</span></span></span><span class="line"><span class="cl"><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Index() {</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">Main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">Title</span><span class="p">&gt;</span><span class="nx">Welcome</span> <span class="nx">to</span> <span class="nx">the</span> <span class="nx">hot</span> <span class="nx">zone</span><span class="o">!</span><span class="p">&lt;/</span><span class="nt">Title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">Main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>You can of course also use Styled-Components in non-route components, just like you would in any real-world sizable project.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Using Styled-Components in Remix seems like a no-brainer, but unfortunately it is not supported directly <em>out-of-the-box</em> from the Remix team. However, we can still use it, if we run through a few extra hoops.</p>
+<p>It&rsquo;s bit troublesome to do, but once you know what it takes, it should take you no more than 5 minutes to set up! With this short guide, you should be good to go!</p>
+<p>This is confirmed to work as of Remix 1.11. Let me know if that changes in future versions!</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/react">react</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/typescript">typescript</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/remix">remix</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/react-architecture-provider-pattern/"> &laquo; React Architecture: The React Provider Pattern</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/returning-children-typescript/">Returning children in React &#43; Typescript &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

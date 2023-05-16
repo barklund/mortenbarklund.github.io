@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>React Architecture: The React Provider Pattern | Morten Barklund</title>
+	<meta name="description" content="The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.">
+	<meta name="keywords" content="context, hooks, architecture, design patterns, usereducer,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/react-architecture-provider-pattern/twitter_feature.png"/>
+<meta name="twitter:title" content="React Architecture: The React Provider Pattern"/>
+<meta name="twitter:description" content="The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board."/>
+
+	<meta property="og:title" content="React Architecture: The React Provider Pattern" />
+<meta property="og:description" content="The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/react-architecture-provider-pattern/" /><meta property="og:image" content="https://mortenbarklund.com/blog/react-architecture-provider-pattern/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2020-06-20T08:00:00-04:00" />
+<meta property="article:modified_time" content="2020-05-11T18:23:05-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=React%20Architecture%3a%20The%20React%20Provider%20Pattern&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-architecture-provider-pattern%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-architecture-provider-pattern%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-architecture-provider-pattern%2f&title=React%20Architecture%3a%20The%20React%20Provider%20Pattern&summary=The%20React%20Provider%20Pattern%20is%20one%20of%20the%20main%20emerging%20React%20design%20patterns%20in%20many%20modern%20React%20applications%20and%20variations%20of%20it%20can%20be%20seen%20touted%20by%20React%20experts%20across%20the%20board.&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Jun 20, 2020
+                                    <i class="far fa-clock clock"></i>
+                                    14 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">React Architecture: The React Provider Pattern</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/react-architecture-provider-pattern/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/react-architecture-provider-pattern/cover.jpg" alt="A hand holding an acorn" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">An &lt;AcornProvider /&gt; in action</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.</p>
+<p>This article documents the origins of this pattern, explores its uses and gives additional detail to how best to use it.</p>
+<p>This pattern is partially informed by and (among other places) heavily used in the <a href="https://github.com/google/web-stories-wp">open-source repository <code>google/web-stories-wp</code></a> of which I&rsquo;m a main contributor and co-architect. Many examples will refer to this fairly significant codebase – which happens to have 20+ instances of this pattern spread throughout the application.</p>
+<h4 id="abbr-titletoo-long-didnt-readtldrabbr"><abbr title="Too long; didn't read">TL;DR</abbr></h4>
+<p>If you don&rsquo;t need the background information on <em><a href="#background-what-are-design-patterns">Design Patterns</a></em> or <em><a href="#react-architecture">React architecture</a></em> principles and you&rsquo;re all caught up with <em><a href="#react-context-provider-and-consumer">React Context</a></em> and <em><a href="#react-usecontext-hook">the useContext hook</a></em>, then you can just skip to the meat of the matter in <em><a href="#putting-it-all-together-the-react-provider-pattern">The React Provider Pattern</a></em>.</p>
+<h4 id="other-formats">Other formats</h4>
+<p>The React Provider Pattern is also the main topic my talk &ldquo;Modern React Design Patterns&rdquo;, that I have presented a number of times including at <a href="https://beta2.meetup.com/en-AU/ReactNYC/events/267250157/">ReactNYC S03E10</a> and <a href="https://sched.co/YF7T">DeveloperWeek Orlando in February 2020</a>.</p>
+<hr>
+<h3 id="background-what-are-design-patterns">Background: What are Design Patterns?</h3>
+<p>The concept of <em>Design Patterns</em> originates in the seminal book, <em><a href="https://en.wikipedia.org/wiki/Design_Patterns">Design Patterns: Elements of Reusable Object-Oriented Software</a></em>. This 1994 book published by Addison-Wesley and authored by Gamma, Helm, Johnson and Vlissides, coloqially known as <em>The Gang of Four</em>, was a hallmark publication on the state of object-oriented practical software development.</p>
+<p>A design pattern is in essence a way of composing units of code to a larger whole that solves a specific purpose in a well-known setup and constuction and with well-established relationship and roles between the different units. The <em>Factory</em> pattern for instance describes how an interface is used to create instances of a single object with different starting configurations - and how implementations of said pattern can then decide on the implementation details irrelevant to the invoker. Design Patterns are also sometimes described as <em>micro architecture</em>, as they can be used over and over on many different scales in the same application.</p>
+<p>The most important thing to understand about this book is however that the four authors did not invent anything new. They merely documented the practices they saw present in real-world development teams and gathered the experience of numerous experts across the field. But more importantly, the coined the terms describing these patterns and put them into context. This enabled developers to have a conversation at a more abstract level about how to construct software without instantly going into the nitty-gritty of actual implementation.</p>
+<p>The Gang of Four described a total of <a href="https://en.wikipedia.org/wiki/Design_Patterns#Patterns_by_type">23 design patterns</a>, many of whom are still very well-known today. They all came from the world of object-oriented programming, but many are applicable outside of that realm. Concepts such as <em>Observer</em>, <em>Singleton</em>, <em>Proxy</em> and many others are very well-known in many languages - including JavaScript.</p>
+<hr>
+<h3 id="react-architecture">React Architecture</h3>
+<p>One of the main features – but also one of the main problems – of React is the lack of a common structure or architecture. You can organize your app in whatever way makes sense to you. React itself provides a minimal architecture which in fact is based around some of the design patterns described by <em>The Gang of Four</em>. React is at its core one big <em>Observer</em>, makes heavy use of the <em>Flyweight</em> pattern to minimize memory usage by reusing objects whereever possible, and of course, is based on the <em>State</em> pattern (heavily combined with the overall Observer pattern).</p>
+<p>But on the outside, React seems very bare-bones. If you <code>create-react-app</code> with the default template, you get the tiniest possible react application with only 1 file of business logic and very little guidance as to how you&rsquo;d add more functionality to this. This in turn leads different people, teams and companies to develop completely different strategies as to how they prefer to use this underlying library to build huge React applications.</p>
+<p>That being said common patterns arise which other developers tend to follow. Both by change, but also by knowledge sharing. Early patterns included ideas such as the separation of container vs presentation, higher-order components (HoC&rsquo;s) and for reversing the information flow: render props.</p>
+<p>But then, React Hooks came – and some of those patterns changed. Completely. What used to be common organizational principles are now completed forgotten or even frowned upon. Even the basic minimal interface provided by the core framework in the form of lifecycle methods is now slowly being deprecated in favor of hook-based approaches.</p>
+<p>Some patterns persisted, others have arisen in the post-hooks React world. This article has a nice overview of <a href="https://www.designmycodes.com/react/react-advanced-patterns.html">4 of the main React design patterns</a> used today.</p>
+<hr>
+<h3 id="react-context-provider-and-consumer">React Context: Provider and Consumer</h3>
+<p><a href="https://reactjs.org/docs/context.html">React Context</a> is a fairly new feature in React. React Context is surprisingly unknown to many developers, despite its versatility in React architecture. React Context is considered part of &ldquo;modern React&rdquo; along with hooks even though React Context actually came out quite a bit before hooks and can be used completely without any hooks<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.</p>
+<p>React Context is a method to send information between components within a component tree. Normally information only travels in one direction, from the Context provider to any component consuming said context. It does nothing you cannot do with simple passing of properties, however it allows you to skip all the intermediate components and send information arbitrarily deep in the component tree.</p>
+<p>Let&rsquo;s do a very simple example with a User Context holding the name of the currently active user:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">createContext</span>  <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">UserContext</span> <span class="o">=</span> <span class="nx">createContext</span><span class="p">({});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">Name</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{({</span> <span class="nx">name</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Hello</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">App</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;World&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span><span class="nx">Welcome</span><span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">Name</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Provider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Breaking this down, this consists of three main parts:</p>
+<ul>
+<li><code>createContext</code>: Create a new context object than can be both provided and consumed - with a default value if no parent provider exists.</li>
+<li><code>SomeContext.Provider</code>: A React component that provides a new value for any consumer below it in the component tree.</li>
+<li><code>SomeContext.Consumer</code>: A React component expecting a render prop which will be rendered with the current value of the nearest provider in the component tree above it.</li>
+</ul>
+<p>This all seems like an incredibly simple construction, but it&rsquo;s immensely powerful and allows for some very complex constructions – especially when combined with hooks, as we&rsquo;ll see in the next section.</p>
+<p>Note that a consumer can have no provider – or multiple providers – above it. These are however both fairly uncommon situations, and we&rsquo;ll ignore those for now. In the following sections, we&rsquo;ll always pair a consumer with a single parent provider. But most often many consumers for each parent provider.</p>
+<h4 id="shortcomings-of-the-react-context-consumer">Shortcomings of the React Context Consumer</h4>
+<p>The consumer component mentioned in the previous section is a little weird to use, as is often the case when using render props. You cannot directly access the values in your component, but have to either move your logic inside the render prop function or pass the values to a child component:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="c1">// This will not work
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">BrokenWelcome</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="sb">`Hello, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{({</span> <span class="nx">name</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;{</span><span class="nx">message</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Moving the message inside the render prop will work:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">NestedWelcome</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{({</span> <span class="nx">name</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="sb">`Hello, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">          <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;{</span><span class="nx">message</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Moving the message inside the render prop will work:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">WelcomeMessage</span><span class="p">({</span> <span class="nx">name</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="sb">`Hello, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;{</span><span class="nx">message</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">ParentWelcome</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{({</span> <span class="nx">name</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">WelcomeMessage</span> <span class="na">name</span><span class="o">=</span><span class="p">{</span><span class="nx">name</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">)}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Consumer</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>While the two latter options are of course workable, they&rsquo;re not as clean as you might want them to be. And that&rsquo;s where the <code>useContext</code> hook comes to the rescue!</p>
+<hr>
+<h3 id="react-usecontext-hook">React <code>useContext</code> hook</h3>
+<p>In order to more directly access the current value of the nearest provider for a given context, React has supplied us with the very nice hook, <code>useContext</code>. It&rsquo;s a hook, that returns the exact same value, as the render prop of a context consumer would be invoked with - and is most often deconstructed as such.</p>
+<p>The above example would now simply read:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">BestWelcome</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">name</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">UserContext</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="sb">`Hello, </span><span class="si">${</span><span class="nx">name</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;{</span><span class="nx">message</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>How&rsquo;s that for a nice component? Easy to read, no unnecessery prop drilling, just clean simple code.</p>
+<p>The beauty of hooks then provides us with the built-in logic, that whenever the nearest context value changes, every hook referencing that context is re-rendered – in turn forcing every component using those hooks to be re-rendered.</p>
+<p>This has some problems of its own of course - what if you only use the <code>name</code> property of the <code>UserContext</code> and someone changes the <code>image</code> property? Then unfortunately your component will re-render too, but there&rsquo;s of course ways to fix that. We&rsquo;ll get back to those later.</p>
+<h4 id="combining-react-context-and-react-hooks">Combining React Context and React Hooks</h4>
+<p>Let&rsquo;s go back to our previous example of a <code>UserContext</code>. This time, let&rsquo;s make our provider a bit more dynamic. Now the name can actually change:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">createContext</span><span class="p">,</span> <span class="nx">useState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">UserContext</span> <span class="o">=</span> <span class="nx">createContext</span><span class="p">({});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">App</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">name</span><span class="p">,</span> <span class="nx">setName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;World&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">setName</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span><span class="nx">Welcome</span><span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">ShowName</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">EditName</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Provider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Now, <code>ShowName</code> is as before, but <code>EditName</code> will now use the newly provided <code>setName</code> property:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">EditName</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">setName</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">UserContext</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">setName</span><span class="p">(</span><span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;What is your name?&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And we can even see this <a href="https://codepen.io/barklund/pen/XWXRKpN">very simple application</a> (with a sprinkling of Material UI) in action here:</p>
+<script
+    data-slug-hash="XWXRKpN"
+    data-user="barklund"
+    data-height="500"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>We now have our first fully working dynamic React Context!</p>
+<hr>
+<h3 id="putting-it-all-together-the-react-provider-pattern">Putting it all together: The React Provider Pattern</h3>
+<p>Going from the above to what I consider to be the React Provider Pattern is merely an act of reorganising all the parts into a more organised structure.</p>
+<p>This structure always consists of the same 3 parts (4 if you count an index file) put inside its own package:</p>
+<ol>
+<li><code>folder/context.js</code> – the file defining the context variable used by the structure</li>
+<li><code>folder/provider.js</code> – the (main) context provider wrapping whatever children its given with a dynamic context</li>
+<li><code>folder/use.js</code> – a custom hook giving components access to the current context value</li>
+</ol>
+<p>The last requirement is to use a structured approach to the context value in order to increase familiarity and reuse.</p>
+<p>Many patterns are possible here, but a very simple structure has proven to serve almost all relevant cases so far with very few exceptions:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">state</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Here goes values, that are to be considered immutable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// Immer.js can be used to ensure immutability is obeyed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Here goes functions, that manipulate the above values
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// or return values based on the context internals
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>Putting all this together, we get this codebase for our very simple <code>UserProvider</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="c1">// File: user/context.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">createContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">UserContext</span> <span class="o">=</span> <span class="nx">createContext</span><span class="p">({</span><span class="nx">state</span><span class="o">:</span> <span class="p">{},</span> <span class="nx">actions</span><span class="o">:</span> <span class="p">{}});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// File: user/use.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">UserContext</span> <span class="nx">from</span> <span class="s1">&#39;./context&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">useUser</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">UserContext</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// File: user/provider.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">UserProvider</span><span class="p">({</span> <span class="nx">children</span> <span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">name</span><span class="p">,</span> <span class="nx">setName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;World&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span> <span class="nx">setName</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserContext.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserContext.Provider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And if we want to use it in our app, we will do it as follows (with the same functionality as before):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="c1">// File: app.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">UserProvider</span> <span class="nx">from</span> <span class="s1">&#39;./user/provider&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">ShowName</span> <span class="nx">from</span> <span class="s1">&#39;./show&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">EditName</span> <span class="nx">from</span> <span class="s1">&#39;./edit&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">App</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">UserProvider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span><span class="nx">Welcome</span><span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">ShowName</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">EditName</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">UserProvider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// File: show.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">useUser</span> <span class="nx">from</span> <span class="s1">&#39;./user/use&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">ShowName</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">state</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span> <span class="p">}</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useUser</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span><span class="nx">Hello</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="p">}&lt;/</span><span class="nt">p</span><span class="p">&gt;;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// File: edit.js
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kr">import</span> <span class="nx">useUser</span> <span class="nx">from</span> <span class="s1">&#39;./user/use&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">EditName</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span> <span class="nx">setName</span><span class="err"> </span><span class="p">}</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useUser</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">setName</span><span class="p">(</span><span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;What is your name?&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>And again, we can see this in action, in this live example. On the surface the example is completely identical to before, but now the context is internalised behind the provider and the custom hook resulting in a much cleaner interface between the provider and the rest of the application:</p>
+<script
+    data-slug-hash="RwrVRQe"
+    data-user="barklund"
+    data-height="500"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<hr>
+<h3 id="examples-how-to-use-the-react-provider-pattern">Examples: How to use the React Provider Pattern</h3>
+<h4 id="application-wide-storage">Application-wide storage</h4>
+<p>This pattern can be used as application-wide storage in lieu of other libraries such as redux.</p>
+<p>Imagine the classic todo application. Our provider has a state, which is the list of todos, and a couple of functions for adding, removing and marking todos as complete:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">TodoProvider</span><span class="p">({</span><span class="nx">children</span><span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Start with an empty list
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="p">[</span><span class="nx">todos</span><span class="p">,</span> <span class="nx">setTodos</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// When adding a todo, simply append to list:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">add</span> <span class="o">=</span> <span class="nx">useCallback</span><span class="p">((</span><span class="nx">title</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">setTodos</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">old</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">[...</span><span class="nx">old</span><span class="p">,</span> <span class="p">{</span><span class="nx">title</span><span class="p">,</span> <span class="nx">isDone</span><span class="o">:</span> <span class="kc">false</span><span class="p">}]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">),</span> <span class="p">[]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Remove a todo by offset in list
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">remove</span> <span class="o">=</span> <span class="nx">useCallback</span><span class="p">((</span><span class="nx">offset</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">setTodos</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">old</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">old</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">offset</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">old</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">),</span> <span class="p">[]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Mark a todo by offset and isDone flag
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="kr">const</span> <span class="nx">mark</span> <span class="o">=</span> <span class="nx">useCallback</span><span class="p">((</span><span class="nx">offset</span><span class="p">,</span> <span class="nx">isDone</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">setTodos</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">old</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">old</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">offset</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="p">...</span><span class="nx">old</span><span class="p">[</span><span class="nx">offset</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">isDone</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">...</span><span class="nx">old</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">),</span> <span class="p">[]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="o">:</span> <span class="p">{</span> <span class="nx">todos</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">remove</span><span class="p">,</span> <span class="nx">mark</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">TodoContext.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">TodoContext.Provider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Note the use of <code>useCallback</code> above. It ensures minimal re-renders of components using this context, as the function is guaranteed to be stable (as its memoized without dependencies). If you don&rsquo;t fully grasp this, don&rsquo;t worry. It&rsquo;s a whole separate and deeply complex topic for a future article.</p>
+<p>Furthermore, note that the above provider would actually be a good use-case for <code>useReducer</code> – but that&rsquo;s also a topic for another time.</p>
+<p>This usage can be found in the <code>google/web-stories-wp</code> codebase in the <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/history/historyProvider.js">history provider</a> and the <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/story/storyProvider.js">story provider</a> - each a provider of different levels of application-wide storage and each with their own associated states and actions.</p>
+<p>Note how both these are applied – among many other providers – in <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/app/index.js#L52-L83">a very specific order</a> in the main application file.</p>
+<h4 id="ui-state">UI state</h4>
+<p>This pattern can be used as component-local storage for UI state - a use that redux handles rather poorly in my opinion.</p>
+<p>Imagine a tabbed interface - you want to remember which tab is currently active, but there&rsquo;s no need to bring in some big library to fuel this. It can be done very simple and elegantly with the provider pattern:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">TabProvider</span><span class="p">({</span><span class="nx">children</span><span class="p">})</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">current</span><span class="p">,</span> <span class="nx">setCurrent</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;INFO&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">state</span><span class="o">:</span> <span class="p">{</span> <span class="nx">current</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span> <span class="nx">setCurrent</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">TabContext.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span><span class="nx">children</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">TabContext.Provider</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>This is almost too simply to be true, but it can actually provide value to the codebase even in a such a distilled example. Because it will often be the case that you&rsquo;ll add more functionality over time, and then you already have a good abstraction to handle this. Maybe you want the old panel to collapse in an animation before switching to the new one. Or maybe you have some data that requires loading before showing the tabs at all.</p>
+<p>Such usage can be found in the <code>google/web-stories-wp</code> codebase in the <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/components/inspector/inspectorProvider.js">inspector provider</a> (which provides current tab among a few other minor things relevant for the inspector panels) and the <a href="https://github.com/google/web-stories-wp/blob/master/assets/src/edit-story/components/panels/panel/panel.js">panel</a> – a small provider around each panel that remembers if the panel is collapsed or not, if resized or not and if so, to what size.</p>
+<hr>
+<h3 id="faq-on-the-react-provider-pattern">FAQ on the React Provider Pattern</h3>
+<h4 id="why-does-the-context-have-its-own-file">Why does the context have its own file?</h4>
+<p>The reason that the context lives in its own file is three-fold:</p>
+<ol>
+<li>It allows context reuse - you might actually end up creating multiple providers for the same context (though it&rsquo;s rare).</li>
+<li>It can be used to mock the provider in testing</li>
+<li>It reduces the codebase in the rare case your don&rsquo;t need the provider in a given bundle</li>
+</ol>
+<h4 id="is-the-context-even-necessary">Is the context even necessary</h4>
+<p>Well, no. Note that the actual context (the variable created in the <code>context.js</code> file) is an internal implementation detail of the user provider – and it could technically be swapped for any other technology resulting in similar functionality such as <code>redux</code>.</p>
+<h4 id="what-about-all-those-re-renders">What about all those re-renders?</h4>
+<p>To avoid unneccessary re-renders when unrelated context values change, please use something akin to <a href="https://github.com/dai-shi/use-context-selector"><code>use-context-selector</code></a>, which memoizes the actually used variables from the context and thus only re-renders your components, if the used properties change.</p>
+<p>Their examples are a bit crude, but it&rsquo;s fairly simple to combine with the above pattern.</p>
+<h4 id="so-is-redux-just-garbage-now-should-i-just-drown-it-like-a-lost-kitten-should-i-chuck-it-on-top-of-the-local-tire-fire">So is <code>redux</code> just garbage now? Should I just drown it like a lost kitten? Should I chuck it on top of the local tire fire?</h4>
+<p>First off, easy now – calm down!</p>
+<p>Secondly: no, most definitely not. Redux (in particular when combined with <code>redux-toolkit</code>) has many functionalities outside of this – and redux actually uses React Context under the hood these days. It&rsquo;s basically this pattern on steroids with many years of optimisation. It does what it does (application-wide storage) very well, but it might be overkill in a smaller (or even medium-sized) applications.</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>React Context came with <a href="https://reactjs.org/blog/2018/03/29/react-v-16-3.html">React 16.3</a> in March 2018 whereas hooks came with <a href="https://reactjs.org/blog/2019/02/06/react-v16.8.0.html">React 16.8</a> in February 2019.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/context">context</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/hooks">hooks</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/architecture">architecture</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/design-patterns">design patterns</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/usereducer">usereducer</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/"> &laquo; Today I Learned: How mouse events really bubble in React</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/styled-components-remix/">How to use Styled-Components correctly in Remix &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

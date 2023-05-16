@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>Today I Learned: How mouse events really bubble in React | Morten Barklund</title>
+	<meta name="description" content="While researching a related topic, I came across a section in the React documentation for synthetic mouse events about how &ldquo;the onMouseEnter and onMouseLeave events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase&rdquo;. What does that even mean? Let&rsquo;s explore!">
+	<meta name="keywords" content="events, propagation, architecture,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/twitter_feature.png"/>
+<meta name="twitter:title" content="Today I Learned: How mouse events really bubble in React"/>
+<meta name="twitter:description" content="While researching a related topic, I came across a section in the React documentation for synthetic mouse events about how &ldquo;the onMouseEnter and onMouseLeave events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase&rdquo;. What does that even mean? Let&rsquo;s explore!"/>
+
+	<meta property="og:title" content="Today I Learned: How mouse events really bubble in React" />
+<meta property="og:description" content="While researching a related topic, I came across a section in the React documentation for synthetic mouse events about how &ldquo;the onMouseEnter and onMouseLeave events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase&rdquo;. What does that even mean? Let&rsquo;s explore!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/" /><meta property="og:image" content="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-01-30T08:00:00-04:00" />
+<meta property="article:modified_time" content="2022-01-30T08:00:00-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Today%20I%20Learned%3a%20How%20mouse%20events%20really%20bubble%20in%20React&url=https%3a%2f%2fmortenbarklund.com%2fblog%2ftoday-learned-how-mouse-events-bubble-in-react%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2ftoday-learned-how-mouse-events-bubble-in-react%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2ftoday-learned-how-mouse-events-bubble-in-react%2f&title=Today%20I%20Learned%3a%20How%20mouse%20events%20really%20bubble%20in%20React&summary=While%20researching%20a%20related%20topic%2c%20I%20came%20across%20a%20section%20in%20the%20React%20documentation%20for%20synthetic%20mouse%20events%20about%20how%20%26ldquo%3b%3cem%3ethe%20%3ccode%3eonMouseEnter%3c%2fcode%3e%20and%20%3ccode%3eonMouseLeave%3c%2fcode%3e%20events%20propagate%20from%20the%20element%20being%20left%20to%20the%20one%20being%20entered%20instead%20of%20ordinary%20bubbling%20and%20do%20not%20have%20a%20capture%20phase%3c%2fem%3e%26rdquo%3b.%20What%20does%20that%20even%20mean%3f%20Let%26rsquo%3bs%20explore%21&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    Jan 30, 2022
+                                    <i class="far fa-clock clock"></i>
+                                    17 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">Today I Learned: How mouse events really bubble in React</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/cover.jpg" alt="A bubble floating in the air" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Bubbles always move the same way, don&#39;t they? Not in React, they don&#39;t!</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>While researching a related topic, I came across this section in <a href="https://reactjs.org/docs/events.html#mouse-events">the React documentation for synthetic mouse events</a>:</p>
+<blockquote>
+<p>The <code>onMouseEnter</code> and <code>onMouseLeave</code> events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase.</p>
+</blockquote>
+<p>So, what does that even mean? How do <code>mouseenter</code> and <code>mouseleave</code> events actually propagate in the DOM and how do they then happen in React? Which events are send and in which order? Why did React change this compared to the DOM and did they do a good job at changing this?</p>
+<p>That&rsquo;s what I set out to investigate. So come along for the ride.</p>
+<h3 id="tldr">TL;DR</h3>
+<p>React <code>mouseenter</code> and <code>mouseleave</code> events are weird, but more sensible than their DOM counterparts. They&rsquo;re all bubbling events though, but they don&rsquo;t really bubble &ldquo;from&rdquo; anywhere. And they even bubble the wrong way!</p>
+<p>An even better implementation in my opinion would be to just dispatch regular non-capturing, non-bubbling events to each element in sequence. It would be exactly that same as what React does now, except all the events would be in the <code>AT_TARGET</code> phase, the target would be the element in question and the <code>.bubbles</code> property would be false.</p>
+<p>Compare the 63 events sent in the DOM to the 5 events sent in React for the same mouse move in the same document tree:</p>
+<table>
+<tr><th>Events in the DOM</th><th>Events in React</th></tr>
+<tr><td>
+<figure>
+<a href="./dom-events-proper-optimized.gif"><img src="./dom-events-proper-optimized.gif" alt="Animation of all events dispatched in the DOM" /></a>
+</figure>
+</td><td>
+<figure>
+<a href="./react-events-optimized.gif"><img src="./react-events-optimized.gif" alt="Animation of all events dispatched in React" /></a>
+</figure>
+</td></tr>
+</table>
+<hr>
+<h2 id="codepen-example">Codepen example</h2>
+<p>Here is the small example application, that I built. It&rsquo;s really simple, but does all the things we want to test. For every element it listens for both <code>mouseenter</code> and <code>mouseleave</code>, both on bubbling and capturing event phases, and both using React listeners and DOM listeners.</p>
+<script
+    data-slug-hash="ExbjwxB"
+    data-user="barklund"
+    data-height="220"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>All the debugging information is output to the console, so not much to see if you just play around with the above. However, if you do open the console and move the mouse around a bit, you will quick get flooded with messages, because there really are a lot of events dispatched all over the place!</p>
+<hr>
+<h2 id="what-do-those-events-even-mean">What do those events even mean?</h2>
+<p>The <code>mouseenter</code> event is dispatched to a given target element, if and only if, the mouse pointer before the event was not inside the target element or any child inside the element and then enters the element or any child inside the element.</p>
+<p>Reversibly, the <code>mouseleave</code> event is dispatched to a given target element, when the mouse pointer was within the element or any child inside the element and then moves outside of the element or any child inside the element.</p>
+<p>Note that not all HTML elements have a visual representation, so some elements are collapsed or have no actual area to be inside. Consider for example a table, where you can have <code>&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;Cell&lt;/td&gt;&lt;/tr&gt;&lt;tbody&gt;&lt;table&gt;</code>, but the only thing you see visually in the browser is the single cell. You can move you mouse cursor from outside the table to inside the cell in one movement, and in that single instance, you will be entering 4 different elements. Conversely, you can move your cursor out of the cell to the outside leaving 4 elements in a single instance.</p>
+<h3 id="bubbling-and-capturing-in-html">Bubbling and capturing in HTML</h3>
+<p>HTML events (almost) always both bubble and capture. Mouse events in particular definitely always do. Let&rsquo;s ignore capturing events for now and stick to bubbling events. We do this because bubbling events are harder to distinguish from target events in that you assign the listener in the same way.</p>
+<p>Let&rsquo;s say we have this simple bit of HTML:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Favorite dogs<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">chapter</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>My favorite dog is of course <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>the corgi<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span>.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">chapter</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>If we assign a (non-capture) event listener to the <code>mouseenter</code> event on the <code>&lt;chapter&gt;</code> element in JavaScript and then move the mouse cursor from the <code>&lt;h1&gt;</code> title directly to the <code>&lt;p&gt;</code> element, how many times do you think the event listener will be invoked? Two! The mouse will enter <p> element, and in doing so, it will also enter the <code>&lt;chapter&gt;</code> element. Because the mouse enters the <code>&lt;chapter&gt;</code> element, the <code>mouseenter</code> event will dispatch to the chapter element. Then because the mouse entered the <code>&lt;p&gt;</code> element, a <code>mouseenter</code> event will dispatch on the <code>&lt;p&gt;</code> element. But because this event bubble, in dispatching this event, the DOM will also send an event to all parents of the <code>&lt;p&gt;</code> element in order starting from the parent first moving all the way out to the document root (and then to the <code>window</code> object).</p>
+<p>The difference between the event being dispatched to the chapter element because the chapter element was entered, and the event dispatched to the chapter element because a child element was entered and the event bubbled can be seen in two ways. The <code>.target</code> property of the event object will in the former case refer to the chapter element, and in the latter to the child element. And the <code>.eventPhase</code> property of the event object will be 2 (<code>Event.AT_TARGET</code>) in the first case and 3 (<code>Event.BUBBLING_PHASE</code>) in the latter.</p>
+<p>So, if you want to create a listener in HTML that will be invoked, when the mouse enters a given element, but you don&rsquo;t care when the mouse moves around between children inside the element, you have to add a regular event listener and then also check either the <code>.target</code> property or the <code>.eventPhase</code> property, to make sure you&rsquo;re handling the right event. You could do something like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">element</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;mouseenter&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">eventPhase</span> <span class="o">!==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// The mouse definitely just moved from outside this element to inside it
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">});</span>
+</span></span></code></pre></div><p>It&rsquo;s a bit messy, but it means that these two events behave just like any other event in the document.</p>
+<h3 id="the-issue-at-the-core">The issue at the core</h3>
+<p>The issue here is, that bubbling and <em>mouse entering child element</em> conceptually are two sides of the same coin. The <code>mouseenter</code> events means that the mouse cursor moved inside this or a child. And bubbling means that you will also receive an event when any child receives the event.</p>
+<p>No other event works like that. When you click an element, only the element that you click will dispatch an event. Because of bubbling, this event will also bubble up to all parent elements. That&rsquo;s why you can add a click listener to a button element, even if it has an <code>&lt;em&gt;</code> element inside, and you will still only receive the event once. <code>mouseenter</code> and <code>mouseleave</code> are different. Those conceptually do both things. If click events worked in the same way, it would cause a lot of trouble too.</p>
+<hr>
+<h2 id="scenarios">Scenarios</h2>
+<p>Let&rsquo;s be a bit more methodical about this. We will consider the base components of these mouse events by considering the ways that a mouse cursor can move between different elements in the DOM. Let&rsquo;s divide the scenarios into three cases.</p>
+<ol>
+<li>The mouse pointer moves from an element to a child of that same element.</li>
+<li>The mouse pointer moves from an element to a parent of that same element.</li>
+<li>The mouse pointer moves from an element to a sibling of that same element.</li>
+</ol>
+<p>These are the three basic scenarios. All of them exist with more than one degree though, so if the pointer moves from an element to its grandparent (or great-grand), it is still case 2. If the pointer moves from an element to its cousin (or second-cousin), it is still the same concept as scenario 3. And even if it moves to a cousin once or twice removed, it&rsquo;s still scenario 3.</p>
+<p>Let&rsquo;s illustrate these basic cases and some slightly more advanced variants.</p>
+<figure>
+<a href="./mouse-event-scenarios.png"><img src="./mouse-event-scenarios.png" alt="Mouse event scenarios illustrated" /></a>
+<caption><em><small>Mouse events illustrated in both HTML, DOM tree, and visual representation. The blue element is the origin and the red element is the destination.</small></em></caption>
+</figure>
+<h3 id="from-element-to-a-child">From element to a child</h3>
+<p>If the mouse cursor moves from an element to a child element, a single <code>mouseenter</code> event is broadcast to the child.</p>
+<p>Let&rsquo;s say we have a very simple document with just this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>Hover me<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>When you move the cursor from the body (anywhere outside the button) to the button, an <code>AT_TARGET</code> event will dispatch to the button with both <code>.target</code> and <code>.currentTarget</code> set to the button.</p>
+<p>This event both captures and bubbles though, so actually all of these events will be dispatched in this order:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>window</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>document</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>&lt;button&gt;</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>document</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>window</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;button&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="direct-to-grandchild">Direct to grandchild</h4>
+<p>If we move from an element directly to a grandchild, the DOM will treat that as if first the child was entered and then immediately following that, the grandchild is entered. So let&rsquo;s say we create this structure instead:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Hover me<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>Because the <code>&lt;ul&gt;</code> does not actually have any visual size, we can move directly from the <code>&lt;body&gt;</code> to the <code>&lt;li&gt;</code>. When that happens, the DOM will dispatch (including capturing and bubbling) a mouseenter event on the <code>&lt;ul&gt;</code> first, and then on the <code>&lt;li&gt;</code> second. That will generate all of these events in this order:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>window</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>document</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>document</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>window</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>window</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>document</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;li&gt;</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>document</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>window</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+</tbody>
+</table>
+<p>Wow, that&rsquo;s a ton of events already! But if we split it up after the 9th event, we can see that it is actually two separate sets of event dispatches starting with capturing at window, moving to the target and bubbling back up to the window for the <code>&lt;ul&gt;</code> first and the <code>&lt;li&gt;</code> second.</p>
+<p>However, if we look at only the events dispatched to the <code>&lt;ul&gt;</code> element that either happen at target phase or bubbling phase (which would be events invoked by a non-capture listener), we can see there are actually two of them:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Here we can clearly see the difference in both the target and phase properties though.</p>
+<p>Imagine adding one more element to the stack - maybe an <code>&lt;a&gt;</code> inside the <code>&lt;ul&gt;</code>. If we can enter directly from the <code>&lt;body&gt;</code> to the <code>&lt;a&gt;</code> (requires some CSS, but definitely possible), we would suddenly have a total of 33 events (9 + 11 + 13). And 3 of them would be invoking a non-capture listener on the <code>&lt;ul&gt;</code> element.</p>
+<h3 id="from-element-to-parent">From element to parent</h3>
+<p>When moving from an element to a parent, the exact same thing occurs with a <code>mouseleave</code> event. If given this HTML:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">button</span><span class="p">&gt;</span>Move out of here<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>And you move the mouse cursor from the button and out to the <code>&lt;body&gt;</code>, 9 <code>mouseleave</code> events will be dispatched starting with capture at the <code>window</code>, over target phase at the button and bubbling all the way back up to the <code>window</code>.</p>
+<p>Similarly, if you move out of two elements in a single move, for instance moving from the <code>&lt;li&gt;</code> to the <code>&lt;body&gt;</code> in this HTML:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>Get out!<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>A total of 20 events would be dispatched just like before, except with type <code>mouseleave</code>.</p>
+<h3 id="from-element-to-sibling">From element to sibling</h3>
+<p>Things get a lot more interesting when you move from an element to another element, that is not either an ancestor or descendant or the original element. This could be when you move from an element to a sibling, a cousing, a nephew, or really any other element not in the direct chain above or below that first element.</p>
+<p>An example would be this simple HTML:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;1&#34;</span><span class="p">&gt;</span>Move from here<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;2&#34;</span><span class="p">&gt;</span>Move to here<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>When you move from the first <code>&lt;li&gt;</code> to the second <code>&lt;li&gt;</code>, what actually happens is that the DOM will dispatch events as if you move from the first <code>&lt;li&gt;</code> to the <code>&lt;ul&gt;</code> and then from <code>&lt;ul&gt;</code> to the second <code>&lt;li&gt;</code>.</p>
+<p>So these 22 events would be broadcast in order:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Type</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>mouseleave</code></td>
+<td><code>window</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>mouseleave</code></td>
+<td><code>document</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>mouseleave</code></td>
+<td><code>document</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>mouseleave</code></td>
+<td><code>window</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>mouseenter</code></td>
+<td><code>window</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>mouseenter</code></td>
+<td><code>document</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>AT_TARGET</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>18</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>19</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;body&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;body&gt;</code></td>
+</tr>
+<tr>
+<td>20</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;html&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;html&gt;</code></td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>mouseenter</code></td>
+<td><code>document</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>document</code></td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>mouseenter</code></td>
+<td><code>window</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>window</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="cousins-and-nephews">Cousins and nephews</h4>
+<p>If we now make an even more complex document tree, where you can move from an element to a nephew, a cousin, or even a cousin some distance removed, things get even more complicated. Take this HTML:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;1&#34;</span><span class="p">&gt;&lt;</span><span class="nt">em</span><span class="p">&gt;</span>Move from <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>here<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">em</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">li</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">u</span><span class="p">&gt;</span>Move to here<span class="p">&lt;/</span><span class="nt">u</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span></code></pre></div><p>If you move the cursor from the <code>&lt;strong&gt;</code> element directly to the <code>&lt;u&gt;</code> element, you will be moving in the document tree by going up three levels to the <code>&lt;ul&gt;</code> and then down two levels to the <code>&lt;u&gt;</code>. Illustrated, you are moving as follows:</p>
+<figure>
+<a href="./sibling-mouse-move.png"><img src="./sibling-mouse-move.png" alt="Document tree with arrow to cousin once removed" /></a>
+<caption><em><small>Document tree with the origin element highlighted in blue and destination element highlighted in red.</small></em></caption>
+</figure>
+<p>In order to figure out which events will be dispatched, you have to do the following:</p>
+<ol>
+<li>Find the closest common ancestor (CCA) of both the origin and the destination element. In our case the <code>&lt;ul&gt;</code>.</li>
+<li>Find every element from (and including) the origin element up to (but not including) the CCA. In our case that would be the <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, and <code>&lt;li id=&quot;1&quot;&gt;</code> elements.</li>
+<li>Find every element from (but not including) the CCA down to (and including) the destination element. In our case that would be the <code>&lt;li id=&quot;2&quot;&gt;</code> and <code>&lt;u&gt;</code> elements.</li>
+</ol>
+<p>Now, dispatch a <code>mouseleave</code> event to all the elements identified in 2. starting from the origin element. Then dispatch a <code>mouseenter</code> event on all the elements identified in 3 ending with the destination element. A total of 5 events are to be dispatched as illustrated:</p>
+<figure>
+<a href="./sibling-mouse-events.png"><img src="./sibling-mouse-events.png" alt="Mouse events dispatched when moving to cousin once removed" /></a>
+<caption><em><small>These five events will be dispatched on with these five element targets when moving from the blue node to the red node.</small></em></caption>
+</figure>
+<p>Each of these five events both capture and bubble. So in our document structure, a total of 15+13+11+11+13=63 events will be sent to various nodes. We won&rsquo;t list them all, because theyre pretty trivial, but here&rsquo;s an animation of them all:</p>
+<figure>
+<a href="./dom-events-proper-optimized.gif"><img src="./dom-events-proper-optimized.gif" alt="Animation of all events dispatched in the DOM" /></a>
+<caption><em><small>All 65 `mouseleave` and `mouseenter` events sent in the DOM.</small></em></caption>
+</figure>
+<p>If we just look at the <code>&lt;u&gt;</code> element and look at all the 10(!) events sent to this single node, the following events will occur in this order:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Type</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;em&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;em&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>CAPTURING_PHASE</code></td>
+<td><code>&lt;u&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;ul&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;u&gt;</code></td>
+<td><code>&lt;ul&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>If you want to detect something happening on this particular element, you have to be very careful with which properties are set to what to be sure, that you actually detect the event, that you care about!</p>
+<h2 id="what-does-react-do">What does React do?</h2>
+<p>All the above is what HTML, DOM, and JavaScript do. So what does React do then?</p>
+<p>React recognized, that this mess of events is an issue. In stead of sending events to all elements in a tree, React actually only sends events directly to the targeted nodes. So if you move from an element to a child, React only sends one event, namely to the child. This event doesn&rsquo;t capture nor bubble. Well, kind of.</p>
+<p>What React actually do is weirder than you would think. They kind of only send one <code>mouseleave</code> event and that events bubbles up through the left nodes (as in the nodes that the mouse is <em>leaving</em>, not nodes <em>to the left</em>). But only through the left nodes, not further above it all the way to the document root. This kind of makes sense - it is an event, that partially bubbles. There is no such thing in HTML, but React invented this, and I think it is a defensible decision.</p>
+<p>However, React then sends a single <code>mouseenter</code> event to the destination element, that bubbles <em><strong>in reverse</strong></em> from the outermost entered element to the destination element! This makes no sense - events can never bubble down the document tree, only up! This violates everything that is known about event propagation!</p>
+<p>And to make things even weirder, none of these events are ever in the target phase. All the events are in the bubbling phase, even the events that are actually sent to the targets.</p>
+<p>So in our example from before were we move from the <code>&lt;strong&gt;</code> element directly to the <code>&lt;u&gt;</code> element as follows:</p>
+<figure>
+<a href="./sibling-mouse-move.png"><img src="./sibling-mouse-move.png" alt="Document tree with arrow to cousin once removed" /></a>
+<caption><em><small>Document tree with the origin element highlighted in blue and destination element highlighted in red.</small></em></caption>
+</figure>
+<p>React will dispatch these 5 events (and only these 5) in the same order as before but now this diagram includes all the bubbling as well:</p>
+<figure>
+<a href="./sibling-mouse-react.png"><img src="./sibling-mouse-react.png" alt="Document tree with all React events highlighted" /></a>
+<caption><em><small>React dispatches exactly these five events when moving from one element to another.</small></em></caption>
+</figure>
+<p>Compared to the previous animation, this looks a lot simpler in React:</p>
+<figure>
+<a href="./react-events-optimized.gif"><img src="./react-events-optimized.gif" alt="Animation of all events dispatched in React" /></a>
+<caption><em><small>React only sends 5 events for even a complex mouse move.</small></em></caption>
+</figure>
+<p>In table form, React dispatches these events:</p>
+<table>
+<thead>
+<tr>
+<th>No.</th>
+<th>Type</th>
+<th>Element</th>
+<th>Phase</th>
+<th><code>.target</code></th>
+<th><code>.currentTarget</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>&lt;strong&gt;</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;em&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>&lt;em&gt;</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>mouseleave</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;strong&gt;</code></td>
+<td><code>&lt;li id=&quot;1&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;u&gt;</code></td>
+<td><code>&lt;li id=&quot;2&quot;&gt;</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>mouseenter</code></td>
+<td><code>&lt;u&gt;</code></td>
+<td><code>BUBBLING_PHASE</code></td>
+<td><code>&lt;u&gt;</code></td>
+<td><code>&lt;u&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Furthermore, React sets the <code>.bubbles</code> property on these events to true. Even though these events clearly don&rsquo;t standard bubbling practices.</p>
+<p>Note in particular, how the common ancestor, the <code>&lt;ul&gt;</code> element, doesn&rsquo;t receive a single event at all. In the DOM, it would receive 10 events, but in React there is no way to tell if <code>mouseenter</code> or <code>mouseleave events occur within its children through the </code>onMouseEnter<code>and</code>onMouseLeave` properties.</p>
+<h3 id="a-more-sensible-alternative">A more sensible alternative</h3>
+<p>I understand why React have decided to only send these five events. These are probably the only events that you care about and they convey the exact information that you need. But the decisions are weird.</p>
+<p>I would change just one thing. I would dispatch all 5 events as regular non-bubbling events directly to the five elements. This would make the following four principles true about these two events, as they are for <em>all other events</em> in both React and DOM:</p>
+<ol>
+<li>When an element has identical <code>.target</code> and <code>.currentTarget</code> attributes, it is in the <code>AT_TARGET</code> phase.</li>
+<li>If an event bubbles, it bubbles all the way to the document root.</li>
+<li>Events only ever bubble <strong>up</strong> the document tree, never down.</li>
+<li>Every event captures.</li>
+</ol>
+<p>It would cause more events to be dispatched, in particular a bunch of capture events would be sent all the way up the document tree. But capture listeners are special, so if you are using them, you are probably already examining the properties carefully.</p>
+<p>You might be thinking, that with the React way of doing it, you can see which elements was the source of the leave event through the <code>.target</code> property, which you cannot in my suggestion. I will admit, that this is a loss of functionality.</p>
+<p>One might think, that we can use the <code>.relatedTarget</code> property, that already exists on mouse events, for that purpose, but it is already used for a different purpose. On the <code>mouseleave</code> events, the <code>.relatedTarget</code> property points to the destination node. And on the <code>mouseenter</code> events, it points to the origin node.</p>
+<p>We could however invent a new property just for this purpose. We could call it <code>.originTarget</code> or something like that. It would only exist for these two events.</p>
+<p>Other than that, my suggestion would work exactly the same as now, if you just place regular <code>onMouseEnter</code> and <code>onMouseLeave</code> listeners and don&rsquo;t look too carefully at the properties. And if you do look at the properties, you would only have to adjust your code slightly, if at all. It would also enable you to use <code>onMouseEnterCapture</code> and <code>onMouseLeaveCapture</code> listeners.</p>
+<h2 id="in-summary">In summary</h2>
+<p>All in all, <code>mouseenter</code> and <code>mouseleave</code> events are a lot simpler in React than in the DOM, but they are still weird. Even weirder than they need to be. Choices have been made to simplify them as compared to the mess of events send in the DOM, but not all of those choices make a ton of sense. This could definitely be improved so as to not violate a ton of (well, 4) regular event propagation principles.</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/events">events</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/propagation">propagation</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/architecture">architecture</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/"> &laquo; React 18 Concurrent Mode: How transitions really work (feat. Wordle)</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/react-architecture-provider-pattern/">React Architecture: The React Provider Pattern &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

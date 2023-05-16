@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="generator" content="Hugo 0.111.3">
+	
+	<link rel="icon" href="/images/logo.svg">
+	
+	<title>React 18 Concurrent Mode: How transitions really work (feat. Wordle) | Morten Barklund</title>
+	<meta name="description" content="A deep-dive into React 18 Concurrent Mode and transitions including startTransition and useTransition with diagrams – and Wordle!">
+	<meta name="keywords" content="react, concurrent mode, react hooks,react, react hooks, react context, design patterns, react concurrent">
+
+	<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/twitter_feature.png"/>
+<meta name="twitter:title" content="React 18 Concurrent Mode: How transitions really work (feat. Wordle)"/>
+<meta name="twitter:description" content="A deep-dive into React 18 Concurrent Mode and transitions including startTransition and useTransition with diagrams – and Wordle!"/>
+
+	<meta property="og:title" content="React 18 Concurrent Mode: How transitions really work (feat. Wordle)" />
+<meta property="og:description" content="A deep-dive into React 18 Concurrent Mode and transitions including startTransition and useTransition with diagrams – and Wordle!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/" /><meta property="og:image" content="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/twitter_feature.png"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-05-01T08:00:00-04:00" />
+<meta property="article:modified_time" content="2022-05-01T08:00:00-04:00" />
+
+
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+	 crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+	<link href="/css/medium.css" rel="stylesheet">
+  <link href="/css/additional.css" rel="stylesheet">
+  <link href="/css/syntax.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+    <div class="container pr-0">
+        
+        <a class="navbar-brand" href="https://mortenbarklund.com//">
+
+            
+            <img src="/images/logo.svg" alt="Blog logo that happens to look a bit like the React logo">
+            
+        </a>
+        
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse" id="navbarMediumish">
+            
+            <ul class="navbar-nav ml-auto">
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="https://barklund.dev/rq2e">Book</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/newsletter">Subscribe</a>
+                </li>
+                 
+                <li class="nav-item ">
+                    <a class="nav-link" href="/license">License</a>
+                </li>
+                
+            </ul>
+        </div>
+        
+    </div>
+</nav>
+
+
+        <div class="site-content">   
+            <div class="container">
+<div class="mainheading">
+    <h1 class="sitetitle">Morten Barklund</h1>
+    <p class="lead">
+         Handy tips for writing better React.
+    </p>
+</div><div class="main-content">
+        
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-md-2 pl-0"><div class="share sticky-top sticky-top-offset">
+    <p>Share:</p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=React%2018%20Concurrent%20Mode%3a%20How%20transitions%20really%20work%20%28feat.%20Wordle%29&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-18-concurrent-mode-how-transitions-work%2f" onclick="window.open(this.href, 'twitter-share', 'width=550,height=435');return false;">
+                <i class="fab fa-twitter" aria-hidden="true" title="Share on Twitter"></i>
+                <span class="sr-only">Share on Twitter</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-18-concurrent-mode-how-transitions-work%2f" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f" aria-hidden="true" title="Share on Facebook"></i>
+                <span class="sr-only">Share on Facebook</span>
+            </a>
+        </li>
+        
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https%3a%2f%2fmortenbarklund.com%2fblog%2freact-18-concurrent-mode-how-transitions-work%2f&title=React%2018%20Concurrent%20Mode%3a%20How%20transitions%20really%20work%20%28feat.%20Wordle%29&summary=A%20deep-dive%20into%20React%2018%20Concurrent%20Mode%20and%20transitions%20including%20%3ccode%3estartTransition%3c%2fcode%3e%20and%20%3ccode%3euseTransition%3c%2fcode%3e%20with%20diagrams%20%e2%80%93%20and%20Wordle%21&source=LinkedIn" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin" aria-hidden="true" title="Share on LinkedIn"></i>
+                <span class="sr-only">Share on LinkedIn</span>
+            </a>
+        </li>
+
+
+        
+    </ul>
+
+    
+</div>
+</div>
+                                
+                <div class="col-md-9 flex-first flex-md-unordered">
+                    <div class="mainheading">
+                        	
+                        
+                        
+                        
+                        <div class="row post-top-meta">
+                            <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0 md-nopad-right">
+                                <picture>
+                                    <source srcset="/images/author.jpg.webp" />
+                                    <img class="author-thumb" src="/images/author.jpg" alt="Morten Barklund" />
+                                </picture>
+                            </div>
+                            <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left md-nopad-left">
+                                <a target="_blank" class="link-dark">Morten Barklund</a><br>
+                                <span class="author-description">
+                                    Lead Frontend Developer, React expert, accessibility advocate, ultrarunner, and board game enthusiast. Also, I simply ❤️  corgis!<br>
+                                    <i class="far fa-star"></i>
+                                    May 1, 2022
+                                    <i class="far fa-clock clock"></i>
+                                    10 min read
+                                </span>					
+                            </div>
+                        </div>			
+                        	
+                        
+                                                
+                        
+                        <h1 class="posttitle">React 18 Concurrent Mode: How transitions really work (feat. Wordle)</h1> 
+                    </div>
+
+                    
+                    
+                    
+                    
+                    
+                    <figure class="featured-figure">
+                        <picture>
+                            <source srcset="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/cover.jpg.webp" />
+                            <img class="featured-image img-fluid" src="https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/cover.jpg" alt="A long straight road" />
+                        </picture>
+                        
+                        <figcaption class="featured-caption">Code execution in React used to be a straight road, but with Concurrent Mode, detours are possible!</figcaption>
+                        
+                    </figure>
+                    
+                    
+
+                    
+                    <div class="article-post">
+                        <p>React 18 is out, and with it React introduced Concurrent Mode. Lots have been said about it, but I want to focus on one aspect of Concurrent Mode in particular: <em>Transitions</em>.</p>
+<p>Despite the somewhat terrible name, React transitions are not related to CSS transitions nor about transitions between elements or visual states or anything like that. Let me have a go at a concise definition:</p>
+<blockquote>
+<p>React Transitions are (blocks of) state updates, that the developer instructs React to deprioritize and delay if something more important comes along.</p>
+</blockquote>
+<p>The <em>transition</em> in this case is the state update instruction. If you instruct React to update some state somewhere in the application, but you instruct React to do it in a transition, it means that you allow React to do it as a low-priority, interruptable, and postponable action. React will eventually get to your transition, but it might be delayed behind any number of higher-priority updates for a while.</p>
+<p>Transitions in React can be created in two ways using two new top-level functions in the React package: <code>startTransition</code> and its hook-variant, <code>useTransition</code>.</p>
+<p>This is all pretty theoretical, so let&rsquo;s get practical.</p>
+<hr>
+<p>Imagine that you&rsquo;re a big fan of Wordle, and you want to create a small helper tool to assist you in solving it. You&rsquo;re not looking for a big cheat engine, you can find plenty of those out there, just a small tool to look up all the possible words with some given letters.</p>
+<p>We can easily create a simple React application, that achieves this. It&rsquo;s in fact right here <a href="https://codepen.io/barklund/pen/poaoezR?editors=0010">in this Codepen</a> in just about 60 lines of code. Try typing some letters in the search field and see the list of words shrink with the typed letters highlighted:</p>
+<script
+    data-slug-hash="poaoezR"
+    data-user="barklund"
+    data-height="300"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>We&rsquo;re not going to go into detail about the business logic here. It could probably be better, but this works for our purposes. The app doesn&rsquo;t work great though, but it does work.</p>
+<h2 id="like-whats-your-problem-man">Like, what&rsquo;s your problem, man?</h2>
+<p>So what is the problem with the above application? The list of allowed words in Wordle is pretty long. It&rsquo;s in fact 12,972 words long. That&rsquo;s a lot of HTML nodes to display in that list. And when you then have to re-render a ton of them with slight changes inside every single node – e.g. when highlighting all words containing just an &ldquo;s&rdquo; – things begin to be a bit choppy.</p>
+<p>When React renders a component, it does a number of things, one after another. The most important parts are:</p>
+<ul>
+<li>Update the state of all components, that have been updated</li>
+<li>Run the actual render function (of each updated component) and collect the resulting JSX</li>
+<li>Reconcile that JSX into the existing HTML</li>
+<li>Run effects in the updates components</li>
+</ul>
+<p>Especially the two middle steps can be quite time-consuming, depending on the complexity of the component functions and the updates made to the JSX.</p>
+<p>We want our application to feel highly performant and responsive. When you enter a letter into the input, we want the input to immediately reflect that this letter was rendered. And due to the way React handles controlled inputs, we need React to re-render the component containing the input with an updated state. Because the list displayed below the input is taking a long time to render and the rendering of the list is tied to the rendering of the input (it all happens in the same component based on the same state value), our input seems unresponsive.</p>
+<figure>
+<a href="./single_character.png"><img src="./single_character.png" alt="Single character render flow" /></a>
+<caption><em><small>This illustrates what happens when you press a single character. React has to spend quite a lot of time first executing all the components, and then some more time reconciling the JSX into HTML.</small></em></caption>
+</figure>
+<p>The problem really shows itself when you press two characters in quick succession. The full render cycle of the first character press is not completed before the second one happens. And then the full render cycle of the second character press is delayed:</p>
+<figure>
+<a href="./multiple_characters.png"><img src="./multiple_characters.png" alt="Multiple characters render flow" /></a>
+<caption><em><small>When you press multiple characters in quick succession in this naive app, the app hasn't updated after the first character press when the second occurs, so you have to wait even longer for the second one to complete.</small></em></caption>
+</figure>
+<p>This is not a good strategy. We want the input field to render immediately, but we can live with the list rendering delayed if need be to make the app feel responsive. How can we do that?</p>
+<h2 id="low-priority-updates-with-starttransition">Low-priority updates with <code>startTransition</code></h2>
+<p>Imagine that we could tell React to update something only when it has nothing more important to do. That is exactly what React transitions do, how very nice for this article!</p>
+<p>The React API has been expanded with a new function in the main package, <code>startTransition</code>, which takes a callback as a parameter. If you wrap a state update in callback passed to <code>startTransition</code>, React will treat this (or these) state updates as lower-priority. React will run all the high-priority updates first and only run the lower-priority updates second, while also being able to abort those lower-priority updates as soon as something more important happens.</p>
+<p>As we&rsquo;re going to take advantage of this new feature, what we want are these two things:</p>
+<ol>
+<li>We want the value property on the input field to update instantly.</li>
+<li>We want the filter property on the Words component to update only when it can do so without interrupting the user typing.</li>
+</ol>
+<p>In the flow diagram, it will look something like this. Notice how the updates on the transition thread can be aborted if something more important happens. The low-priority update happening after pressing &ldquo;s&rdquo; is aborted in the figure below, because another high-priority update occurred. The low-priority update after pressing &ldquo;st&rdquo; is able to run to completion without being interrupted, and once completed, React allows the low-priority update to actually render into the main thread and be displayed to the user.</p>
+<figure>
+<a href="./multiple_characters_with_transition.png"><img src="./multiple_characters_with_transition.png" alt="Multiple characters with transition render flow" /></a>
+<caption><em><small>In this ideal world, we just update the value on the input at first when the user types to make the input field seem responsive, and only then we start calculating an update with the filter value applied to the Words component. We do that by making two separate state values, that we can update separately.</small></em></caption>
+</figure>
+<p><strong>Note</strong>: I have to be completely honest here and admit, that I don&rsquo;t know exactly how interruptable the transition update is. JavaScript is in its essence single-threaded so you cannot abort a function once run, but you can run code in another thread using web workers (background threads), so perhaps React can check some flag while running and abort if the flag is flipped from the &ldquo;main&rdquo; thread.</p>
+<p>I imagine the component renders to all complete before React checks whether the resulting JSX should be reconciled to the DOM, but I am not completely sure. If you do know exactly how this works, feel more than free to <a href="//twitter.com/barklund">ping me on Twitter @barklund</a>.</p>
+<p>Let&rsquo;s see how to do this in our component. The code we had before looked like this. Notice how we only have a single state variable, <code>filter</code>, that both updates the input field and the list displayed below:</p>
+<div class="dimmed">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="hl"><span class="lnt"> 8
+</span></span><span class="hl"><span class="lnt"> 9
+</span></span><span class="hl"><span class="lnt">10
+</span></span><span class="hl"><span class="lnt">11
+</span></span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="hl"><span class="lnt">16
+</span></span><span class="lnt">17
+</span><span class="hl"><span class="lnt">18
+</span></span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">FilterWords</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">list</span><span class="p">,</span> <span class="nx">setList</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">useEffect</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fetch</span><span class="p">(</span><span class="nx">targetURL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">setList</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">sort</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span> <span class="p">[])</span>
+</span></span><span class="line hl"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">filter</span><span class="p">,</span> <span class="nx">setFilter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">  <span class="kr">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">target</span><span class="o">:</span> <span class="p">{</span> <span class="nx">value</span> <span class="p">}</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line hl"><span class="cl">    <span class="nx">setFilter</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Filter</span><span class="o">:</span>
+</span></span><span class="line hl"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;search&#34;</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">filter</span><span class="p">}</span> <span class="na">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleChange</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line hl"><span class="cl">      <span class="p">&lt;</span><span class="nt">Words</span> <span class="na">list</span><span class="o">=</span><span class="p">{</span><span class="nx">list</span><span class="p">}</span> <span class="na">filter</span><span class="o">=</span><span class="p">{</span><span class="nx">filter</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
+<p>Let&rsquo;s go ahead and split the filter variable into two. One is the high-priority value used for the input and the other is the lower-priority one used for the list. We will update the former directly in the click callback, but the later will be wrapped inside a <code>startTransition</code> callback as follows:</p>
+<div class="dimmed">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="hl"><span class="lnt"> 9
+</span></span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="hl"><span class="lnt">12
+</span></span><span class="hl"><span class="lnt">13
+</span></span><span class="hl"><span class="lnt">14
+</span></span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="hl"><span class="lnt">22
+</span></span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">FilterWords</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">list</span><span class="p">,</span> <span class="nx">setList</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">useEffect</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fetch</span><span class="p">(</span><span class="nx">targetURL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">setList</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">sort</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">filter</span><span class="p">,</span> <span class="nx">setFilter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">deferredFilter</span><span class="p">,</span> <span class="nx">setDeferredFilter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">target</span><span class="o">:</span> <span class="p">{</span> <span class="nx">value</span> <span class="p">}</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setFilter</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">    <span class="nx">startTransition</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line hl"><span class="cl">      <span class="nx">setDeferredFilter</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Filter</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;search&#34;</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">filter</span><span class="p">}</span> <span class="na">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleChange</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line hl"><span class="cl">      <span class="p">&lt;</span><span class="nt">Words</span> <span class="na">list</span><span class="o">=</span><span class="p">{</span><span class="nx">list</span><span class="p">}</span> <span class="na">filter</span><span class="o">=</span><span class="p">{</span><span class="nx">deferredFilter</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
+<p>You can see this in action in <a href="https://codepen.io/barklund/pen/ZErELWQ?editors=0110">the following pen</a>:</p>
+<script
+    data-slug-hash="ZErELWQ"
+    data-user="barklund"
+    data-height="300"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>Note how you can type quickly and the input field updates instantly. The list only updates once you&rsquo;re either take a slight break while typing, or the resulting list of words is so small, it can be rendered quickly enough to be completed before your next character press.</p>
+<h2 id="usetransition-hook"><code>useTransition</code> hook</h2>
+<p>In the above example, you sometimes see a list of words, that doesn&rsquo;t actually match the current search filter, simply because the transition hasn&rsquo;t run yet. What if we could show the list of words as &ldquo;stale&rdquo; (i.e. <em>not fresh</em>) while we&rsquo;re still waiting for the transition to run?</p>
+<p>Lo and behold, that&rsquo;s exactly why the React API has also been extended with the new hook, <code>useTransition</code>. This hook returns a boolean flag and a function in an array (similarly to the return value of <code>useState</code>).</p>
+<p>The boolean value is often named <code>isPending</code> and the function <code>startTransition</code>, but that&rsquo;s not a requirement. This <code>startTransition</code> is a variant of the global function of the same name from the React package, however this one is linked to the <code>isPending</code> flag. While there is any still incomplete transition created with this specific <code>startTransition</code>, the corresponding <code>isPending</code> flag will be true, false otherwise.</p>
+<p>We can use this <code>isPending</code> flag to dim the list of words if the list is stale, which it will be if there&rsquo;s a pending transition. Note that <code>startTransition</code> is now a reference to the local function returned by the hook, and not the global function from the React package:</p>
+<div class="dimmed">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="hl"><span class="lnt"> 9
+</span></span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="hl"><span class="lnt">13
+</span></span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="hl"><span class="lnt">23
+</span></span><span class="hl"><span class="lnt">24
+</span></span><span class="hl"><span class="lnt">25
+</span></span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-jsx" data-lang="jsx"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">FilterWords</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">list</span><span class="p">,</span> <span class="nx">setList</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">useEffect</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">fetch</span><span class="p">(</span><span class="nx">targetURL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span> <span class="p">=&gt;</span> <span class="nx">setList</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\n&#39;</span><span class="p">).</span><span class="nx">sort</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">filter</span><span class="p">,</span> <span class="nx">setFilter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">isPending</span><span class="p">,</span> <span class="nx">startTransition</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useTransition</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">[</span><span class="nx">deferredFilter</span><span class="p">,</span> <span class="nx">setDeferredFilter</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">target</span><span class="o">:</span> <span class="p">{</span> <span class="nx">value</span> <span class="p">}</span> <span class="p">})</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setFilter</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line hl"><span class="cl">    <span class="nx">startTransition</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">setDeferredFilter</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Filter</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;search&#34;</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">filter</span><span class="p">}</span> <span class="na">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleChange</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line hl"><span class="cl">      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">style</span><span class="o">=</span><span class="p">{{</span><span class="nx">opacity</span><span class="o">:</span> <span class="nx">isPending</span> <span class="o">?</span> <span class="mf">0.3</span> <span class="o">:</span> <span class="mi">1</span><span class="p">}}&gt;</span>
+</span></span><span class="line hl"><span class="cl">        <span class="p">&lt;</span><span class="nt">Words</span> <span class="na">list</span><span class="o">=</span><span class="p">{</span><span class="nx">list</span><span class="p">}</span> <span class="na">filter</span><span class="o">=</span><span class="p">{</span><span class="nx">deferredFilter</span><span class="p">}</span> <span class="p">/&gt;</span>
+</span></span><span class="line hl"><span class="cl">      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></div>
+<p>That results in the following app on Codepen:</p>
+<script
+    data-slug-hash="rNJNyQq"
+    data-user="barklund"
+    data-height="300"
+    data-default-tab="result"
+    data-theme-id="8862"
+    class='codepen'
+    async
+    src="//codepen.io/assets/embed/ei.js"
+></script>
+<p>Note that the duration in which the list is grayed out is most often extremely brief, so <code>isPending</code> should only be used for minor visual clues like the above. A lot of examples of <code>useTransition</code> out there will use the flag to display a message like <em>&ldquo;Please wait while list updates&rdquo;</em>, but if you only see it for 0.1 second, you won&rsquo;t be able to read it anyway, and it&rsquo;ll just a be flashing confusion rather than an actual user experience improvement.</p>
+<h2 id="what-about-usedeferredvalue">What about <code>useDeferredValue</code>?</h2>
+<p>We could have solved this exact same issue using the other new hook for low-priority state updates, <code>useDeferredValue</code>. So why didn&rsquo;t we? That&rsquo;s a topic for another (future) article.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>React Concurrent Mode and transitions in particular are a fairly complex new addition to the React API. Transitions are a bit tricky to understand and can be hard to apply correctly.</p>
+<p>Always implement your application without transitions at first, unless you&rsquo;re a very skilled developer. Just like memoization, if you apply transitions wrongly, you&rsquo;ll end up doing more harm than good and ruin the user experience for no good reason. Only if you start to notice that your application and interface is feeling sluggish should you consider applying transitions. However, when you do need a transition for performance optimization, it is a much better solution that all the workarounds we had available before.</p>
+
+                    </div>
+                    
+                    
+                    <div class="after-post-tags">
+                        <ul class="tags">
+                        
+                        <li>
+                        <a href="/tags/react">react</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/concurrent-mode">concurrent mode</a>
+                        </li>
+                        
+                        <li>
+                        <a href="/tags/react-hooks">react hooks</a>
+                        </li>
+                        
+                        </ul>
+                    </div>
+                    
+
+                    
+                    
+                    
+                    <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+                    
+                        <a class="d-block col-md-6" href="https://mortenbarklund.com/blog/react-typescript-props-spread/"> &laquo; Spreading props correctly with React &#43; TypeScript</a>
+                    
+                    
+                        <a class="d-block col-md-6 text-lg-right" href="https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/">Today I Learned: How mouse events really bubble in React &raquo;</a>
+                    
+                    <div class="clearfix"></div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+
+        
+        
+    </div>
+
+<section class="overlay-popup">
+  <div class="overlay">
+    <button class="overlay-close">x</button>
+    <img src="/images/book.png" width="300" />
+    <div>
+      <h3>The Ultimate Guide to React in 2022</h3>
+      <p>Learn how to master React in this 600+ page book by Morten Barklund.</p>
+      <p>Use code <code>au35mbam</code> at checkout for 35% off!</p>
+      <a class="overlay-cta" href="//reactquickly.dev">Get React Quickly</a>
+    </div>
+  </div>
+</section>
+<script>
+const lastPopup = localStorage.getItem('last-popup') || 0;
+const numDaysSince = (new Date().getTime() - lastPopup) / 1000 / 60 / 60 / 24;
+if (numDaysSince >= 1) { 
+  localStorage.setItem('last-popup', new Date().getTime());
+  const getToggle = flag => () => {
+    document.querySelector(".overlay-popup").classList.toggle("visible", flag);
+    if (flag) {
+      document.addEventListener("keydown", closeIfEscape);
+    } else {
+      document.removeEventListener("keydown", closeIfEscape);
+    }
+  }
+  const closeIfEscape = ({ key }) => (key === 'Escape') && getToggle(false)();
+  setTimeout(getToggle(true), 100_000);
+  document.querySelector(".overlay-close").addEventListener("click", getToggle(false));
+}
+</script>
+<style>
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(33, 33, 33, 0.8);
+  transform: translateY(60%) scale(0);
+}
+
+.overlay-popup.visible {
+  transform: translateY(0) scale(1);
+  transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+}
+.overlay img {
+  max-width: 50vw;
+}
+@media (min-width: 720px) {
+  .overlay {
+    flex-direction: row;
+    width: initial;
+  }
+}
+.overlay-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  padding: 0;
+  font-size: 20px;
+  background-color: #eee;
+  box-shadow: 0 0 4px rgba(0 0 0 / 0.5);
+  display: block;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+}
+.overlay-cta {
+  display: inline-block;
+  background-color: #FC4A8B;
+  color: white;
+  padding: 1em;
+  margin: 1em 0;
+}
+.overlay-cta:hover {
+  color: white;
+}
+</style>
+            </div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 text-center text-lg-left">
+                <a href="/license">Licensed under CC BY-SA 4.0</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101253872);</script>
+<script async src="//static.getclicky.com/js"></script>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="/js/mediumish.js"></script>
+
+    </body>
+</html>

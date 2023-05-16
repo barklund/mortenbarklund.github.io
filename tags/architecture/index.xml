@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>architecture on Morten Barklund</title>
+    <link>https://mortenbarklund.com/tags/architecture/</link>
+    <description>Recent content in architecture on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 30 Jan 2022 08:00:00 -0400</lastBuildDate><atom:link href="https://mortenbarklund.com/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Today I Learned: How mouse events really bubble in React</title>
+      <link>https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/</link>
+      <pubDate>Sun, 30 Jan 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/today-learned-how-mouse-events-bubble-in-react/</guid>
+      <description>While researching a related topic, I came across a section in the React documentation for synthetic mouse events about how &amp;ldquo;&lt;em&gt;the &lt;code&gt;onMouseEnter&lt;/code&gt; and &lt;code&gt;onMouseLeave&lt;/code&gt; events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase&lt;/em&gt;&amp;rdquo;. What does that even mean? Let&amp;rsquo;s explore!</description>
+    </item>
+    
+    <item>
+      <title>React Architecture: The React Provider Pattern</title>
+      <link>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</link>
+      <pubDate>Mon, 11 May 2020 18:23:05 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-architecture-provider-pattern/</guid>
+      <description>The React Provider Pattern is one of the main emerging React design patterns in many modern React applications and variations of it can be seen touted by React experts across the board.</description>
+    </item>
+    
+  </channel>
+</rss>

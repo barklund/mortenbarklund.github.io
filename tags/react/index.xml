@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>react on Morten Barklund</title>
+    <link>https://mortenbarklund.com/tags/react/</link>
+    <description>Recent content in react on Morten Barklund</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 16 May 2023 22:37:37 +0200</lastBuildDate><atom:link href="https://mortenbarklund.com/tags/react/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Comprehensive Guide to Advanced React and TypeScript</title>
+      <link>https://mortenbarklund.com/blog/advanced-react-typescript/</link>
+      <pubDate>Tue, 16 May 2023 22:37:37 +0200</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/advanced-react-typescript/</guid>
+      <description>As I embark on this exciting journey of exploring &amp;ldquo;Advanced React and TypeScript,&amp;rdquo; I invite you to join me on a quest to unlock the hidden potential of these powerful technologies.</description>
+    </item>
+    
+    <item>
+      <title>Spreading props correctly with React &#43; TypeScript</title>
+      <link>https://mortenbarklund.com/blog/react-typescript-props-spread/</link>
+      <pubDate>Wed, 04 Jan 2023 21:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-typescript-props-spread/</guid>
+      <description>In this blog post, we&amp;rsquo;re going to explore how to create a React component that can be passed any number of properties which will be passed through to some other component.</description>
+    </item>
+    
+    <item>
+      <title>React 18 Concurrent Mode: How transitions really work (feat. Wordle)</title>
+      <link>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</link>
+      <pubDate>Sun, 01 May 2022 08:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/react-18-concurrent-mode-how-transitions-work/</guid>
+      <description>A deep-dive into React 18 Concurrent Mode and transitions including &lt;code&gt;startTransition&lt;/code&gt; and &lt;code&gt;useTransition&lt;/code&gt; with diagrams – and Wordle!</description>
+    </item>
+    
+    <item>
+      <title>How to use Styled-Components correctly in Remix</title>
+      <link>https://mortenbarklund.com/blog/styled-components-remix/</link>
+      <pubDate>Sat, 28 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/styled-components-remix/</guid>
+      <description>Remix is a great new React website framework, one of the few to challenge the dominance of NextJS. Remix comes with a new philosophy, and with that also some new challenges and complexities when it comes to integrating third-party libraries.</description>
+    </item>
+    
+    <item>
+      <title>Returning children in React &#43; Typescript</title>
+      <link>https://mortenbarklund.com/blog/returning-children-typescript/</link>
+      <pubDate>Thu, 05 Jan 2023 20:00:00 +0100</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/returning-children-typescript/</guid>
+      <description>In this blog post, we&amp;rsquo;ll go over the topic of returning the children property directly from a React component discussing why you would want to do that, what issues you can run into when introducing TypeScript, and how we can get around it.</description>
+    </item>
+    
+    <item>
+      <title>The simplest possible webapp implemented in React, Angular, and Vue</title>
+      <link>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 -0400</pubDate>
+      
+      <guid>https://mortenbarklund.com/blog/simplest-webapp-react-angular-vue/</guid>
+      <description>Are you new to frontend development and feel that all the popular libraries and frameworks are too daunting to get started with? Do you always balk at tutorials, when they mention installing a bunch of programs and libraries and running scripts, compilers, and bundlers when trying to learn something new?</description>
+    </item>
+    
+  </channel>
+</rss>
